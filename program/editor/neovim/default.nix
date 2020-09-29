@@ -22,7 +22,12 @@ in
       :set numberwidth=4
       :set updatetime=300
 
-    '' + (builtins.readFile ./coc.vim);
+      " Disable F1
+      :nmap <F1> :echo<CR>
+      :imap <F1> <C-o>:echo<CR>
+
+    ''
+    + (builtins.readFile ./coc.vim);
 
     # Neovim plugins
     plugins = with pkgs.vimPlugins; [
