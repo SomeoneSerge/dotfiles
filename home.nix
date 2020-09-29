@@ -4,15 +4,39 @@
   imports = [
     ./program/terminal/tmux/default.nix
   ];
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
+  home.stateVersion = "20.09";
+
+  home.username = "nk";
+  home.homeDirectory = "/home/nk";
+
+  home.sessionVariables = {
+    EDITOR = "nvim";
+  };
 
   home.language.base = "en_US.UTF-8";
   home.packages = with pkgs; [
+    cachix
     lorri
-    tmux
     direnv
     niv
+
+    gist
+    gitAndTools.hub
+    gitAndTools.gh
+    curl
+    wget
+
+    fish
+    fd
+    ag
+    ripgrep
+    fzf
+
+    mosh
+
     beets
     cmus
   ];
@@ -67,19 +91,4 @@
       };
     };
   };
-
-  # Home Manager needs a bit of information about you and the
-  # paths it should manage.
-  home.username = "nk";
-  home.homeDirectory = "/home/nk";
-
-  # This value determines the Home Manager release that your
-  # configuration is compatible with. This helps avoid breakage
-  # when a new Home Manager release introduces backwards
-  # incompatible changes.
-  #
-  # You can update Home Manager without changing this value. See
-  # the Home Manager release notes for a list of state version
-  # changes in each release.
-  home.stateVersion = "20.09";
 }
