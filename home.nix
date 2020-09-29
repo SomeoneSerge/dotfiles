@@ -3,6 +3,7 @@
 {
   imports = [
     ./program/terminal/tmux/default.nix
+    ./program/tools/audio/beets/default.nix
   ];
 
   # Let Home Manager install and manage itself.
@@ -59,36 +60,5 @@
   programs.man = {
     enable = true;
     generateCaches = true;
-  };
-  programs.beets = {
-    enable = true;
-    package = with pkgs; (
-      beets.override
-      {
-        enableConvert = true;
-        enableLoadext = true;
-        enableKeyfinder = true;
-        enableFetchart = true;
-        enableThumbnails = true;
-      }
-    );
-    settings = {
-      directory=  "~/Music";
-      library = "~/.config/beets/library.db";
-      plugins = [
-        "fromfilename"
-        "fetchart"
-        "lyrics"
-        "lastgenre"
-        "web" "bpd"
-        "duplicates"
-        "discogs"
-        "ftintitle"
-        "badfiles"
-      ];
-      import = {
-          move = true;
-      };
-    };
   };
 }
