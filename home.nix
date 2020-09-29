@@ -3,6 +3,7 @@
 {
   imports = [
     ./program/terminal/tmux/default.nix
+    ./program/editor/neovim/default.nix
     ./program/tools/audio/beets/default.nix
   ];
 

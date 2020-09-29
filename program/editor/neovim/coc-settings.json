@@ -1,0 +1,130 @@
+{
+    "tslint.autoFixOnSave": true,
+    "languageserver": {
+        "python": {
+            "filetypes": [
+                "py"
+            ],
+            "command": "python",
+            "args": [
+                "-mpyls",
+                "-vv",
+                "--log-file",
+                "/tmp/lsp_python.log"
+            ],
+            "settings": {
+                "pyls": {
+                    "enable": true,
+                    "trace": {
+                        "server": "verbose"
+                    },
+                    "commandPath": "",
+                    "configurationSources": [
+                        "pycodestyle"
+                    ],
+                    "plugins": {
+                        "jedi_completion": {
+                            "enabled": true
+                        },
+                        "jedi_hover": {
+                            "enabled": true
+                        },
+                        "jedi_references": {
+                            "enabled": true
+                        },
+                        "jedi_signature_help": {
+                            "enabled": true
+                        },
+                        "jedi_symbols": {
+                            "enabled": true,
+                            "all_scopes": true
+                        },
+                        "mccabe": {
+                            "enabled": true,
+                            "threshold": 15
+                        },
+                        "preload": {
+                            "enabled": true
+                        },
+                        "pycodestyle": {
+                            "enabled": true
+                        },
+                        "pydocstyle": {
+                            "enabled": false,
+                            "match": "(?!test_).*\\.py",
+                            "matchDir": "[^\\.].*"
+                        },
+                        "pyflakes": {
+                            "enabled": true
+                        },
+                        "rope_completion": {
+                            "enabled": true
+                        },
+                        "yapf": {
+                            "enabled": true
+                        }
+                    }
+                }
+            }
+        },
+        "ccls": {
+            "command": "ccls",
+            "filetypes": [
+                "c",
+                "cpp",
+                "cuda",
+                "objc",
+                "objcpp"
+            ],
+            "rootPatterns": [
+                ".ccls",
+                "compile_commands.json",
+                ".vim/",
+                ".git/",
+                ".hg/"
+            ],
+            "initializationOptions": {
+                "cache": {
+                    "directory": ".ccls-cache"
+                }
+            }
+        },
+        "haskell": {
+            "command": "hie-wrapper",
+            "args": [
+                "--lsp"
+            ],
+            "rootPatterns": [
+                "*.cabal",
+                "stack.yaml",
+                "cabal.project",
+                "package.yaml"
+            ],
+            "filetypes": [
+                "hs",
+                "lhs",
+                "haskell"
+            ],
+            "initializationOptions": {
+                "languageServerHaskell": {}
+            }
+        }
+    },
+    "python.formatting.provider": "black",
+    "python.jediPath": "/home/nk/.ve/nvim/lib/python3.8/site-packages/jedi",
+    "python.jediEnabled": true,
+    "python.autoUpdateLanguageServer": true,
+    "python.linting.flake8Enabled": true,
+    "python.linting.pylintPath": "/usr/bin/pylint",
+    "python.formatting.blackPath": "/usr/bin/black",
+    "python.formatting.yapfPath": "/usr/bin/yapf",
+    "python.sortImports.path": "/usr/bin/isort",
+    "python.linting.flake8Path": "/usr/bin/flake8",
+    "python.condaPath": "~/miniforge3/bin/conda",
+    "json.format.enable": true,
+    "coc.preferences.formatOnSaveFiletypes": [
+        "python",
+        "json",
+        "yaml"
+    ]
+}
