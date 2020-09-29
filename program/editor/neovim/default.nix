@@ -21,7 +21,8 @@ in
       :set shiftwidth=4
       :set numberwidth=4
       :set updatetime=300
-    '';
+
+    '' + (builtins.readFile ./coc.vim);
 
     # Neovim plugins
     plugins = with pkgs.vimPlugins; [
