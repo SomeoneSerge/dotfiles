@@ -43,10 +43,14 @@
             }
         }
     },
+    "python.autoUpdateLanguageServer": true,
     "python.formatting.provider": "black",
     "python.jediPath": "/home/nk/.ve/nvim/lib/python3.8/site-packages/jedi",
     "python.jediEnabled": true,
-    "python.autoUpdateLanguageServer": true,
+    "python.linting.pydocstyleEnabled": true,
+    "python.linting.pydocstylePath": "nix-shell -p python3Packages.pydocstyle --run 'python -m pydocstyle'",
+    "python.linting.mypyEnabled": true,
+    "python.linting.mypyPath": "nix-shell -p python3Packages.mypy --run mypy",
     "python.linting.flake8Enabled": true,
     "python.linting.pylintPath": "/usr/bin/pylint",
     "python.formatting.blackPath": "/usr/bin/black",

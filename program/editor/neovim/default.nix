@@ -2,10 +2,14 @@
 
 let
   pyPkgs = (ps: with ps; [
+    # Currently useless, because
+    # https://github.com/NixOS/nixpkgs/issues/98166
       pylint
       black
       flake8
       isort
+      pydocstyle
+      mypy
     ]);
 in
 {
