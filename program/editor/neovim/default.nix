@@ -11,6 +11,7 @@ let
       pydocstyle
       mypy
       jedi
+      pkgs.pylinters
     ]);
   cocConfigDict = import ./coc.nix { config = config; pylinters = pkgs.pylinters; };
   cocConfig = (pkgs.writeText "coc-settings.json" (builtins.toJSON cocConfigDict));
