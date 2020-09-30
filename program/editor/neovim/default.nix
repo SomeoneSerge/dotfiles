@@ -44,6 +44,7 @@ in
       gruvbox
       tabular
       vim-nix
+      fugitive
       coc-nvim
       coc-yaml
       coc-json
