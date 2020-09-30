@@ -12,18 +12,10 @@ let
       mypy
       jedi
     ]);
+  cocConfigDict = import ./coc.nix { config = config; pylinters = pkgs.pylinters; };
+  cocConfig = (pkgs.writeText "coc-settings.json" (builtins.toJSON cocConfigDict));
 in
 {
-  home.packages = with pkgs.python3Packages; [
-      pylint
-      black
-      flake8
-      isort
-      pydocstyle
-      mypy
-      jedi
-      pkgs.python3
-  ];
   programs.neovim = {
     enable = true;
     vimAlias = true;
@@ -67,5 +59,5 @@ in
   #     "python.linting.pylintPath": "nix-shell -p 'python3.withPackages(ps: [ps.pylint])' --run 'python -m pylint'"
   #   }
   # '';
-  xdg.configFile."nvim/coc-settings.json".source = ./coc-settings.json;
+  xdg.configFile."nvim/coc-settings.json".source = cocConfig;
 }
