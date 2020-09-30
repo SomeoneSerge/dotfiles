@@ -10,9 +10,20 @@ let
       isort
       pydocstyle
       mypy
+      jedi
     ]);
 in
 {
+  home.packages = with pkgs.python3Packages; [
+      pylint
+      black
+      flake8
+      isort
+      pydocstyle
+      mypy
+      jedi
+      pkgs.python3
+  ];
   programs.neovim = {
     enable = true;
     vimAlias = true;
