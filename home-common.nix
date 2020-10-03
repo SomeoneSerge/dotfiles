@@ -11,9 +11,6 @@
   programs.home-manager.enable = true;
   home.stateVersion = "20.09";
 
-  home.username = "serge";
-  home.homeDirectory = "/home/serge";
-
   home.sessionVariables = {
     EDITOR = "nvim";
   };
