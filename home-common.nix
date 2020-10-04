@@ -3,6 +3,13 @@
 {
   nixpkgs.overlays = [ (import ./overlays/pylinters.nix) ];
 
+  # Ignored anyway, because "restricted setting"
+  # and "untrusted user":
+
+  # xdg.configFile."nix/nix.conf".text = ''
+  #   experimental-features = nix-command flakes
+  #   '';
+
   imports = [
     ./program/terminal/tmux/default.nix
     ./program/editor/neovim/default.nix
@@ -23,6 +30,7 @@
     lorri
     direnv
     niv
+    nixUnstable
 
     gist
     gitAndTools.hub
