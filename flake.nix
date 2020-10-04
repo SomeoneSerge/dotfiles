@@ -20,7 +20,11 @@
       anarchymachine = home-manager.lib.homeManagerConfiguration {
         configuration = ({ config, pkgs, ...}:
           {
-            nixpkgs.config.allowUnfree = true;
+            xdg.configFile."nixpkgs/config.nix".text = ''
+              {
+                allowUnfree = true;
+              }
+            '';
           }
           // (import ./home-common.nix {inherit config pkgs; }));
         homeDirectory = "/home/serge";
