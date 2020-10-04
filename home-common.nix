@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+  nixpkgs.overlays = [ (import ./overlays/pylinters.nix) ];
+
   imports = [
     ./program/terminal/tmux/default.nix
     ./program/editor/neovim/default.nix
@@ -8,7 +10,7 @@
   ];
 
   # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
+  # programs.home-manager.enable = true;
   home.stateVersion = "20.09";
 
   home.sessionVariables = {

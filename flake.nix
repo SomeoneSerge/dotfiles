@@ -8,32 +8,28 @@
 
   outputs = { self, nixpkgs, home-manager }@inputs: 
   let
-    overlays = [ import ./overlays/pylinters.nix ];
     system = "x86_64-linux";
-  in rec {
+  in {
     homeManagerConfigurations = {
       intm = home-manager.lib.homeManagerConfiguration {
         configuration = import ./hosts/intm/home.nix;
         homeDirectory = "/home/nk";
         username = "nk";
         inherit system;
-        pkgs = import nixpkgs {
-          inherit system overlays;
-        };
       };
       anarchymachine = home-manager.lib.homeManagerConfiguration {
-        configuration = import ./hosts/anarchymachine/home.nix;
+        configuration = ({ config, pkgs, ...}:
+          {
+            nixpkgs.config.allowUnfree = true;
+          }
+          // (import ./home-common.nix {inherit config pkgs; }));
         homeDirectory = "/home/serge";
         username = "serge";
         inherit system;
-        pkgs = import nixpkgs {
-          config.allowUnfree = true;
-          inherit system overlays;
-        };
       };
     };
-    defaultPackage.x86_64-linux = homeManagerConfigurations.intm.activationPackage;
-    packages.x86_64-linux.activateIntm = homeManagerConfigurations.intm.activationPackage;
-    packages.x86_64-linux.activateAnarchy = homeManagerConfigurations.anarchymachine.activationPackage;
+    defaultPackage.x86_64-linux = self.homeManagerConfigurations.intm.activationPackage;
+    packages.x86_64-linux.homeIntm = self.homeManagerConfigurations.intm.activationPackage;
+    packages.x86_64-linux.homeAnarchy = self.homeManagerConfigurations.anarchymachine.activationPackage;
   };
 }
