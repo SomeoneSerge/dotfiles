@@ -38,7 +38,6 @@
     curl
     wget
 
-    fish
     fd
     ag
     ripgrep
@@ -68,5 +67,14 @@
   programs.man = {
     enable = true;
     generateCaches = true;
+  };
+  programs.fish = {
+    enable = true;
+    shellInit = ''
+        # TODO: Find a proper way to do it...
+        set -p fish_function_path ${pkgs.fish-foreign-env}/share/fish-foreign-env/functions
+        fenv source /etc/profile.d/nix.sh
+        set -e fish_function_path[1]
+        '';
   };
 }
