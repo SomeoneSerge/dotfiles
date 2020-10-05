@@ -11,7 +11,7 @@
     ./program/neovim/default.nix
   ];
 
-  # Let Home Manager install and manage itself.
+  # Let's NOT let Home Manager install and manage itself.
   # programs.home-manager.enable = true;
   home.stateVersion = "20.09";
 
