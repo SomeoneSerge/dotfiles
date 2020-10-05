@@ -9,9 +9,5 @@
 
     curl
     wget
-
-    gist
-    gitAndTools.hub
-    gitAndTools.gh
   ];
 }
