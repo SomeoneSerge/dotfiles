@@ -25,6 +25,7 @@
     # mosh
 
     asciinema
+    youtubeDL
   ];
 
   programs.git = {
