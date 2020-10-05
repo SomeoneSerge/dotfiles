@@ -8,7 +8,6 @@
     ./common-fileutils.nix
     ./program/tmux/default.nix
     ./program/neovim/default.nix
-    ./program/beets/default.nix
   ];
 
   # Let Home Manager install and manage itself.

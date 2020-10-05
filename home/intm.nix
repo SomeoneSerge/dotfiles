@@ -3,6 +3,7 @@
 {
   imports = [
     ./common.nix
+    ./program/beets/default.nix
   ];
 
   home.packages = with pkgs; [
