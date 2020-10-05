@@ -26,6 +26,6 @@
     };
     defaultPackage.x86_64-linux = self.homeManagerConfigurations.intm.activationPackage;
     packages.x86_64-linux.homeIntm = self.homeManagerConfigurations.intm.activationPackage;
-    packages.x86_64-linux.homeAnarchy = self.homeManagerConfigurations.devbox.activationPackage;
+    packages.x86_64-linux.homeDevbox = self.homeManagerConfigurations.devbox.activationPackage;
   };
 }
