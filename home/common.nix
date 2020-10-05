@@ -1,19 +1,14 @@
 { config, pkgs, ... }:
 
 {
-  nixpkgs.overlays = [ (import ./overlays/pylinters.nix) ];
-
-  # Ignored anyway, because "restricted setting"
-  # and "untrusted user":
-
-  # xdg.configFile."nix/nix.conf".text = ''
-  #   experimental-features = nix-command flakes
-  #   '';
+  nixpkgs.overlays = [ (import ../overlays/pylinters.nix) ];
 
   imports = [
-    ./program/terminal/tmux/default.nix
-    ./program/editor/neovim/default.nix
-    ./program/tools/audio/beets/default.nix
+    ./common-nixutils.nix
+    ./common-fileutils.nix
+    ../program/terminal/tmux/default.nix
+    ../program/editor/neovim/default.nix
+    ../program/tools/audio/beets/default.nix
   ];
 
   # Let Home Manager install and manage itself.
@@ -26,26 +21,7 @@
 
   home.language.base = "en_US.UTF-8";
   home.packages = with pkgs; [
-    cachix
-    lorri
-    niv
-    nixUnstable
-
-    gist
-    gitAndTools.hub
-    gitAndTools.gh
-    curl
-    wget
-
-    fd
-    ag
-    ripgrep
-    fzf
-
     mosh
-
-    beets
-    cmus
   ];
 
   programs.git = {
@@ -68,10 +44,6 @@
     generateCaches = true;
   };
 
-  programs.direnv = {
-    enable = true;
-    enableNixDirenvIntegration = true;
-  };
   programs.fish = {
     enable = true;
     shellInit = ''

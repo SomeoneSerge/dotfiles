@@ -2,12 +2,15 @@
 
 {
   imports = [
-    ../../home-common.nix
+    ./common.nix
   ];
 
   home.packages = with pkgs; [
     mpv
     vlc
     deadbeef
+
+    beets
+    cmus
   ];
 }

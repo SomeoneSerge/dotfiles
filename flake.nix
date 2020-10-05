@@ -12,21 +12,13 @@
   in {
     homeManagerConfigurations = {
       intm = home-manager.lib.homeManagerConfiguration {
-        configuration = import ./hosts/intm/home.nix;
+        configuration = import ./home/intm.nix;
         homeDirectory = "/home/nk";
         username = "nk";
         inherit system;
       };
-      anarchymachine = home-manager.lib.homeManagerConfiguration {
-        configuration = ({ config, pkgs, ...}:
-          {
-            xdg.configFile."nixpkgs/config.nix".text = ''
-              {
-                allowUnfree = true;
-              }
-            '';
-          }
-          // (import ./home-common.nix {inherit config pkgs; }));
+      devbox = home-manager.lib.homeManagerConfiguration {
+        configuration = (import ./home/devbox.nix);
         homeDirectory = "/home/serge";
         username = "serge";
         inherit system;
@@ -34,6 +26,6 @@
     };
     defaultPackage.x86_64-linux = self.homeManagerConfigurations.intm.activationPackage;
     packages.x86_64-linux.homeIntm = self.homeManagerConfigurations.intm.activationPackage;
-    packages.x86_64-linux.homeAnarchy = self.homeManagerConfigurations.anarchymachine.activationPackage;
+    packages.x86_64-linux.homeAnarchy = self.homeManagerConfigurations.devbox.activationPackage;
   };
 }
