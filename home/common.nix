@@ -6,9 +6,9 @@
   imports = [
     ./common-nixutils.nix
     ./common-fileutils.nix
-    ../program/terminal/tmux/default.nix
-    ../program/editor/neovim/default.nix
-    ../program/tools/audio/beets/default.nix
+    ./program/tmux/default.nix
+    ./program/neovim/default.nix
+    ./program/beets/default.nix
   ];
 
   # Let Home Manager install and manage itself.
