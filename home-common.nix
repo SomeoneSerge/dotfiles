@@ -28,7 +28,6 @@
   home.packages = with pkgs; [
     cachix
     lorri
-    direnv
     niv
     nixUnstable
 
@@ -67,6 +66,10 @@
   programs.man = {
     enable = true;
     generateCaches = true;
+  };
+
+  programs.direnv = {
+    enable = true;
   };
   programs.fish = {
     enable = true;
