@@ -43,4 +43,10 @@
         set -e fish_function_path[1]
         '';
   };
+
+  services.gpg-agent = {
+    enableSshSupport = true;
+    pinentryFlavor = "gnome3";
+  };
+
 }
