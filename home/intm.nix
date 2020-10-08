@@ -16,6 +16,7 @@
   ];
 
   services.gpg-agent = {
+    pinentryFlavor = "gnome3";
   };
 
   home.sessionVariables = {
