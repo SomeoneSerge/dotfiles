@@ -9,23 +9,12 @@
   outputs = { self, nixpkgs, home-manager }@inputs: 
   let
     system = "x86_64-linux";
+    homeCfgs = (import ./home/default.nix {
+      inherit nixpkgs home-manager system;
+    });
   in {
-    homeManagerConfigurations = {
-      intm = home-manager.lib.homeManagerConfiguration {
-        configuration = import ./home/intm.nix;
-        homeDirectory = "/home/nk";
-        username = "nk";
-        inherit system;
-      };
-      devbox = home-manager.lib.homeManagerConfiguration {
-        configuration = (import ./home/devbox.nix);
-        homeDirectory = "/home/serge";
-        username = "serge";
-        inherit system;
-      };
-    };
-    defaultPackage.x86_64-linux = self.homeManagerConfigurations.intm.activationPackage;
-    packages.x86_64-linux.homeIntm = self.homeManagerConfigurations.intm.activationPackage;
-    packages.x86_64-linux.homeDevbox = self.homeManagerConfigurations.devbox.activationPackage;
+    defaultPackage.x86_64-linux = homeCfgs.intm.activationPackage;
+    packages.x86_64-linux.homeIntm = homeCfgs.intm.activationPackage;
+    packages.x86_64-linux.homeDevbox = homeCfgs.devbox.activationPackage;
   };
 }
