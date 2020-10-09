@@ -50,7 +50,7 @@ Flakes-enabled `nix`:
 - Flakes also allow fetching the artifact without explicitly cloning the repo:
 
   ```bash
-  nix build github:newkozlukov/dotfiles#homeIntm
+  nix build github:newkozlukov/dotfiles#home-intm
   ```
 - The previous only works with public repos, because nix uses github's HTTP
   API, unaware of SSH keys

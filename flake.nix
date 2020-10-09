@@ -14,7 +14,7 @@
     });
   in {
     defaultPackage.x86_64-linux = homeCfgs.intm.activationPackage;
-    packages.x86_64-linux.homeIntm = homeCfgs.intm.activationPackage;
-    packages.x86_64-linux.homeDevbox = homeCfgs.devbox.activationPackage;
+    packages.x86_64-linux.home-intm = homeCfgs.intm.activationPackage;
+    packages.x86_64-linux.home-devbox = homeCfgs.devbox.activationPackage;
   };
 }
