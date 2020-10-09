@@ -14,7 +14,19 @@
     });
   in {
     defaultPackage.x86_64-linux = homeCfgs.intm.activationPackage;
-    packages.x86_64-linux.home-intm = homeCfgs.intm.activationPackage;
-    packages.x86_64-linux.home-devbox = homeCfgs.devbox.activationPackage;
+    packages.x86_64-linux = {
+      home-intm = homeCfgs.intm.activationPackage;
+      home-devbox = homeCfgs.devbox.activationPackage;
+    };
+    apps.x86_64-linux = {
+      home-intm = {
+        type = "app";
+        program = "${self.packages.x86_64-linux.home-intm}/activate";
+      };
+      home-devbox = {
+        type = "app";
+        program = "${self.packages.x86_64-linux.home-devbox}/activate";
+      };
+    };
   };
 }
