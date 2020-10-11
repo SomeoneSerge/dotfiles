@@ -18,6 +18,17 @@
   services.gpg-agent = {
     pinentryFlavor = "gnome3";
   };
+  services.redshift = {
+    enable = true;
+    package = pkgs.redshift-wlr;
+    latitude = "55.6765651";
+    longitude = "37.7623706";
+    temperature = {
+      day = 6000;
+      night = 2100;
+    };
+    extraOptions = [ "-m wayland" ];
+  };
 
   home.sessionVariables = {
     MOZ_USE_XINPUT2 = 1;
