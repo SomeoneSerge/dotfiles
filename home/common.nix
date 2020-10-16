@@ -17,6 +17,8 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
+    FONTCONFIG_FILE = "${pkgs.fontconfig.out}/etc/fonts/fonts.conf";
+    LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
   };
 
   home.language.base = "en_US.UTF-8";
@@ -48,5 +50,6 @@
     enable = true;
     enableSshSupport = true;
   };
+  
 
 }
