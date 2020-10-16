@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 
-{
+rec {
   nixpkgs.overlays = [ (import ../overlays/pylinters.nix) ];
 
   imports = [
@@ -43,6 +43,7 @@
         set -p fish_function_path ${pkgs.fish-foreign-env}/share/fish-foreign-env/functions
         fenv source /etc/profile.d/nix.sh
         set -e fish_function_path[1]
+        ${config.lib.shell.exportAll home.sessionVariables}
         '';
   };
 
