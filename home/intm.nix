@@ -4,6 +4,7 @@
   imports = [
     ./common.nix
     ./program/beets/default.nix
+    ./weechat.nix
   ];
 
   home.packages = with pkgs; [
