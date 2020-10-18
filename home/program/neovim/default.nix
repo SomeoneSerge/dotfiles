@@ -56,10 +56,5 @@ in
     extraPython3Packages = pyPkgs;
   };
 
-  # xdg.configFile."nvim/coc-settings.json".text = ''
-  #   {
-  #     "python.linting.pylintPath": "nix-shell -p 'python3.withPackages(ps: [ps.pylint])' --run 'python -m pylint'"
-  #   }
-  # '';
   xdg.configFile."nvim/coc-settings.json".source = cocConfig;
 }
