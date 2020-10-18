@@ -27,11 +27,18 @@ in
       :nmap <F1> :echo<CR>
       :imap <F1> <C-o>:echo<CR>
 
+      " Fzf config borrowed from @newzubakhin
+      noremap <Leader>b :Buffers<CR>
+      noremap <Leader>h :History<CR>
+      noremap <Leader>s :Ag<CR>
+      noremap <Leader>f :Files<CR>
+
     ''
     + (builtins.readFile ./coc.vim);
 
     # Neovim plugins
     plugins = with pkgs.vimPlugins; [
+      fzf-vim
       ctrlp
       editorconfig-vim
       gruvbox
