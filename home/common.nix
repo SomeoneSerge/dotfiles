@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 
-{
+rec {
   nixpkgs.overlays = [ (import ../overlays/pylinters.nix) ];
 
   imports = [
@@ -17,13 +17,15 @@
 
   home.sessionVariables = {
     EDITOR = "nvim";
+    FONTCONFIG_FILE = "${pkgs.fontconfig.out}/etc/fonts/fonts.conf";
+    LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
   };
 
   home.language.base = "en_US.UTF-8";
   home.packages = with pkgs; [
     # Not installing mosh, because of
     # https://github.com/NixOS/nixpkgs/issues/90523
-    # mosh
+    mosh
 
     asciinema
     youtubeDL
@@ -41,6 +43,7 @@
         set -p fish_function_path ${pkgs.fish-foreign-env}/share/fish-foreign-env/functions
         fenv source /etc/profile.d/nix.sh
         set -e fish_function_path[1]
+        ${config.lib.shell.exportAll home.sessionVariables}
         '';
   };
 
@@ -49,5 +52,6 @@
     enableSshSupport = true;
     enableScDaemon = false;
   };
+  
 
 }
