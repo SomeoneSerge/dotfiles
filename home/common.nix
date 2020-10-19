@@ -25,7 +25,7 @@ rec {
   home.packages = with pkgs; [
     # Not installing mosh, because of
     # https://github.com/NixOS/nixpkgs/issues/90523
-    # mosh
+    mosh
 
     asciinema
     youtubeDL
