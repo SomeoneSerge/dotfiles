@@ -4,9 +4,17 @@ let
   pyPkgs = (ps: with ps; [
     # Currently useless, because
     # https://github.com/NixOS/nixpkgs/issues/98166
-    pkgs.pylinters
+      pylint
+      black
+      flake8
+      isort
+      pydocstyle
+      mypy
+      jedi
+      yapf
+      pkgs.pylinters
     ]);
-  cocConfigDict = import ./coc.nix { config = config; pylinters = pkgs.pylinters; };
+  cocConfigDict = import ./coc.nix { config = config; pylinters = pkgs.pylinters; pythonPackages = pkgs.python38Packages; };
   cocConfig = (pkgs.writeText "coc-settings.json" (builtins.toJSON cocConfigDict));
 in
 {

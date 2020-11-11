@@ -1,6 +1,6 @@
-self: super: {
+final: prev: {
   pylinters = let 
-    python = super.python3.withPackages (ps: with ps; [
+    python = prev.python3.withPackages (ps: with ps; [
       pylint
       black
       flake8
@@ -10,22 +10,26 @@ self: super: {
       jedi
       yapf
     ]);
-  in super.stdenv.mkDerivation {
+    wrappers = prev.stdenv.mkDerivation {
+      name = "pylinters";
+      nativeBuildInputs = [
+        prev.makeWrapper
+      ];
+      buildInputs = [
+        prev.makeWrapper
+        python
+      ];
+      phases = [ "buildPhase" ];
+      buildPhase = ''
+        . "${prev.makeWrapper}/nix-support/setup-hook"
+        mkdir -p $out/bin
+        for prog in jedi ; do
+          makeWrapper ${python}/bin/python $out/bin/$prog --argv0 $prog --add-flags "-m $prog"
+        done
+      '';
+    };
+  in prev.buildEnv {
     name = "pylinters-env";
-    nativeBuildInputs = [
-      super.makeWrapper
-    ];
-    buildInputs = [
-      super.makeWrapper
-      python
-    ];
-    phases = [ "buildPhase" ];
-    buildPhase = ''
-      . "${super.makeWrapper}/nix-support/setup-hook"
-      mkdir -p $out/bin
-      for prog in jedi pylint mypy flake8 pydocstyle black isort yapf ; do
-        makeWrapper ${python}/bin/python $out/bin/$prog --argv0 $prog --add-flags "-m $prog"
-      done
-    '';
+    paths = [python wrappers];
   };
 }

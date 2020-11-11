@@ -1,8 +1,8 @@
-{ config, pylinters }:
+{ config, pylinters, pythonPackages }:
 
 {
   tsserver.enable = true;
-  python.jediPath = "${pylinters}/bin/jedi";
+  python.jediPath = "${pylinters}/lib/python3.8/site-packages/";
   python.linting.pydocstylePath = "${pylinters}/bin/pydocstyle";
   python.linting.mypyPath = "${pylinters}/bin/mypy";
   python.linting.pylintPath = "${pylinters}/bin/pylint";
