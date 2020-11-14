@@ -29,6 +29,12 @@ rec {
 
     asciinema
     youtubeDL
+
+    stack
+    bazel
+    meson
+    nodejs
+    ccls
   ];
 
   programs.man = {

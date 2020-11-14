@@ -14,4 +14,7 @@
   services.gpg-agent = {
     pinentryFlavor = "tty";
   };
+
+  home.packages = with pkgs; [
+  ];
 }
