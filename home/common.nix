@@ -44,7 +44,13 @@ rec {
 
   programs.zsh = {
     enable = true;
-    prezto.enable = true;
+    prezto = {
+      enable = true;
+      prompt = {
+        theme = "pure";
+        pwdLength = "long";
+      };
+    };
   };
 
   programs.fish = {
