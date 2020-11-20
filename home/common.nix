@@ -47,8 +47,19 @@ rec {
     prezto = {
       enable = true;
       prompt = {
-        theme = "pure";
+        theme = "minimal";
         pwdLength = "long";
+      };
+      pmodules = [
+        "environment"
+        "terminal"
+        "editor"
+        "history"
+        "completion"
+        "prompt"
+      ];
+      syntaxHighlighting = {
+        highlighters = ["main" "brackets"];
       };
     };
   };
