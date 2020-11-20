@@ -42,26 +42,8 @@ rec {
     generateCaches = true;
   };
 
-  programs.zsh = {
+  programs.bash = {
     enable = true;
-    prezto = {
-      enable = true;
-      prompt = {
-        theme = "minimal";
-        pwdLength = "long";
-      };
-      pmodules = [
-        "environment"
-        "terminal"
-        "editor"
-        "history"
-        "completion"
-        "prompt"
-      ];
-      syntaxHighlighting = {
-        highlighters = ["main" "brackets"];
-      };
-    };
   };
 
   programs.fish = {
