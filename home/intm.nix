@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, nixGL, ... }:
 
 {
   imports = [
@@ -14,7 +14,16 @@
 
     beets
     cmus
+
+    nixGLIntel
   ];
+
+  programs.kitty = {
+    enable = true;
+  };
+  programs.qutebrowser = {
+    enable = true;
+  };
 
   services.gpg-agent = {
     pinentryFlavor = "gnome3";

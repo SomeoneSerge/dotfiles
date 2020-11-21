@@ -1,7 +1,12 @@
-{ config, pkgs, ... }:
+{ config, pkgs, nixGL, ... }:
 
 rec {
-  nixpkgs.overlays = [ (import ../overlays/pylinters.nix) ];
+  nixpkgs.overlays = [
+    (import ../overlays/pylinters.nix)
+    (final: prev: {
+      inherit (nixGL) nixGLNvidia nixGLIntel nixGLDefault;
+    })
+  ];
 
   imports = [
     ./common-nixutils.nix
