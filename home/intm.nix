@@ -30,8 +30,8 @@
   };
   services.redshift = {
     enable = true;
-    # extraOptions = [ "-m wayland" ];
-    # package = pkgs.redshift-wlr;
+    extraOptions = [ "-m wayland" ];
+    package = pkgs.redshift-wlr;
     latitude = "55.6765651";
     longitude = "37.7623706";
     temperature = {
