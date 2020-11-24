@@ -1,6 +1,6 @@
 { config, pkgs, nixGL, ... }:
 
-rec {
+{
   nixpkgs.overlays = [
     (import ../overlays/pylinters.nix)
     (final: prev: {
@@ -49,6 +49,10 @@ rec {
 
   programs.bash = {
     enable = true;
+    sessionVariables = config.home.sessionVariables;
+    bashrcExtra = ''
+      . ${pkgs.bash-completion}/share/bash-completion/bash_completion
+      '';
   };
 
   programs.fish = {
@@ -58,8 +62,12 @@ rec {
         set -p fish_function_path ${pkgs.fish-foreign-env}/share/fish-foreign-env/functions
         fenv source /etc/profile.d/nix.sh
         set -e fish_function_path[1]
-        ${config.lib.shell.exportAll home.sessionVariables}
+        ${config.lib.shell.exportAll config.home.sessionVariables}
         '';
+  };
+
+  programs.fzf = {
+    enable = true;
   };
 
   services.gpg-agent = {
@@ -67,6 +75,4 @@ rec {
     enableSshSupport = true;
     enableScDaemon = false;
   };
-  
-
 }

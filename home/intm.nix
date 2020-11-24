@@ -48,5 +48,4 @@ rec {
     SDL_VIDEODRIVER = "wayland";
     CLUTTER_BACKEND = "wayland";
   };
-  pam.sessionVariables = home.sessionVariables;
 }
