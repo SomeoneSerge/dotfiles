@@ -3,7 +3,7 @@
 rec {
   imports = [
     ./common.nix
-    ./program/beets/default.nix
+    # ./program/beets/default.nix
     ./weechat.nix
   ];
 
@@ -12,7 +12,7 @@ rec {
     vlc
     deadbeef
 
-    beets
+    # beets
     cmus
 
     nixGLIntel
@@ -21,9 +21,9 @@ rec {
   programs.kitty = {
     enable = true;
   };
-  programs.qutebrowser = {
-    enable = true;
-  };
+  # programs.qutebrowser = {
+  #   enable = true;
+  # };
 
   services.gpg-agent = {
     pinentryFlavor = "gnome3";
