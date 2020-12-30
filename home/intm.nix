@@ -8,9 +8,9 @@ rec {
   ];
 
   home.packages = with pkgs; [
-    mpv-with-scripts
-    vlc
-    deadbeef
+    # mpv-with-scripts
+    # vlc
+    # deadbeef
 
     # beets
     cmus
