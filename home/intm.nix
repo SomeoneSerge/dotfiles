@@ -18,9 +18,11 @@ rec {
     nixGLIntel
   ];
 
-  programs.kitty = {
-    enable = true;
-  };
+  # GL apps don't work
+
+  # programs.kitty = {
+  #   enable = true;
+  # };
   # programs.qutebrowser = {
   #   enable = true;
   # };
