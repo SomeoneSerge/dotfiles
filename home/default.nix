@@ -21,10 +21,16 @@ in {
       home = { inherit username homeDirectory; };
     };
   };
-  devbox = home-manager.lib.homeManagerConfiguration {
-    configuration = (import ./devbox.nix);
+  devbox = home-manager.lib.homeManagerConfiguration rec {
+    inherit system;
     homeDirectory = "/home/serge";
     username = "serge";
-    inherit system;
+    configuration = {pkgs, ...}: rec {
+      imports = [
+        ./devbox.nix
+        injectGL
+      ];
+      home = { inherit username homeDirectory; };
+    };
   };
 }

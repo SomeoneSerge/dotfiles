@@ -16,5 +16,7 @@
   };
 
   home.packages = with pkgs; [
+    pkgs.nixGLIntel
+    # pkgs.nixGLNvidia
   ];
 }

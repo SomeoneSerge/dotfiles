@@ -7,6 +7,8 @@
     ripgrep
     fzf
 
+    ncdu
+
     curl
     wget
   ];

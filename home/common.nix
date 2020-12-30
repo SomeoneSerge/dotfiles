@@ -38,6 +38,7 @@
     stack
     bazel
     meson
+    leiningen
     nodejs
     ccls
   ];
@@ -53,6 +54,17 @@
     bashrcExtra = ''
       . ${pkgs.bash-completion}/share/bash-completion/bash_completion
       '';
+    shellOptions = [
+      # Default
+      "histappend"
+      "checkwinsize"
+      "extglob"
+      "globstar"
+      "checkjobs"
+      # Custom
+      "dirspell"
+      "cdspell"
+    ];
   };
 
   programs.fish = {
