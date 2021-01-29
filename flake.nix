@@ -22,15 +22,15 @@
       inherit pkgs home-manager system nixGL;
     });
   in {
-    defaultPackage.x86_64-linux = homeCfgs.intm.activationPackage;
+    defaultPackage.x86_64-linux = homeCfgs.laptop.activationPackage;
     packages.x86_64-linux = {
-      home-intm = homeCfgs.intm.activationPackage;
+      home-laptop = homeCfgs.laptop.activationPackage;
       home-devbox = homeCfgs.devbox.activationPackage;
     };
     apps.x86_64-linux = {
-      home-intm = {
+      home-laptop = {
         type = "app";
-        program = "${self.packages.x86_64-linux.home-intm}/activate";
+        program = "${self.packages.x86_64-linux.home-laptop}/activate";
       };
       home-devbox = {
         type = "app";

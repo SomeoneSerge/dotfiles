@@ -9,13 +9,13 @@ let
     ];
   };
 in {
-  intm = home-manager.lib.homeManagerConfiguration rec {
+  laptop = home-manager.lib.homeManagerConfiguration rec {
     inherit system;
     homeDirectory = "/home/nk";
     username = "nk";
     configuration = {pkgs, ...}: rec {
       imports = [
-        ./intm.nix
+        ./laptop.nix
         injectGL
       ];
       home = { inherit username homeDirectory; };

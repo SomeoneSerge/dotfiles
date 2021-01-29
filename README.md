@@ -2,7 +2,7 @@
 
 A collection of cheap hacks to manage the dotfiles via [nix](https://nixos.org)
 and [home-manager](https://github.com/nix-community/home-manager) on a
-non-NixOS system.
+**non-NixOS** system.
 
 ## Set-up
 
@@ -33,15 +33,19 @@ Flakes-enabled `nix`:
 
 1. Laptop:
     ```bash
-    nix build .#homeIntm
-    ./result/activate # `homa-manager switch` equivalent
+    nix run .#home-laptop
     ```
+
+    - No unfree packages
+    - Has gui stuff
 
 2. Devbox:
     ```bash
-    nix build .#homeDevbox
-    ./result/activate
+    nix run .#home-devbox
     ```
+
+    - Unfree packages
+    - No gui
 
 ---
 
@@ -50,7 +54,7 @@ Flakes-enabled `nix`:
 - Flakes also allow fetching the artifact without explicitly cloning the repo:
 
   ```bash
-  nix build github:newkozlukov/dotfiles#home-intm
+  nix build github:newkozlukov/dotfiles#home-laptop
   ```
 - The previous only works with public repos, because nix uses github's HTTP
   API, unaware of SSH keys
