@@ -20,6 +20,7 @@
             please = "push --force-with-lease";
         };
         color.ui = "auto";
+        init.defaultBranch = "master";
     };
   };
 

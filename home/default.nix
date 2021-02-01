@@ -1,13 +1,7 @@
 { pkgs, home-manager, system, nixGL }:
 
 let
-  injectGL = {...}: {
-    nixpkgs.overlays = [
-      (final: prev: {
-        inherit (nixGL) nixGLNvidia nixGLIntel nixGLDefault;
-      })
-    ];
-  };
+  overlays = (import ../overlays { inherit pkgs nixGL; });
 in {
   laptop = home-manager.lib.homeManagerConfiguration rec {
     inherit system;
@@ -15,10 +9,13 @@ in {
     username = "nk";
     configuration = {pkgs, ...}: rec {
       imports = [
+        overlays
+        ./common.nix
         ./laptop.nix
-        injectGL
       ];
-      home = { inherit username homeDirectory; };
+      home = {
+        inherit username homeDirectory;
+      };
     };
   };
   devbox = home-manager.lib.homeManagerConfiguration rec {
@@ -27,10 +24,13 @@ in {
     username = "serge";
     configuration = {pkgs, ...}: rec {
       imports = [
+        overlays
+        ./common.nix
         ./devbox.nix
-        injectGL
       ];
-      home = { inherit username homeDirectory; };
+      home = {
+        inherit username homeDirectory;
+      };
     };
   };
 }

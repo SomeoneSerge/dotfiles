@@ -1,13 +1,6 @@
 { config, pkgs, nixGL, ... }:
 
 {
-  nixpkgs.overlays = [
-    (import ../overlays/pylinters.nix)
-    (final: prev: {
-      inherit (nixGL) nixGLNvidia nixGLIntel nixGLDefault;
-    })
-  ];
-
   imports = [
     ./common-nixutils.nix
     ./common-fileutils.nix
@@ -28,6 +21,7 @@
 
   home.language.base = "en_US.UTF-8";
   home.packages = with pkgs; [
+    nixUnstable
     # Not installing mosh, because of
     # https://github.com/NixOS/nixpkgs/issues/90523
     # mosh

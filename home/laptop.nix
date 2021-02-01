@@ -3,7 +3,6 @@
 rec {
   imports = [
     ./common.nix
-    # ./program/beets/default.nix
     ./weechat.nix
   ];
 
