@@ -7,6 +7,11 @@
     ripgrep
     fzf
 
+    zip
+    unzip
+    gzip
+    xz
+
     ncdu
 
     curl
