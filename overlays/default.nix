@@ -5,7 +5,7 @@ let
     inherit (nixGL) nixGLNvidia nixGLIntel nixGLDefault;
   });
   useModernNix = (final: prev: {
-    inherit (nix.packages.${system}) nix;
+    nixModern = nix.packages.${system}.nix;
   });
   addPythonLinters = (import ./pylinters.nix);
   overlays = {...}: {

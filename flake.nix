@@ -15,11 +15,18 @@
   outputs = { self, nixpkgs, nix, home-manager, ... }@inputs: 
   let
     system = "x86_64-linux";
-    pkgsArgs = { inherit system; overlays = [nix.overlay]; };
+    /* Apparently, there are multiple nixpkgs spawned.
+     * These nixpkgs are used to build home-manager.
+     * Nixpkgs that home-manager configs get in their arguments are different
+     */
+    pkgsArgs = { inherit system; };
     pkgs = import nixpkgs pkgsArgs;
+    pkgsUnfree = import nixpkgs (pkgsArgs // { allowUnfree = true; });
+
     nixGL = import inputs.nixGL {
-      pkgs = import nixpkgs (pkgsArgs // { allowUnfree = true; });
+      pkgs = pkgsUnfree;
     };
+
     homeCfgs = (pkgs.callPackage ./home/default.nix {
       inherit pkgs home-manager system nixGL nix;
     });
@@ -28,6 +35,7 @@
     packages.${system} = {
       home-laptop = homeCfgs.laptop.activationPackage;
       home-devbox = homeCfgs.devbox.activationPackage;
+      nix = nix.packages.${system}.nix;
     };
     apps.${system} = {
       home-laptop = {

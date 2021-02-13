@@ -21,7 +21,7 @@
 
   home.language.base = "en_US.UTF-8";
   home.packages = with pkgs; [
-    nixUnstable
+    nixModern /* imported in ../overlays/default.nix from NixOS/nix flake */
     # Not installing mosh, because of
     # https://github.com/NixOS/nixpkgs/issues/90523
     # mosh
