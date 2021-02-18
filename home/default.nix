@@ -1,16 +1,18 @@
-{ pkgs, home-manager, system, nixGL }:
+{ system, pkgs, home-manager, nixGL, nix }:
 
 let
-  overlays = (import ../overlays { inherit pkgs nixGL; });
+  overlays = (pkgs.callPackage ../overlays { inherit pkgs nixGL nix; });
+  commonImports = [
+    overlays
+    ./common.nix
+  ];
 in {
   laptop = home-manager.lib.homeManagerConfiguration rec {
     inherit system;
     homeDirectory = "/home/nk";
     username = "nk";
-    configuration = {pkgs, ...}: rec {
-      imports = [
-        overlays
-        ./common.nix
+    configuration = {pkgs, ...}@confInputs: rec {
+      imports = commonImports ++ [
         ./laptop.nix
       ];
       home = {
@@ -22,10 +24,8 @@ in {
     inherit system;
     homeDirectory = "/home/serge";
     username = "serge";
-    configuration = {pkgs, ...}: rec {
-      imports = [
-        overlays
-        ./common.nix
+    configuration = {pkgs, ...}@confInputs: rec {
+      imports = commonImports ++ [
         ./devbox.nix
       ];
       home = {

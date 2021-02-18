@@ -1,11 +1,11 @@
-{ pkgs, nixGL }:
+{ system, pkgs, nixGL, nix }:
 
 let
   addInjectGL = (final: prev: {
     inherit (nixGL) nixGLNvidia nixGLIntel nixGLDefault;
   });
-  useNixUnstable = (final: prev: {
-    nix = prev.nixUnstable;
+  useModernNix = (final: prev: {
+    nixModern = nix.packages.${system}.nix;
   });
   addPythonLinters = (import ./pylinters.nix);
   overlays = {...}: {
@@ -13,6 +13,7 @@ let
       addInjectGL
       # useNixUnstable  -- this breaks cachix
       addPythonLinters
+      useModernNix
     ];
   };
 in overlays
