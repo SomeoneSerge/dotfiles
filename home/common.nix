@@ -22,6 +22,9 @@
   home.language.base = "en_US.UTF-8";
   home.packages = with pkgs; [
     nixModern /* imported in ../overlays/default.nix from NixOS/nix flake */
+
+    less
+
     # Not installing mosh, because of
     # https://github.com/NixOS/nixpkgs/issues/90523
     # mosh
@@ -43,11 +46,38 @@
     generateCaches = true;
   };
 
+  programs.zsh = {
+    enable = true;
+    plugins = [
+      {
+        name = "zsh-autosuggestions";  # will source zsh-autosuggestions.plugin.zsh
+        src = pkgs.fetchFromGitHub {
+          owner = "zsh-users";
+          repo = "zsh-autosuggestions";
+          rev = "v0.6.4";
+          sha256 = "xv4eleksJzomCtLsRUj71RngIJFw8+A31O6/p7i4okA=";
+        };
+       }
+       {
+         name = "enhancd";
+         file = "init.sh";
+         src = pkgs.fetchFromGitHub {
+           owner = "b4b4r07";
+           repo = "enhancd";
+           rev = "v2.2.4";
+           sha256 = "9/JGJgfAjXLIioCo3gtzCXJdcmECy6s59Oj0uVOfuuo=";
+           };
+        }
+    ];
+
+  };
+
   programs.bash = {
     enable = true;
     sessionVariables = config.home.sessionVariables;
     bashrcExtra = ''
       . ${pkgs.bash-completion}/share/bash-completion/bash_completion
+      PROMPT_COMMAND="history -a; history -r"
       '';
     shellOptions = [
       # Default
