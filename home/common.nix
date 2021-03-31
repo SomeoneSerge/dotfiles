@@ -70,7 +70,18 @@
            };
         }
     ];
+  };
 
+  programs.powerline-go = {
+    enable = true;
+    newline = false;
+    modules = [ "nix-shell" "cwd" "git" ];
+      # pathAliases = { "\\~/project/foo" = "prj-foo"; };
+    settings = {
+      cwd-max-depth = 2;
+      git-mode = "simple";
+      #   ignore-repos = [ "/home/me/project1" "/home/me/project2" ];
+    };
   };
 
   programs.bash = {
