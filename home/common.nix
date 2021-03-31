@@ -49,6 +49,7 @@
 
   programs.zsh = {
     enable = true;
+    enableCompletion = true;
     plugins = [
       {
         name = "zsh-autosuggestions";  # will source zsh-autosuggestions.plugin.zsh
@@ -70,6 +71,14 @@
            };
         }
     ];
+    initExtraBeforeCompInit = ''
+      # From https://github.com/sorin-ionescu/prezto/issues/1245 but possibly useless
+      function revert-expand-or-complete {
+        zle expand-or-complete
+      }
+
+      zle -N expand-or-complete-with-indicator revert-expand-or-complete
+      '';
   };
 
   programs.powerline-go = {
