@@ -33,6 +33,7 @@
     asciinema
     youtubeDL
 
+    patchelf
     stack
     bazel
     meson
@@ -75,8 +76,7 @@
   programs.bash = {
     enable = true;
     sessionVariables = config.home.sessionVariables;
-    bashrcExtra = ''
-      . ${pkgs.bash-completion}/share/bash-completion/bash_completion
+    bashrcExtra = '' . ${pkgs.bash-completion}/share/bash-completion/bash_completion
       PROMPT_COMMAND="history -a; history -r"
       '';
     shellOptions = [
