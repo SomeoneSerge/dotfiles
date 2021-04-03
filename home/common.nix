@@ -1,6 +1,7 @@
 { config, pkgs, nixGL, ... }:
 
-{
+let mainLocale = "en_US.UTF-8";
+in {
   imports = [
     ./common-nixutils.nix
     ./common-fileutils.nix
@@ -13,15 +14,21 @@
   # programs.home-manager.enable = true;
   home.stateVersion = "20.09";
 
+  home.language.base = mainLocale;
+
   home.sessionVariables = {
     EDITOR = "nvim";
     FONTCONFIG_FILE = "${pkgs.fontconfig.out}/etc/fonts/fonts.conf";
     LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+    LC_ALL = mainLocale;
+    LANG = mainLocale;
+    PATH = "${config.home.homeDirectory}/.nix-profile/bin";
   };
 
-  home.language.base = "en_US.UTF-8";
   home.packages = with pkgs; [
     nixModern /* imported in ../overlays/default.nix from NixOS/nix flake */
+
+    busybox
 
     less
 
@@ -49,17 +56,9 @@
 
   programs.zsh = {
     enable = true;
+    enableAutosuggestions = true;
     enableCompletion = true;
     plugins = [
-      {
-        name = "zsh-autosuggestions";  # will source zsh-autosuggestions.plugin.zsh
-        src = pkgs.fetchFromGitHub {
-          owner = "zsh-users";
-          repo = "zsh-autosuggestions";
-          rev = "v0.6.4";
-          sha256 = "xv4eleksJzomCtLsRUj71RngIJFw8+A31O6/p7i4okA=";
-        };
-       }
        {
          name = "enhancd";
          file = "init.sh";
@@ -71,13 +70,12 @@
            };
         }
     ];
-    initExtraBeforeCompInit = ''
-      # From https://github.com/sorin-ionescu/prezto/issues/1245 but possibly useless
-      function revert-expand-or-complete {
-        zle expand-or-complete
-      }
-
-      zle -N expand-or-complete-with-indicator revert-expand-or-complete
+    initExtra = ''
+      bindkey -v
+      bindkey "^[[H"  beginning-of-line
+      bindkey "^[[F"  end-of-line
+      bindkey "^[[1;5D" backward-word
+      bindkey "^[[1;5C" forward-word
       '';
   };
 
@@ -95,7 +93,6 @@
 
   programs.bash = {
     enable = true;
-    sessionVariables = config.home.sessionVariables;
     bashrcExtra = '' . ${pkgs.bash-completion}/share/bash-completion/bash_completion
       PROMPT_COMMAND="history -a; history -r"
       '';
