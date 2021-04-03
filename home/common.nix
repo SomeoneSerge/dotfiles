@@ -22,7 +22,7 @@ in {
     LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
     LC_ALL = mainLocale;
     LANG = mainLocale;
-    PATH = "${config.home.homeDirectory}/.nix-profile/bin";
+    PATH = "/bin:${config.home.homeDirectory}/.nix-profile/bin";
   };
 
   home.packages = with pkgs; [
