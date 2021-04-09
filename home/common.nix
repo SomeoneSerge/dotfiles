@@ -72,8 +72,10 @@ in {
     ];
     initExtra = ''
       bindkey -v
+      bindkey "^[[1~" beginning-of-line
       bindkey "^[[H"  beginning-of-line
       bindkey "^[[F"  end-of-line
+      bindkey "^[[4~"  end-of-line
       bindkey "^[[1;5D" backward-word
       bindkey "^[[1;5C" forward-word
       '';
