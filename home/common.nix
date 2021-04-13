@@ -27,6 +27,7 @@ in {
 
   home.packages = with pkgs; [
     nixModern /* imported in ../overlays/default.nix from NixOS/nix flake */
+    home-manager
 
     busybox
 
