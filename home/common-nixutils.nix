@@ -4,7 +4,7 @@
   home.packages = with pkgs; [
     nixUnstable
     cachix
-    lorri
+    # lorri
     niv
   ];
 
