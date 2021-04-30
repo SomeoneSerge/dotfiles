@@ -6,13 +6,26 @@ and [home-manager](https://github.com/nix-community/home-manager) on a
 
 ## Set-up
 
-This repo manages, in a terribly ad hoc manner, two hosts: call them a "laptop"
-and "devbox". Both hosts are non-NixOS (archlinux and opensuse). Both host
-configurations manage the same user, but usernames are different. Devbox is
-allowed to install unfree software. The laptop is not. Laptop is being
-gradually migrated to nix configuration. It runs wayland and a lot of
-applications not managed by nix. Devbox is a headless non-nixos machine
-with user environment mostly managed by nix.
+This repo manages, in a terribly ad hoc manner, the following hosts:
+- "laptop"
+    - Non-NixOS (archlinux)
+
+    Just home-manager:
+    `nix run .#home-laptop`
+
+    - random wayland stuff
+- "devbox"
+    - Non-NixOS (archlinux)
+
+    Just home-manager:
+    `nix run .#home-devbox`
+
+    - `nixpkgs.allowUnfree = true`
+    - headless
+- "ss-x230"
+    - NixOS
+
+    `sudo nixos-rebuild switch --flake .#`
 
 ## Prerequisites
 

@@ -47,5 +47,10 @@
         program = "${self.packages.x86_64-linux.home-devbox}/activate";
       };
     };
+
+    nixosConfigurations.ss-x230 = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [ ./hosts/ss-x230/configuration.nix ];
+    };
   };
 }
