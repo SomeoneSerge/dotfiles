@@ -62,6 +62,7 @@
 
   # Enable the GNOME 3 Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.gdm.autoSuspend = false;
   services.xserver.desktopManager.gnome3.enable = true;
   
 
@@ -118,6 +119,8 @@
       '';
     };
   };
+
+  programs.mosh.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
