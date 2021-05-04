@@ -143,6 +143,17 @@ in {
       "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq"
     ];
     UDPInterface.bind = "0.0.0.0:${toString cjdnsPort}";
+    UDPInterface.connectTo = {
+        #  hyperboria/peers/blob/master/eu/nl/amsterdam/sabsare.geek.k
+        "163.172.222.21:3111" = {
+            # "contact" = "sabsare@disroot.org";
+            # "gpg" = "7267 B3AF BBA3 020D DAA9  00DC A4D0 24EC FAEF 0B4D";
+            # "login" = "default-login";
+            "password" = "lwmnsu9t63rzfbjj74ttv525s2phq96";
+            "hostname" = "h.sabsare.geek";
+            "publicKey" = "c6x0vfhh88ncz4by4ss3kmf09c7lp5nv9jufs8r3mkcudxfvb9v0.k";
+        };
+    };
   };
 
   # List services that you want to enable:
