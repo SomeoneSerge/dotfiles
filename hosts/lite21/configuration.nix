@@ -6,6 +6,7 @@
 
 let
   cjdnsPort = 43211;
+  weechat' = builtins.head (import ../../home/weechat.nix { inherit pkgs; }).home.packages;
 in {
   imports =
     [ # Include the results of the hardware scan.
@@ -94,8 +95,17 @@ in {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    wget aria2 tmux git qrencode yrd
+    weechat'
+    wget aria2 git qrencode yrd
   ];
+
+  programs.tmux = {
+      enable = true;
+      clock24 = true;
+      escapeTime = 100;
+      keyMode = "vi";
+      newSession = true;
+  };
 
   programs.neovim = {
     enable = true;
@@ -131,8 +141,6 @@ in {
       "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq"
     ];
     UDPInterface.bind = "0.0.0.0:${toString cjdnsPort}";
-    ipTunnel.allowedConnections = [
-    ];
   };
 
   # List services that you want to enable:
