@@ -147,13 +147,10 @@
       UDPInterface = {
           bind = "0.0.0.0:22623";
           connectTo = {
-              "130.240.202.22:5039" = {
-                  # "contact"="william@willeponken.me";
-                  # "gpg"="DECA60149478ECFE";
-                  # "login"="public-peer";
-                  password = "zuqcdlv9kj0cvghl4vdx28bcz4vnzf9";
-                  hostname = "bohr.willeponken.me";
-                  publicKey = "b83r3fpguqp0w506n1u41dx8wk9kd7shv7ldfy7vxkkxb6h7yjj0.k";
+              "5.2.76.123:43211" = {
+                  password = "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq";
+                  hostname = "lite21";
+                  publicKey = "v20.0000.0000.0000.0001.ld0wgbr2wr4ku7vfnhg16py5bpnpkjd0cmn046l51g4gsxvzllg0.k";
               };
           };
     };
