@@ -4,7 +4,9 @@
 
 { config, pkgs, ... }:
 
-{
+let
+  cjdnsPort = 43211;
+in {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -123,7 +125,7 @@
     authorizedPasswords = [
       "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq"
     ];
-    UDPInterface.bind = "0.0.0.0:43211";
+    UDPInterface.bind = "0.0.0.0:${toString cjdnsPort}";
   };
 
   # List services that you want to enable:
@@ -138,6 +140,7 @@
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedUDPPorts = [cjdnsPort];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 

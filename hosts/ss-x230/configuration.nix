@@ -26,6 +26,9 @@
 
   networking.hostName = "ss-x230"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hosts = {
+      "fc7f:217a:060b:504b:8538:506a:e573:6615" = ["lite21.cjd"];
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Helsinki";
