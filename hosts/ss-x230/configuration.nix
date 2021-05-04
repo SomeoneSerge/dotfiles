@@ -130,7 +130,7 @@
   services.openssh = {
     enable = true;
     passwordAuthentication = false;
-  }
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
