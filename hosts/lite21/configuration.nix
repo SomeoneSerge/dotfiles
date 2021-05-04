@@ -30,6 +30,11 @@ in {
   boot.loader.grub.device = "/dev/vda"; # or "nodev" for efi only
   # boot.loader.grub.device = "nodev";
 
+  boot.kernel.sysctl = {
+      "net.core.default_qdisc" = "fq";
+      "net.ipv4.tcp_congestion_control" = "bbr";
+  };
+
   networking.hostName = "lite21"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -126,6 +131,8 @@ in {
       "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq"
     ];
     UDPInterface.bind = "0.0.0.0:${toString cjdnsPort}";
+    ipTunnel.allowedConnections = [
+    ];
   };
 
   # List services that you want to enable:
