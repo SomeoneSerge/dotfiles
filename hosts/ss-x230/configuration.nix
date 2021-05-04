@@ -153,7 +153,7 @@
               "5.2.76.123:43211" = {
                   password = "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq";
                   hostname = "lite21";
-                  publicKey = "v20.0000.0000.0000.0001.ld0wgbr2wr4ku7vfnhg16py5bpnpkjd0cmn046l51g4gsxvzllg0.k";
+                  publicKey = "ld0wgbr2wr4ku7vfnhg16py5bpnpkjd0cmn046l51g4gsxvzllg0.k";
               };
           };
     };
