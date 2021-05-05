@@ -34,6 +34,10 @@
   networking.hosts = {
       "fc7f:217a:060b:504b:8538:506a:e573:6615" = ["lite21.cjd"];
   };
+  networking.networkmanager = {
+      enable = true; # already enabled by gnome
+      unmanaged = ["type:tun"];
+  };
 
   # Set your time zone.
   time.timeZone = "Europe/Helsinki";
@@ -58,17 +62,25 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.redshift = {
-      enable = true;
-      latitude = "60.177055971970695";
-      longitude = "24.922565622004093";
-  };
 
 
   # Enable the GNOME 3 Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.autoSuspend = false;
   services.xserver.desktopManager.gnome3.enable = true;
+  programs.geary.enable = false;
+  programs.evolution = {
+      enable = true;
+      plugins = with pkgs; [evolution-ews];
+  };
+  services.davmail = {
+      # enable = true;
+      url = "https://mail.aalto.fi/owa/";
+      # url = "https://outlook.office365.com/owa/?realm=aalto.fi";
+      # url = "https://outlook.office365.com/EWS/Exchange.asmx";
+      config = {
+      };
+  };
   
 
   # Configure keymap in X11
@@ -98,8 +110,18 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    ag ripgrep fd
+    pass-wayland
+    pavucontrol
+    wl-clipboard
+    logseq
+    xournalpp
+    htop
+    iotop
     wget
     firefox
+    mpv
+    vlc
     obs-studio
     git
     qrencode
@@ -169,6 +191,8 @@
           };
     };
   };
+  
+  services.flatpak.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
