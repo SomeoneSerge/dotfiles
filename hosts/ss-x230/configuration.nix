@@ -4,7 +4,10 @@
 
 { config, pkgs, ... }:
 
-{
+let
+  lite21ipv4 = "5.2.76.123";
+  yggdrasilPort = 43212;
+in {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
@@ -185,7 +188,7 @@
       UDPInterface = {
           bind = "0.0.0.0:22623";
           connectTo = {
-              "5.2.76.123:43211" = {
+              "${lite21ipv4}:43211" = {
                   password = "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq";
                   hostname = "lite21";
                   publicKey = "ld0wgbr2wr4ku7vfnhg16py5bpnpkjd0cmn046l51g4gsxvzllg0.k";
@@ -194,6 +197,23 @@
     };
   };
   
+  services.yggdrasil = {
+      enable = true;
+      persistentKeys = true;
+      config = {
+          Peers = [
+              "tcp://${lite21ipv4}:${toString yggdrasilPort}"
+          ];
+          NodeInfo = {
+              name = "ss-x230";
+          };
+          SessionFirewall = {
+              enable = true;
+              AllowFromDirect = true;
+          };
+      };
+  };
+
   services.flatpak.enable = true;
 
   # This value determines the NixOS release from which the default

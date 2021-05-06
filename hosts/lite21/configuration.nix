@@ -210,6 +210,9 @@ in {
           SessionFirewall = {
               enable = true;
               AllowFromDirect = true;
+              WhitelistEncryptionPublicKeys = [
+                  "dfa6c4226ede9967fc0f3523d9a9b42d3be916c608cf4b364c92996ca5bbe620"
+              ];
           };
       };
   };
