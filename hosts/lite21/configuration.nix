@@ -98,7 +98,8 @@ in {
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     weechat'
-    wget aria2 git qrencode yrd
+    wget aria2 git qrencode
+    yrd cjdns-tools
   ];
 
   programs.tmux = {
@@ -138,11 +139,14 @@ in {
 
   services.cjdns = {
     enable = true;
+
     # Public user password
     authorizedPasswords = [
       "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq"
     ];
+
     UDPInterface.bind = "0.0.0.0:${toString cjdnsPort}";
+
     #  hyperboria/peers/blob/master/eu/nl/amsterdam/sabsare.geek.k
     UDPInterface.connectTo."163.172.222.21:3111" = {
         # "contact" = "sabsare@disroot.org";
@@ -160,6 +164,35 @@ in {
         "password" = "773vp0snvpjfnn5wb6pc4x5xl6j229v";
         "hostname" = "unloved.vultar.ams";
         "publicKey" = "vxh6lcjqgpgswbwmwu6wxd9kntflhwbpxfsw83ks9yf34jcqb7b0.k";
+    };
+    # eu/de/Frankfurt/sssemil.k
+    UDPInterface.connectTo."45.32.152.232:5078" = {
+        hostname = "ssemil.k";
+        password = "v277jzr7r3jgk0vk1389b2c3h0gy98t";
+        publicKey = "08bz912l989nzqc21q9x5qr96ns465nd71f290hb9q40z94jjw60.k";
+
+    };
+    # eu/ru/moscow/h.bunjlabs.com.k
+    UDPInterface.connectTo."94.142.141.189:50433" = {
+        password = "c5q2j63x5nkmt2yg2vjmlnfuh1jnjjf";
+        hostname = "h.bunjlabs.com";
+        publicKey = "0gdj2xzn01lzjjcrykjvwp8flnxkp1b3jny0drl5b168lmpsmfj0.k";
+    };
+
+    # eu/ru/novosibirsk/meanmail.k
+    UDPInterface.connectTo."91.234.81.181:7485" = {
+        password = "zfhb88fzf2lmpb5g2bgju6ps33lfr1c";
+        hostname = "meanmail";
+        publicKey = "0x3bvhjx0knnq67ruwmz369tuflr8zknkzbx7wgn60s4nujugdk0.k";
+    };
+    extraConfig.interfaces.UDPInterface.connectTo."142.93.148.79:32307" = {
+        login = "public-peer";
+        password = "242yl4g4nmu0rygusyhxu9xd13lrhuj";
+        publicKey = "nvl82112jgj26sgv6r7sbuqc7wh1n7w1stsj327lbcu8n2yycf20.k";
+        peerName = "kusoneko.moe";
+        contact = "kusoneko@kusoneko.moe";
+        location = "digitalocean tor1";
+        gpg = "E5FD4F97502A0BB304F44BA1440515F24B65A136";
     };
   };
 
