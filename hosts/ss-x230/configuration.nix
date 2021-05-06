@@ -124,7 +124,7 @@ in {
     htop
     iotop
     wget
-    firefox
+    qutebrowser
     mpv
     vlc
     obs-studio
