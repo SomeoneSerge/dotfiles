@@ -2,7 +2,7 @@
   description = "Someone's dotfiles";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:SomeoneSerge/nixpkgs/nixos-unstable";
     nix.url = "github:NixOS/nix";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
