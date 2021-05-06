@@ -25,6 +25,8 @@
   boot.supportedFilesystems = [ "btrfs" ];
 
   boot.kernel.sysctl = {
+      "net.core.rmem_max" = 134217728;
+      "net.core.wmem_max" = 134217728;
       "net.core.default_qdisc" = "fq";
       "net.ipv4.tcp_congestion_control" = "bbr";
   };
