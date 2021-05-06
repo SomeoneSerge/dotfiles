@@ -43,6 +43,7 @@ in {
       enable = true; # already enabled by gnome
       unmanaged = ["type:tun"];
   };
+  networking.nameservers = ["1.1.1.1"];
 
   # Set your time zone.
   time.timeZone = "Europe/Helsinki";
@@ -110,6 +111,8 @@ in {
     openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
     ];
+  };
+  home-manager.users.ss = {
   };
 
   # List packages installed in system profile. To search, run:

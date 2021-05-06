@@ -50,12 +50,18 @@
 
     nixosConfigurations.ss-x230 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      modules = [ ./hosts/ss-x230/configuration.nix ];
+      modules = [
+          (home-manager.nixosModules.home-manager)
+          { home-manager.useGlobalPkgs = true; }
+          ./hosts/ss-x230/configuration.nix
+      ];
     };
 
     nixosConfigurations.lite21 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      modules = [ ./hosts/lite21/configuration.nix ];
+      modules = [
+          ./hosts/lite21/configuration.nix 
+      ];
     };
   };
 }
