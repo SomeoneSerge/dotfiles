@@ -6,6 +6,7 @@
 
 let
   cjdnsPort = 43211;
+  yggdrasilPort = 43212;
   weechat' = builtins.head (import ../../home/weechat.nix { inherit pkgs; }).home.packages;
 in {
   imports =
@@ -196,6 +197,23 @@ in {
     };
   };
 
+  services.yggdrasil = {
+      enable = true;
+      persistentKeys = true;
+      config = {
+          Listen = [
+              "tcp://0.0.0.0:${toString yggdrasilPort}"
+          ];
+          NodeInfo = {
+              name = "lite21";
+          };
+          SessionFirewall = {
+              enable = true;
+              AllowFromDirect = true;
+          };
+      };
+  };
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
@@ -209,6 +227,7 @@ in {
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   networking.firewall.allowedUDPPorts = [cjdnsPort];
+  networking.firewall.allowedTCPPorts = [yggdrasilPort];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
