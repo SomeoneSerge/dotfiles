@@ -59,7 +59,6 @@ in
       coc-python
     ];
 
-    withPython = false;
     withPython3 = true;
     extraPython3Packages = pyPkgs;
   };

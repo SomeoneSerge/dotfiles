@@ -60,16 +60,6 @@ in {
     enableAutosuggestions = true;
     enableCompletion = true;
     plugins = [
-       {
-         name = "enhancd";
-         file = "init.sh";
-         src = pkgs.fetchFromGitHub {
-           owner = "b4b4r07";
-           repo = "enhancd";
-           rev = "v2.2.4";
-           sha256 = "9/JGJgfAjXLIioCo3gtzCXJdcmECy6s59Oj0uVOfuuo=";
-           };
-        }
     ];
     initExtra = ''
       bindkey -v
@@ -79,6 +69,7 @@ in {
       bindkey "^[[4~"  end-of-line
       bindkey "^[[1;5D" backward-word
       bindkey "^[[1;5C" forward-word
+      bindkey "^[[3~" delete-char
       '';
   };
 
