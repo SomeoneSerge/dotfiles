@@ -14,7 +14,7 @@ let
       yapf
       pkgs.pylinters
     ]);
-  cocConfigDict = import ./coc.nix { config = config; pylinters = pkgs.pylinters; pythonPackages = pkgs.python38Packages; };
+  cocConfigDict = import ./coc.nix { inherit pkgs config; pylinters = pkgs.pylinters; pythonPackages = pkgs.python38Packages; };
   cocConfig = (pkgs.writeText "coc-settings.json" (builtins.toJSON cocConfigDict));
 in
 {

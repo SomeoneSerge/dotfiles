@@ -12,7 +12,9 @@ rec {
     # deadbeef
 
     # beets
+    nixfmt
     cmus
+    haskell-language-server
 
     nixGLIntel
   ];

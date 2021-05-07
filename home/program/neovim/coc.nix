@@ -1,4 +1,4 @@
-{ config, pylinters, pythonPackages }:
+{ pkgs, config, pylinters, pythonPackages }:
 
 {
   tsserver.enable = true;
@@ -47,7 +47,7 @@
       };
     };
     haskell = {
-      "command"= "hie-wrapper";
+      "command" = "haskell-language-server-wrapper";
       "args"= [
         "--lsp"
       ];
