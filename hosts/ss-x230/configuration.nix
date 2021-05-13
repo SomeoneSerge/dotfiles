@@ -156,6 +156,13 @@ in {
   };
 
   programs.mosh.enable = true;
+  programs.tmux = {
+      enable = true;
+      clock24 = true;
+      escapeTime = 100;
+      keyMode = "vi";
+      newSession = true;
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
