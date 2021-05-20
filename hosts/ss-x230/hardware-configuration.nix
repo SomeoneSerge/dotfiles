@@ -14,31 +14,43 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/6550cd53-0585-4fe9-8d29-2ca562df74bd";
+    { device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
       fsType = "btrfs";
-      options = [ "subvol=root" ];
+      options = [ "subvol=root" "compress=zstd" ];
     };
 
-  boot.initrd.luks.devices."nixcrypt".device = "/dev/disk/by-uuid/03dbe62a-9856-49af-9bca-07687e1075b3";
+  boot.initrd.luks.devices."nixcrypt".device = "/dev/disk/by-uuid/1d929650-4f2b-4003-ad2c-d51ff4aaf85e";
 
   fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/6550cd53-0585-4fe9-8d29-2ca562df74bd";
+    { device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
       fsType = "btrfs";
-      options = [ "subvol=home" ];
+      options = [ "subvol=home" "compress=zstd" ];
     };
 
   fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/6550cd53-0585-4fe9-8d29-2ca562df74bd";
+    { device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
       fsType = "btrfs";
-      options = [ "subvol=nix" ];
+      options = [ "subvol=nix"  "compress=zstd"];
+    };
+
+  fileSystems."/var" =
+    { device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
+      fsType = "btrfs";
+      options = [ "subvol=var"  "compress=zstd"];
+    };
+
+  fileSystems."/snapshots" =
+    { device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
+      fsType = "btrfs";
+      options = [ "subvol=snapshots"  "compress=zstd"];
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/DA63-B2BC";
+    { device = "/dev/disk/by-uuid/9268-B585";
       fsType = "vfat";
     };
 
-  swapDevices = [ { device = "/var/swap"; } ];
+  swapDevices = [ ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 }
