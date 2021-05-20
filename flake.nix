@@ -30,7 +30,7 @@
     homeCfgs = (pkgs.callPackage ./home/default.nix {
       inherit pkgs home-manager system nixGL nix;
     });
-  in {
+  in rec {
     defaultPackage.${system} = homeCfgs.laptop.activationPackage;
     packages.${system} = {
       home-laptop = homeCfgs.laptop.activationPackage;
@@ -61,6 +61,18 @@
       system = "x86_64-linux";
       modules = [
           ./hosts/lite21/configuration.nix 
+      ];
+    };
+
+    nixosConfigurations.x230-installer = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+        "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix"
+        {
+          environment.systemPackages = [
+            nixosConfigurations.ss-x230.config.system.build.toplevel
+          ];
+        }
       ];
     };
   };
