@@ -128,6 +128,7 @@ in {
     iotop
     wget
     qutebrowser
+    firefox
     mpv
     vlc
     obs-studio
@@ -135,13 +136,13 @@ in {
     qrencode
     imv
     yrd
+    vim
   ];
   
   programs.neovim = {
     enable = true;
 
     defaultEditor = true;
-    vimAlias = true;
 
     configure = {
       customRC = ''
