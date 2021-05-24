@@ -38,6 +38,8 @@ in {
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.hosts = {
       "fc7f:217a:060b:504b:8538:506a:e573:6615" = ["lite21.cjd"];
+      "201:898:d5f1:3941:bd2e:229:dcd4:dc9c" = ["devbox.ygg"];
+      "fc76:d36c:8f3b:bbaa:1ad6:2039:7b99:7ca6" = ["devbox.k"];
   };
   networking.networkmanager = {
       enable = true; # already enabled by gnome
