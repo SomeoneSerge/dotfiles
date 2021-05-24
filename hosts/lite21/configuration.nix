@@ -212,15 +212,21 @@ in {
           Listen = [
               "tcp://0.0.0.0:${toString yggdrasilPort}"
           ];
+          Peers = [
+              "tls://65.21.57.122:35953"
+              "tcp://130.61.65.117:80"
+              "tls://45.147.198.155:6010"
+              "tcp://51.15.118.10:62486"
+          ];
           NodeInfo = {
               name = "lite21";
           };
           SessionFirewall = {
               enable = true;
               AllowFromDirect = true;
-              WhitelistEncryptionPublicKeys = [
-                  "dfa6c4226ede9967fc0f3523d9a9b42d3be916c608cf4b364c92996ca5bbe620"
-              ];
+              # WhitelistEncryptionPublicKeys = [
+              #     "dfa6c4226ede9967fc0f3523d9a9b42d3be916c608cf4b364c92996ca5bbe620"
+              # ];
           };
       };
   };
