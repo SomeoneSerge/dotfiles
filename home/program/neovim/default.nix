@@ -10,7 +10,6 @@ let
       isort
       pydocstyle
       mypy
-      jedi
       yapf
       pkgs.pylinters
     ]);
@@ -56,7 +55,7 @@ in
       coc-nvim
       coc-yaml
       coc-json
-      coc-python
+      coc-pyright
     ];
 
     withPython3 = true;

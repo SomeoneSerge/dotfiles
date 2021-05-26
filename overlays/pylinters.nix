@@ -4,6 +4,7 @@ final: prev: {
       pylint
       black
       flake8
+      autopep8
       isort
       pydocstyle
       mypy

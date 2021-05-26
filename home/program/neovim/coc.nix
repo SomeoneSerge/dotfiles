@@ -2,10 +2,12 @@
 
 {
   tsserver.enable = true;
-  python.jediPath = "${pylinters}/lib/python3.8/site-packages/";
+  pyright.enable = true;
+  python.pythonPath = "${pylinters}/bin/python";
   python.linting.pydocstylePath = "${pylinters}/bin/pydocstyle";
   python.linting.mypyPath = "${pylinters}/bin/mypy";
   python.linting.pylintPath = "${pylinters}/bin/pylint";
+  python.formatting.autopep8Path = "${pylinters}/bin/autopep8";
   python.formatting.blackPath = "${pylinters}/bin/black";
   python.formatting.yapfPath = "${pylinters}/bin/yapf";
   python.sortImports.path = "${pylinters}/bin/isort";
