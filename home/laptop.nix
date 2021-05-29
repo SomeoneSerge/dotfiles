@@ -13,7 +13,4 @@ rec {
 
     nixGLIntel
   ];
-  services.gpg-agent = {
-    pinentryFlavor = "gnome3";
-  };
 }

@@ -19,14 +19,6 @@ in {
   home.packages = with pkgs; [
     home-manager
 
-    busybox
-    less
-
-    # Not installing mosh, because of
-    # https://github.com/NixOS/nixpkgs/issues/90523
-    # mosh
-    htop
-
     asciinema
     youtubeDL
 
@@ -74,31 +66,8 @@ in {
     };
   };
 
-  programs.bash = {
-    enable = true;
-    bashrcExtra = '' . ${pkgs.bash-completion}/share/bash-completion/bash_completion
-      PROMPT_COMMAND="history -a; history -r"
-      '';
-    shellOptions = [
-      # Default
-      "histappend"
-      "checkwinsize"
-      "extglob"
-      "globstar"
-      "checkjobs"
-      # Custom
-      "dirspell"
-      "cdspell"
-    ];
-  };
-
   programs.fzf = {
     enable = true;
   };
 
-  services.gpg-agent = {
-    enable = true;
-    enableSshSupport = true;
-    enableScDaemon = false;
-  };
 }

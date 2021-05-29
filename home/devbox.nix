@@ -31,6 +31,36 @@ in {
     # pkgs.nixGLNvidia
     yrd
     qrencode
+    busybox
+    less
     aria2
+    # Not installing mosh, because of
+    # https://github.com/NixOS/nixpkgs/issues/90523
+    # mosh
+    htop
   ];
+
+  services.gpg-agent = {
+    enable = true;
+    enableSshSupport = true;
+    enableScDaemon = false;
+  };
+
+  programs.bash = {
+    enable = true;
+    bashrcExtra = '' . ${pkgs.bash-completion}/share/bash-completion/bash_completion
+      PROMPT_COMMAND="history -a; history -r"
+      '';
+    shellOptions = [
+      # Default
+      "histappend"
+      "checkwinsize"
+      "extglob"
+      "globstar"
+      "checkjobs"
+      # Custom
+      "dirspell"
+      "cdspell"
+    ];
+  };
 }
