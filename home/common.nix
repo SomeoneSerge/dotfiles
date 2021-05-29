@@ -1,4 +1,4 @@
-{ config, pkgs, nixGL, ... }:
+{ pkgs, ... }:
 
 let mainLocale = "en_US.UTF-8";
 in {
@@ -16,21 +16,10 @@ in {
 
   home.language.base = mainLocale;
 
-  home.sessionVariables = {
-    EDITOR = "nvim";
-    FONTCONFIG_FILE = "${pkgs.fontconfig.out}/etc/fonts/fonts.conf";
-    LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-    LC_ALL = mainLocale;
-    LANG = mainLocale;
-    PATH = "/bin:${config.home.homeDirectory}/.nix-profile/bin";
-  };
-
   home.packages = with pkgs; [
-    nixModern /* imported in ../overlays/default.nix from NixOS/nix flake */
     home-manager
 
     busybox
-
     less
 
     # Not installing mosh, because of

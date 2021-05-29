@@ -77,7 +77,7 @@ in {
   services.xserver.displayManager.gdm.autoSuspend = false;
   services.xserver.windowManager.i3.enable = true;
   services.xserver.desktopManager.gnome3.enable = true;
-  services.gnome3.tracker.enable = true;
+  # services.gnome3.tracker.enable = true;
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -138,23 +138,24 @@ in {
     lm_sensors
     tdesktop
   ];
+  environment.sessionVariables.LC_ALL = "en_US.UTF-8";
 
-  programs.neovim = {
-    enable = true;
+  # programs.neovim = {
+  #   enable = true;
 
-    defaultEditor = true;
+  #   defaultEditor = true;
 
-    configure = {
-      customRC = ''
-        :set smartindent
-        :set expandtab
-        :set tabstop=4
-        :set shiftwidth=4
-        :set numberwidth=4
-        :set number
-      '';
-    };
-  };
+  #   configure = {
+  #     customRC = ''
+  #       :set smartindent
+  #       :set expandtab
+  #       :set tabstop=4
+  #       :set shiftwidth=4
+  #       :set numberwidth=4
+  #       :set number
+  #     '';
+  #   };
+  # };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
