@@ -1,6 +1,7 @@
 { config, pkgs, ... }:
 
-{
+let mainLocale = "en_US.UTF-8";
+in {
   imports = [
     ./common.nix
   ];

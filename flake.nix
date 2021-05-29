@@ -33,7 +33,7 @@
       inherit pkgs home-manager system nixGL nix;
     });
   in rec {
-    defaultPackage.${system} = homeCfgs.laptop.activationPackage;
+    defaultPackage.${system} = pkgs.pylinters;
     packages.${system} = {
       home-laptop = (homeCfgs.laptop "nk").activationPackage;
       home-devbox = homeCfgs.devbox.activationPackage;
