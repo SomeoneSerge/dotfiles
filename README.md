@@ -1,8 +1,8 @@
 # Someone's... dotfiles
 
-A collection of cheap hacks to manage the dotfiles via [nix](https://nixos.org)
+~~A collection of cheap hacks to manage the dotfiles via [nix](https://nixos.org)
 and [home-manager](https://github.com/nix-community/home-manager) on a
-**non-NixOS** system.
+**non-NixOS** system.~~ Currently moving to full-NixOS, repo is a mess
 
 ## Set-up
 
