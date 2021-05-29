@@ -67,7 +67,7 @@ in {
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
@@ -77,9 +77,23 @@ in {
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.autoSuspend = false;
-  services.xserver.windowManager.i3.enable = true;
   services.xserver.desktopManager.gnome3.enable = true;
-  # services.gnome3.tracker.enable = true;
+  services.gnome3.tracker.enable = false;
+
+  programs.light.enable = true;
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true; # so that gtk works properly
+    extraPackages = with pkgs; [
+      swaylock
+      swayidle
+      wl-clipboard
+      mako
+      alacritty
+      wofi
+      dmenu
+    ];
+  };
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -108,7 +122,7 @@ in {
   users.users.ss = {
     isNormalUser = true;
     description = "Someone Serge";
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "video" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
         # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
     ];
@@ -140,6 +154,7 @@ in {
     lm_sensors
     tdesktop
     sshfs
+    brightnessctl
   ];
   environment.sessionVariables.LC_ALL = "en_US.UTF-8";
 
