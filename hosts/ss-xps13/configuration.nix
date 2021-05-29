@@ -4,11 +4,16 @@
 
 { config, pkgs, ... }:
 
-{
+let
+  lite21ipv4 = "5.2.76.123";
+  yggdrasilPort = 43212;
+in {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
+
+  hardware.enableRedistributableFirmware = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -20,6 +25,8 @@
     extraOptions = ''
       experimental-features = nix-command flakes ca-derivations ca-references
     '';
+    gc.automatic = true;
+    gc.options = "--delete-older-than 8d";
   };
 
   boot.kernel.sysctl = {
@@ -32,7 +39,8 @@
   networking.hostName = "ss-xps13"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.hosts = {
-      "fc7f:217a:060b:504b:8538:506a:e573:6615" = ["lite21.cjd"];
+      "${lite21ipv4}" = ["lite21"];
+      "fc7f:217a:060b:504b:8538:506a:e573:6615" = ["lite21.k"];
       "201:898:d5f1:3941:bd2e:229:dcd4:dc9c" = ["devbox.ygg"];
       "fc76:d36c:8f3b:bbaa:1ad6:2039:7b99:7ca6" = ["devbox.k"];
   };
@@ -69,12 +77,15 @@
   services.xserver.displayManager.gdm.autoSuspend = false;
   services.xserver.windowManager.i3.enable = true;
   services.xserver.desktopManager.gnome3.enable = true;
-
-  
+  services.gnome3.tracker.enable = true;
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
   # services.xserver.xkbOptions = "eurosign:e";
+  
+  services.packagekit.enable = true;
+  services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
+  services.fwupd.enable = true;
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -123,6 +134,9 @@
     imv
     yrd
     vim
+    nixfmt
+    lm_sensors
+    tdesktop
   ];
 
   programs.neovim = {
@@ -173,15 +187,56 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
+  nixpkgs.config.packageOverrides = pkgs: {
+    vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
+  };
+
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
       # intel-compute-runtime
+      # intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      libva-full
+      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      vaapiVdpau
+      libvdpau-va-gl
     ];
   };
 
   xdg.portal.enable = true;
   services.flatpak.enable = true;
+  programs.singularity.enable = true;
+
+  services.yggdrasil = {
+      enable = true;
+      persistentKeys = true;
+      config = {
+          Peers = [
+              "tcp://${lite21ipv4}:${toString yggdrasilPort}"
+          ];
+          NodeInfo = {
+              name = config.networking.hostName;
+          };
+          SessionFirewall = {
+              enable = true;
+              AllowFromDirect = true;
+          };
+      };
+  };
+
+  services.cjdns = {
+      enable = true;
+      UDPInterface = {
+          bind = "0.0.0.0:22623";
+          connectTo = {
+              "${lite21ipv4}:43211" = {
+                  password = "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq";
+                  hostname = "lite21";
+                  publicKey = "ld0wgbr2wr4ku7vfnhg16py5bpnpkjd0cmn046l51g4gsxvzllg0.k";
+              };
+          };
+    };
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
