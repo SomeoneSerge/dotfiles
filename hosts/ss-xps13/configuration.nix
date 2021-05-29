@@ -77,8 +77,8 @@ in {
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.autoSuspend = false;
-  services.xserver.desktopManager.gnome3.enable = true;
-  services.gnome3.tracker.enable = false;
+  services.xserver.desktopManager.gnome.enable = true;
+  services.gnome.tracker.enable = true;
 
   programs.light.enable = true;
   programs.sway = {
@@ -155,6 +155,8 @@ in {
     tdesktop
     sshfs
     brightnessctl
+    gnome.gnome-tweaks
+    gnome.gnome-tweak-tool
   ];
   environment.sessionVariables.LC_ALL = "en_US.UTF-8";
 
