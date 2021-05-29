@@ -24,7 +24,7 @@
     pkgsArgs = { inherit system overlays; };
     pkgs = import nixpkgs pkgsArgs;
     pkgs' = pkgs;
-    pkgsUnfree = import nixpkgs (pkgsArgs // { allowUnfree = true; });
+    pkgsUnfree = import nixpkgs (pkgsArgs // { config.allowUnfree = true; });
 
     nixGL = import inputs.nixGL {
       pkgs = pkgsUnfree;
@@ -54,11 +54,15 @@
 
     nixosConfigurations.ss-x230 = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
-      inherit pkgs;
+      pkgs = pkgsUnfree;
       modules = [
+          nixos-hardware.nixosModules.lenovo-thinkpad-x230
           (home-manager.nixosModules.home-manager)
-          { home-manager.useGlobalPkgs = true; }
           ./hosts/ss-x230/configuration.nix
+          {
+              home-manager.useGlobalPkgs = true;
+              home-manager.users.ss = (import ./home/laptop.nix { inherit pkgs; });
+          }
       ];
     };
 
