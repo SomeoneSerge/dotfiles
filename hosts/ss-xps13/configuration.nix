@@ -68,6 +68,7 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.autoSuspend = false;
   services.xserver.windowManager.i3.enable = true;
+  services.xserver.desktopManager.gnome3.enable = true;
 
   
 
@@ -84,6 +85,7 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
+  services.xserver.libinput.touchpad.tapping = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   # users.users.jane = {
@@ -121,8 +123,24 @@
     imv
     yrd
     vim
-    neovim
   ];
+
+  programs.neovim = {
+    enable = true;
+
+    defaultEditor = true;
+
+    configure = {
+      customRC = ''
+        :set smartindent
+        :set expandtab
+        :set tabstop=4
+        :set shiftwidth=4
+        :set numberwidth=4
+        :set number
+      '';
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
