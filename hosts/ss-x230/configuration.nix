@@ -140,6 +140,10 @@ in {
     yrd
     vim
   ];
+  environment.variables.LC_ALL = "en_US.UTF-8";
+  i18n.extraLocaleSettings = {
+      LC_ALL = "en_US.UTF-8";
+  };
   
   programs.neovim = {
     enable = true;
