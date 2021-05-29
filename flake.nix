@@ -2,17 +2,18 @@
   description = "Someone's dotfiles";
 
   inputs = {
-    nixpkgs.url = "github:SomeoneSerge/nixpkgs/nixos-unstable";
-    nix.url = "github:NixOS/nix";
-    home-manager.url = "github:nix-community/home-manager";
+    nixpkgs.url = github:SomeoneSerge/nixpkgs/nixos-unstable;
+    nix.url = github:NixOS/nix;
+    nixos-hardware.url = github:NixOS/nixos-hardware/master;
+    home-manager.url = github:nix-community/home-manager;
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixGL ={
-      url = "github:guibou/nixGL";
+      url = github:guibou/nixGL;
       flake = false;
     };
   };
 
-  outputs = { self, nixpkgs, nix, home-manager, ... }@inputs: 
+  outputs = { self, nixpkgs, nix, home-manager, nixos-hardware, ... }@inputs: 
   let
     system = "x86_64-linux";
     /* Apparently, there are multiple nixpkgs spawned.
@@ -74,6 +75,7 @@
       inherit pkgs;
       modules = [
           (home-manager.nixosModules.home-manager)
+          nixos-hardware.nixosModules.dell-xps-13-9360
           {
               home-manager.useGlobalPkgs = true;
               home-manager.users.ss = (import ./home/laptop.nix { inherit pkgs; });

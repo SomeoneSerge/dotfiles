@@ -195,12 +195,11 @@ in {
   hardware.opengl = {
     enable = true;
     extraPackages = with pkgs; [
-      # intel-compute-runtime
-      # intel-media-driver # LIBVA_DRIVER_NAME=iHD
       libva-full
-      vaapiIntel         # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       vaapiVdpau
       libvdpau-va-gl
+      intel-media-driver # LIBVA_DRIVER_NAME=iHD
     ];
   };
 
