@@ -64,6 +64,13 @@
       ];
     };
 
+    nixosConfigurations.ss-xps13 = nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [
+          ./hosts/ss-xps13/configuration.nix 
+      ];
+    };
+
     nixosConfigurations.x230-installer = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [
