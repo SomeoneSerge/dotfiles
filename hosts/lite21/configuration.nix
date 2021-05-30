@@ -13,6 +13,7 @@ let
 in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./matrix.nix
   ];
 
   nix = {
@@ -34,6 +35,8 @@ in {
   # boot.loader.grub.device = "nodev";
 
   boot.kernel.sysctl = {
+  
+    "net.ipv6.conf.all.forwarding" = 1;
     "net.core.default_qdisc" = "cake";
     "net.ipv4.tcp_congestion_control" = "bbr";
     "net.ipv4.tcp_fastopen" = 3;
