@@ -159,7 +159,9 @@ in {
     gnome.gnome-tweak-tool
     gnome.dconf-editor
     colmap
+    dnsutils
   ];
+
   environment.sessionVariables.LC_ALL = "en_US.UTF-8";
 
   programs.neovim = {

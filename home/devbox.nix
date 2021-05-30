@@ -46,21 +46,4 @@ in {
     enableScDaemon = false;
   };
 
-  programs.bash = {
-    enable = true;
-    bashrcExtra = '' . ${pkgs.bash-completion}/share/bash-completion/bash_completion
-      PROMPT_COMMAND="history -a; history -r"
-      '';
-    shellOptions = [
-      # Default
-      "histappend"
-      "checkwinsize"
-      "extglob"
-      "globstar"
-      "checkjobs"
-      # Custom
-      "dirspell"
-      "cdspell"
-    ];
-  };
 }

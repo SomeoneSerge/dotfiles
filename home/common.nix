@@ -57,7 +57,7 @@ in {
   programs.powerline-go = {
     enable = true;
     newline = false;
-    modules = [ "nix-shell" "cwd" "git" ];
+    modules = [ "host" "nix-shell" "cwd" "git" ];
       # pathAliases = { "\\~/project/foo" = "prj-foo"; };
     settings = {
       cwd-max-depth = 2;
@@ -70,4 +70,21 @@ in {
     enable = true;
   };
 
+  programs.bash = {
+    enable = true;
+    bashrcExtra = '' . ${pkgs.bash-completion}/share/bash-completion/bash_completion
+      PROMPT_COMMAND="history -a; history -r"
+      '';
+    shellOptions = [
+      # Default
+      "histappend"
+      "checkwinsize"
+      "extglob"
+      "globstar"
+      "checkjobs"
+      # Custom
+      "dirspell"
+      "cdspell"
+    ];
+  };
 }
