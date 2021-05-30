@@ -157,6 +157,7 @@ in {
     brightnessctl
     gnome.gnome-tweaks
     gnome.gnome-tweak-tool
+    colmap
   ];
   environment.sessionVariables.LC_ALL = "en_US.UTF-8";
 
