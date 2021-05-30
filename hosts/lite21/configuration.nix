@@ -241,11 +241,33 @@ in {
   };
   programs.mosh.enable = true;
 
+  security.acme.email = "smnXXs@protonmail.com";
+  security.acme.acceptTerms = true;
+  services.nginx = {
+    enable = true;
+ 
+    recommendedTlsSettings = true;
+    recommendedOptimisation = true;
+    recommendedGzipSettings = true;
+    recommendedProxySettings = true;
+
+    virtualHosts = {
+      "someones.tf" = {
+        forceSSL = true;
+        enableACME = true;
+        serverAliases = [ "www.someones.tf" ];
+        locations."/" = {
+            root = "/var/www/someones.tf";
+        };
+      };
+    };
+  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   networking.firewall.allowedUDPPorts = [cjdnsPort];
-  networking.firewall.allowedTCPPorts = [yggdrasilPort];
+  networking.firewall.allowedTCPPorts = [yggdrasilPort 80 443];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
