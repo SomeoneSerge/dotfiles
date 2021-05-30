@@ -29,10 +29,17 @@ in {
   };
 
   boot.kernel.sysctl = {
-    "net.core.rmem_max" = 134217728;
-    "net.core.wmem_max" = 134217728;
-    "net.core.default_qdisc" = "fq";
+    "net.ipv6.conf.all.forwarding" = 1;
+    "net.core.default_qdisc" = "cake";
     "net.ipv4.tcp_congestion_control" = "bbr";
+    "net.ipv4.tcp_fastopen" = 3;
+    "net.ipv4.tcp_rmem" = "4096 1048576 16777216";
+    "net.ipv4.tcp_wmem" = "4096 65536 16777216";
+    "net.core.rmem_default" = 1048576;
+    "net.core.wmem_default" = 65536;
+    "net.core.rmem_max" = 16777216;
+    "net.core.wmem_max" = 16777216;
+    "net.core.optmem_max" = 65536;
   };
 
   networking.hostName = "ss-xps13"; # Define your hostname.
