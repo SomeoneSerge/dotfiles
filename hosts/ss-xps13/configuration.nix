@@ -26,6 +26,8 @@ in {
     '';
     gc.automatic = true;
     gc.options = "--delete-older-than 8d";
+    buildCores = 3;
+    maxJobs = 12;
   };
 
   boot.kernel.sysctl = {
