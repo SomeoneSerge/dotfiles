@@ -108,6 +108,7 @@ in {
     dnsutils
     element-desktop
     ffmpeg-full
+    syncplay
   ];
 
   # Enable the X11 windowing system.
