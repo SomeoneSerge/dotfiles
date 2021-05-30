@@ -2,9 +2,7 @@
 
 let mainLocale = "en_US.UTF-8";
 in {
-  imports = [
-    ./common.nix
-  ];
+  imports = [ ./common.nix ];
 
   home.sessionVariables = {
     FONTCONFIG_FILE = "${pkgs.fontconfig.out}/etc/fonts/fonts.conf";
@@ -21,12 +19,10 @@ in {
     }
   '';
 
-  services.gpg-agent = {
-    pinentryFlavor = "tty";
-  };
+  services.gpg-agent = { pinentryFlavor = "tty"; };
 
   home.packages = with pkgs; [
-    nixModern /* imported in ../overlays/default.nix from NixOS/nix flake */
+    nixModern # imported in ../overlays/default.nix from NixOS/nix flake
     pkgs.nixGLIntel
     # pkgs.nixGLNvidia
     yrd

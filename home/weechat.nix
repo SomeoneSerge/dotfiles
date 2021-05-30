@@ -1,8 +1,8 @@
 { pkgs, ... }:
 
 {
-  home.packages = [(
-    pkgs.weechat.override {
+  home.packages = [
+    (pkgs.weechat.override {
       configure = { ... }: {
         init = ''
           /server add freenode chat.freenode.org
@@ -19,6 +19,6 @@
           /filter add irc_smart * irc_smart_filter *
         '';
       };
-    }
-  )];
+    })
+  ];
 }

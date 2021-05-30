@@ -1,25 +1,21 @@
 final: prev: {
-  pylinters = let 
-    python = prev.python3.withPackages (ps: with ps; [
-      pylint
-      black
-      flake8
-      autopep8
-      isort
-      pydocstyle
-      mypy
-      jedi
-      yapf
-    ]);
+  pylinters = let
+    python = prev.python3.withPackages (ps:
+      with ps; [
+        pylint
+        black
+        flake8
+        autopep8
+        isort
+        pydocstyle
+        mypy
+        jedi
+        yapf
+      ]);
     wrappers = prev.stdenv.mkDerivation {
       name = "pylinters";
-      nativeBuildInputs = [
-        prev.makeWrapper
-      ];
-      buildInputs = [
-        prev.makeWrapper
-        python
-      ];
+      nativeBuildInputs = [ prev.makeWrapper ];
+      buildInputs = [ prev.makeWrapper python ];
       phases = [ "buildPhase" ];
       buildPhase = ''
         . "${prev.makeWrapper}/nix-support/setup-hook"
@@ -31,6 +27,6 @@ final: prev: {
     };
   in prev.buildEnv {
     name = "pylinters-env";
-    paths = [python wrappers];
+    paths = [ python wrappers ];
   };
 }

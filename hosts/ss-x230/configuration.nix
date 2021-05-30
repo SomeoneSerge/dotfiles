@@ -8,10 +8,9 @@ let
   lite21ipv4 = "5.2.76.123";
   yggdrasilPort = 43212;
 in {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   nix = {
     package = pkgs.nixUnstable;
@@ -28,24 +27,24 @@ in {
   boot.supportedFilesystems = [ "btrfs" ];
 
   boot.kernel.sysctl = {
-      "net.core.rmem_max" = 134217728;
-      "net.core.wmem_max" = 134217728;
-      "net.core.default_qdisc" = "fq";
-      "net.ipv4.tcp_congestion_control" = "bbr";
+    "net.core.rmem_max" = 134217728;
+    "net.core.wmem_max" = 134217728;
+    "net.core.default_qdisc" = "fq";
+    "net.ipv4.tcp_congestion_control" = "bbr";
   };
 
   networking.hostName = "ss-x230"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.hosts = {
-      "fc7f:217a:060b:504b:8538:506a:e573:6615" = ["lite21.cjd"];
-      "201:898:d5f1:3941:bd2e:229:dcd4:dc9c" = ["devbox.ygg"];
-      "fc76:d36c:8f3b:bbaa:1ad6:2039:7b99:7ca6" = ["devbox.k"];
+    "fc7f:217a:060b:504b:8538:506a:e573:6615" = [ "lite21.cjd" ];
+    "201:898:d5f1:3941:bd2e:229:dcd4:dc9c" = [ "devbox.ygg" ];
+    "fc76:d36c:8f3b:bbaa:1ad6:2039:7b99:7ca6" = [ "devbox.k" ];
   };
   networking.networkmanager = {
-      enable = true; # already enabled by gnome
-      unmanaged = ["type:tun"];
+    enable = true; # already enabled by gnome
+    unmanaged = [ "type:tun" ];
   };
-  networking.nameservers = ["1.1.1.1"];
+  networking.nameservers = [ "1.1.1.1" ];
 
   # Set your time zone.
   time.timeZone = "Europe/Helsinki";
@@ -71,25 +70,22 @@ in {
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-
   # Enable the GNOME 3 Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.autoSuspend = false;
   services.xserver.desktopManager.gnome3.enable = true;
   programs.geary.enable = false;
   programs.evolution = {
-      enable = true;
-      plugins = with pkgs; [evolution-ews];
+    enable = true;
+    plugins = with pkgs; [ evolution-ews ];
   };
   services.davmail = {
-      # enable = true;
-      url = "https://mail.aalto.fi/owa/";
-      # url = "https://outlook.office365.com/owa/?realm=aalto.fi";
-      # url = "https://outlook.office365.com/EWS/Exchange.asmx";
-      config = {
-      };
+    # enable = true;
+    url = "https://mail.aalto.fi/owa/";
+    # url = "https://outlook.office365.com/owa/?realm=aalto.fi";
+    # url = "https://outlook.office365.com/EWS/Exchange.asmx";
+    config = { };
   };
-  
 
   # Configure keymap in X11
   # services.xserver.layout = "us";
@@ -111,16 +107,17 @@ in {
     description = "Someone Serge";
     extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
     openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
     ];
   };
-  home-manager.users.ss = {
-  };
+  home-manager.users.ss = { };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    ag ripgrep fd
+    ag
+    ripgrep
+    fd
     pass-wayland
     pavucontrol
     wl-clipboard
@@ -141,10 +138,8 @@ in {
     vim
   ];
   environment.variables.LC_ALL = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-      LC_ALL = "en_US.UTF-8";
-  };
-  
+  i18n.extraLocaleSettings = { LC_ALL = "en_US.UTF-8"; };
+
   programs.neovim = {
     enable = true;
 
@@ -164,11 +159,11 @@ in {
 
   programs.mosh.enable = true;
   programs.tmux = {
-      enable = true;
-      clock24 = true;
-      escapeTime = 100;
-      keyMode = "vi";
-      newSession = true;
+    enable = true;
+    clock24 = true;
+    escapeTime = 100;
+    keyMode = "vi";
+    newSession = true;
   };
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -192,43 +187,38 @@ in {
   networking.firewall.allowedUDPPorts = [ 5201 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-  
+
   hardware.opengl = {
     enable = true;
-    extraPackages = with pkgs; [
-      intel-compute-runtime
-    ];
+    extraPackages = with pkgs; [ intel-compute-runtime ];
   };
 
   services.cjdns = {
-      enable = true;
-      UDPInterface = {
-          bind = "0.0.0.0:22623";
-          connectTo = {
-              "${lite21ipv4}:43211" = {
-                  password = "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq";
-                  hostname = "lite21";
-                  publicKey = "ld0wgbr2wr4ku7vfnhg16py5bpnpkjd0cmn046l51g4gsxvzllg0.k";
-              };
-          };
+    enable = true;
+    UDPInterface = {
+      bind = "0.0.0.0:22623";
+      connectTo = {
+        "${lite21ipv4}:43211" = {
+          password =
+            "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq";
+          hostname = "lite21";
+          publicKey = "ld0wgbr2wr4ku7vfnhg16py5bpnpkjd0cmn046l51g4gsxvzllg0.k";
+        };
+      };
     };
   };
-  
+
   services.yggdrasil = {
-      enable = true;
-      persistentKeys = true;
-      config = {
-          Peers = [
-              "tcp://${lite21ipv4}:${toString yggdrasilPort}"
-          ];
-          NodeInfo = {
-              name = "ss-x230";
-          };
-          SessionFirewall = {
-              enable = true;
-              AllowFromDirect = true;
-          };
+    enable = true;
+    persistentKeys = true;
+    config = {
+      Peers = [ "tcp://${lite21ipv4}:${toString yggdrasilPort}" ];
+      NodeInfo = { name = "ss-x230"; };
+      SessionFirewall = {
+        enable = true;
+        AllowFromDirect = true;
       };
+    };
   };
 
   services.flatpak.enable = true;

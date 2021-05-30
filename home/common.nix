@@ -40,8 +40,7 @@ in {
     enable = true;
     enableAutosuggestions = true;
     enableCompletion = true;
-    plugins = [
-    ];
+    plugins = [ ];
     initExtra = ''
       bindkey -v
       bindkey "^[[1~" beginning-of-line
@@ -51,14 +50,14 @@ in {
       bindkey "^[[1;5D" backward-word
       bindkey "^[[1;5C" forward-word
       bindkey "^[[3~" delete-char
-      '';
+    '';
   };
 
   programs.powerline-go = {
     enable = true;
     newline = false;
     modules = [ "host" "nix-shell" "cwd" "git" ];
-      # pathAliases = { "\\~/project/foo" = "prj-foo"; };
+    # pathAliases = { "\\~/project/foo" = "prj-foo"; };
     settings = {
       cwd-max-depth = 2;
       git-mode = "simple";
@@ -66,15 +65,14 @@ in {
     };
   };
 
-  programs.fzf = {
-    enable = true;
-  };
+  programs.fzf = { enable = true; };
 
   programs.bash = {
     enable = true;
-    bashrcExtra = '' . ${pkgs.bash-completion}/share/bash-completion/bash_completion
-      PROMPT_COMMAND="history -a; history -r"
-      '';
+    bashrcExtra = ''
+      . ${pkgs.bash-completion}/share/bash-completion/bash_completion
+           PROMPT_COMMAND="history -a; history -r"
+           '';
     shellOptions = [
       # Default
       "histappend"

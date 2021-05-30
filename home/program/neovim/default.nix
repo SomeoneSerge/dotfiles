@@ -1,9 +1,10 @@
 { config, pkgs, ... }:
 
 let
-  pyPkgs = (ps: with ps; [
-    # Currently useless, because
-    # https://github.com/NixOS/nixpkgs/issues/98166
+  pyPkgs = (ps:
+    with ps; [
+      # Currently useless, because
+      # https://github.com/NixOS/nixpkgs/issues/98166
       pylint
       black
       flake8
@@ -13,10 +14,14 @@ let
       yapf
       pkgs.pylinters
     ]);
-  cocConfigDict = import ./coc.nix { inherit pkgs config; pylinters = pkgs.pylinters; pythonPackages = pkgs.python38Packages; };
-  cocConfig = (pkgs.writeText "coc-settings.json" (builtins.toJSON cocConfigDict));
-in
-{
+  cocConfigDict = import ./coc.nix {
+    inherit pkgs config;
+    pylinters = pkgs.pylinters;
+    pythonPackages = pkgs.python38Packages;
+  };
+  cocConfig =
+    (pkgs.writeText "coc-settings.json" (builtins.toJSON cocConfigDict));
+in {
   programs.neovim = {
     enable = true;
     vimAlias = true;
@@ -40,8 +45,7 @@ in
       noremap <Leader>s :Ag<CR>
       noremap <Leader>f :Files<CR>
 
-    ''
-    + (builtins.readFile ./coc.vim);
+    '' + (builtins.readFile ./coc.vim);
 
     # Neovim plugins
     plugins = with pkgs.vimPlugins; [

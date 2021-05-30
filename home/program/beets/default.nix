@@ -3,33 +3,30 @@
 {
   programs.beets = {
     enable = true;
-    package = with pkgs; (
-      beets.override
-      {
+    package = with pkgs;
+      (beets.override {
         enableConvert = true;
         enableLoadext = true;
         enableKeyfinder = true;
         enableFetchart = true;
         enableThumbnails = true;
-      }
-    );
+      });
     settings = {
-      directory=  "~/Music";
+      directory = "~/Music";
       library = "~/.config/beets/library.db";
       plugins = [
         "fromfilename"
         "fetchart"
         "lyrics"
         "lastgenre"
-        "web" "bpd"
+        "web"
+        "bpd"
         "duplicates"
         "discogs"
         "ftintitle"
         "badfiles"
       ];
-      import = {
-          move = true;
-      };
+      import = { move = true; };
     };
   };
 }

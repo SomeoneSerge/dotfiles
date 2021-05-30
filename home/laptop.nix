@@ -1,10 +1,7 @@
 { pkgs, ... }:
 
 rec {
-  imports = [
-    ./common.nix
-    ./weechat.nix
-  ];
+  imports = [ ./common.nix ./weechat.nix ];
 
   home.packages = with pkgs; [
     nixfmt

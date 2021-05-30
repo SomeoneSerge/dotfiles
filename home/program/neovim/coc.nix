@@ -19,54 +19,23 @@
   python.linting.flake8Enabled = true;
 
   json.format.enable = true;
-  coc.preferences.formatOnSaveFiletypes = [
-    "python"
-    "json"
-    "yaml"
-  ];
+  coc.preferences.formatOnSaveFiletypes = [ "python" "json" "yaml" ];
 
   languageserver = {
     ccls = {
-      "command"= "ccls";
-      "filetypes"= [
-        "c"
-        "cpp"
-        "cuda"
-        "objc"
-        "objcpp"
-      ];
-      "rootPatterns"= [
-        ".ccls"
-        "compile_commands.json"
-        ".vim/"
-        ".git/"
-        ".hg/"
-      ];
-      "initializationOptions"= {
-        "cache"= {
-          "directory"= ".ccls-cache";
-        };
-      };
+      "command" = "ccls";
+      "filetypes" = [ "c" "cpp" "cuda" "objc" "objcpp" ];
+      "rootPatterns" =
+        [ ".ccls" "compile_commands.json" ".vim/" ".git/" ".hg/" ];
+      "initializationOptions" = { "cache" = { "directory" = ".ccls-cache"; }; };
     };
     haskell = {
       "command" = "haskell-language-server-wrapper";
-      "args"= [
-        "--lsp"
-      ];
-      "rootPatterns"= [
-        "*.cabal"
-        "stack.yaml"
-        "cabal.project"
-        "package.yaml"
-      ];
-      "filetypes"= [
-        "hs"
-        "lhs"
-        "haskell"
-      ];
-      "initializationOptions"= {
-        "languageServerHaskell"= {};
-      };
+      "args" = [ "--lsp" ];
+      "rootPatterns" =
+        [ "*.cabal" "stack.yaml" "cabal.project" "package.yaml" ];
+      "filetypes" = [ "hs" "lhs" "haskell" ];
+      "initializationOptions" = { "languageServerHaskell" = { }; };
     };
   };
 }

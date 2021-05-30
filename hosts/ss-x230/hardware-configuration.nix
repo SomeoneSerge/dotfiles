@@ -4,51 +4,51 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "sdhci_pci" ];
+  boot.initrd.availableKernelModules =
+    [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
-      fsType = "btrfs";
-      options = [ "subvol=root" "compress=zstd" ];
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
+    fsType = "btrfs";
+    options = [ "subvol=root" "compress=zstd" ];
+  };
 
-  boot.initrd.luks.devices."nixcrypt".device = "/dev/disk/by-uuid/1d929650-4f2b-4003-ad2c-d51ff4aaf85e";
+  boot.initrd.luks.devices."nixcrypt".device =
+    "/dev/disk/by-uuid/1d929650-4f2b-4003-ad2c-d51ff4aaf85e";
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
-      fsType = "btrfs";
-      options = [ "subvol=home" "compress=zstd" ];
-    };
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
+    fsType = "btrfs";
+    options = [ "subvol=home" "compress=zstd" ];
+  };
 
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
-      fsType = "btrfs";
-      options = [ "subvol=nix"  "compress=zstd"];
-    };
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
+    fsType = "btrfs";
+    options = [ "subvol=nix" "compress=zstd" ];
+  };
 
-  fileSystems."/var" =
-    { device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
-      fsType = "btrfs";
-      options = [ "subvol=var"  "compress=zstd"];
-    };
+  fileSystems."/var" = {
+    device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
+    fsType = "btrfs";
+    options = [ "subvol=var" "compress=zstd" ];
+  };
 
-  fileSystems."/snapshots" =
-    { device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
-      fsType = "btrfs";
-      options = [ "subvol=snapshots"  "compress=zstd"];
-    };
+  fileSystems."/snapshots" = {
+    device = "/dev/disk/by-uuid/36f35e90-a447-4755-bc78-b5bf869b5552";
+    fsType = "btrfs";
+    options = [ "subvol=snapshots" "compress=zstd" ];
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/9268-B585";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/9268-B585";
+    fsType = "vfat";
+  };
 
   swapDevices = [ ];
 

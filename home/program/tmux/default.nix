@@ -38,6 +38,6 @@
       # Borrowed from https://github.com/srid/nix-config/blob/master/nix/tmux.nix
       bind Escape copy-mode
       bind-key -Tcopy-mode-vi 'Escape' send -X cancel
-      '';
+    '';
   };
 }

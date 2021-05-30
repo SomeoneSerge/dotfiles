@@ -4,52 +4,50 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports =
-    [ (modulesPath + "/profiles/qemu-guest.nix")
-    ];
+  imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
 
-  boot.initrd.availableKernelModules = [ "ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk" ];
+  boot.initrd.availableKernelModules =
+    [ "ata_piix" "uhci_hcd" "virtio_pci" "sr_mod" "virtio_blk" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/add3814d-affa-48b6-9e7b-f19177fd40ab";
-      fsType = "btrfs";
-      options = [ "subvol=root" ];
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/add3814d-affa-48b6-9e7b-f19177fd40ab";
+    fsType = "btrfs";
+    options = [ "subvol=root" ];
+  };
 
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/add3814d-affa-48b6-9e7b-f19177fd40ab";
-      fsType = "btrfs";
-      options = [ "subvol=nix" ];
-    };
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-uuid/add3814d-affa-48b6-9e7b-f19177fd40ab";
+    fsType = "btrfs";
+    options = [ "subvol=nix" ];
+  };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/add3814d-affa-48b6-9e7b-f19177fd40ab";
-      fsType = "btrfs";
-      options = [ "subvol=home" ];
-    };
+  fileSystems."/home" = {
+    device = "/dev/disk/by-uuid/add3814d-affa-48b6-9e7b-f19177fd40ab";
+    fsType = "btrfs";
+    options = [ "subvol=home" ];
+  };
 
-  fileSystems."/var" =
-    { device = "/dev/disk/by-uuid/add3814d-affa-48b6-9e7b-f19177fd40ab";
-      fsType = "btrfs";
-      options = [ "subvol=var" ];
-    };
+  fileSystems."/var" = {
+    device = "/dev/disk/by-uuid/add3814d-affa-48b6-9e7b-f19177fd40ab";
+    fsType = "btrfs";
+    options = [ "subvol=var" ];
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/E6F9-61E9";
-      fsType = "vfat";
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/E6F9-61E9";
+    fsType = "vfat";
+  };
 
-  fileSystems."/.snapshots" =
-    { device = "/dev/disk/by-uuid/add3814d-affa-48b6-9e7b-f19177fd40ab";
-      fsType = "btrfs";
-      options = [ "subvol=.snapshots" ];
-    };
+  fileSystems."/.snapshots" = {
+    device = "/dev/disk/by-uuid/add3814d-affa-48b6-9e7b-f19177fd40ab";
+    fsType = "btrfs";
+    options = [ "subvol=.snapshots" ];
+  };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/65499d44-80e5-4b0b-9b78-2381996d53a1"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/65499d44-80e5-4b0b-9b78-2381996d53a1"; }];
 
 }
