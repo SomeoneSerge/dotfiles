@@ -252,6 +252,14 @@ in {
     recommendedProxySettings = true;
 
     virtualHosts = {
+      "someonex.net" = {
+        forceSSL = true;
+        enableACME = true;
+        serverAliases = [ "www.someonex.net" ];
+        locations."/" = {
+            root = "/var/www/someonex.net";
+        };
+      };
       "someones.tf" = {
         forceSSL = true;
         enableACME = true;
