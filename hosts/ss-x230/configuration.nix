@@ -127,7 +127,7 @@ in {
     iotop
     wget
     qutebrowser
-    firefox
+    firefox-wayland
     mpv
     vlc
     obs-studio
