@@ -107,6 +107,7 @@ in {
     colmap
     dnsutils
     element-desktop
+    ffmpeg-full
   ];
 
   # Enable the X11 windowing system.
@@ -227,6 +228,7 @@ in {
       vaapiVdpau
       libvdpau-va-gl
       intel-media-driver # LIBVA_DRIVER_NAME=iHD
+      intel-compute-runtime
     ];
   };
 
