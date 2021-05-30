@@ -1,6 +1,8 @@
 { config, pkgs, lib, ... }:
 
 let
+  hostAddress = "192.168.100.10";
+  localAddress = "192.168.100.11";
   hostName = "matrix";
   domain = "someonex.net";
   fqdn = let
@@ -42,16 +44,15 @@ in {
 
       # forward all Matrix API calls to the synapse Matrix homeserver
       locations."/_matrix" = {
-        proxyPass = "http://192.168.100.11:8008"; # without a trailing /
+        proxyPass = "http://${localAddress}:8008"; # without a trailing /
       };
     };
   };
   containers.matrix = {
     autoStart = true;
     privateNetwork = true;
-    hostAddress = "192.168.100.10";
-    localAddress = "192.168.100.11";
-    config = ({ config, pkgs, lib ? pkgs.lib, ... }: {
+    inherit hostAddress localAddress;
+    config = ({ config, pkgs, lib, ... }: {
       networking = {
         inherit domain hostName;
         firewall.allowedTCPPorts = [ 80 443 8008 ];
@@ -68,10 +69,11 @@ in {
 
       services.matrix-synapse = {
         enable = true;
+	# enable_registration = true;
         server_name = config.networking.domain;
         listeners = [{
           port = 8008;
-          bind_address = "::1";
+          bind_address = localAddress;
           type = "http";
           tls = false;
           x_forwarded = true;
