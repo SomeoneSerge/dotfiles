@@ -112,6 +112,9 @@ in {
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    htop
+    dnsutils
+    ag ripgrep
     weechat'
     wget
     aria2
