@@ -24,7 +24,6 @@ let
 in {
   programs.neovim = {
     enable = true;
-    vimAlias = true;
 
     extraConfig = ''
       :imap jk <Esc>
@@ -50,12 +49,10 @@ in {
     # Neovim plugins
     plugins = with pkgs.vimPlugins; [
       fzf-vim
-      ctrlp
-      editorconfig-vim
       gruvbox
       tabular
-      vim-nix
       fugitive
+      vim-nix
       coc-nvim
       coc-yaml
       coc-json
