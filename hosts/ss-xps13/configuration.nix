@@ -72,6 +72,43 @@ in {
   #   keyMap = "us";
   # };
 
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    logseq
+    ag
+    ripgrep
+    fd
+    pass-wayland
+    pavucontrol
+    wl-clipboard
+    xournalpp
+    htop
+    iotop
+    wget
+    qutebrowser
+    firefox
+    mpv
+    vlc
+    obs-studio
+    git
+    qrencode
+    imv
+    yrd
+    vim
+    nixfmt
+    lm_sensors
+    tdesktop
+    sshfs
+    brightnessctl
+    gnome.gnome-tweaks
+    gnome.gnome-tweak-tool
+    gnome.dconf-editor
+    colmap
+    dnsutils
+    element-desktop
+  ];
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.displayManager.gdm.enable = true;
@@ -127,43 +164,6 @@ in {
       # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
     ];
   };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    logseq
-    ag
-    ripgrep
-    fd
-    pass-wayland
-    pavucontrol
-    wl-clipboard
-    xournalpp
-    htop
-    iotop
-    wget
-    qutebrowser
-    firefox
-    mpv
-    vlc
-    obs-studio
-    git
-    qrencode
-    imv
-    yrd
-    vim
-    nixfmt
-    lm_sensors
-    tdesktop
-    sshfs
-    brightnessctl
-    gnome.gnome-tweaks
-    gnome.gnome-tweak-tool
-    gnome.dconf-editor
-    colmap
-    dnsutils
-    element-desktop
-  ];
 
   environment.sessionVariables.LC_ALL = "en_US.UTF-8";
 
