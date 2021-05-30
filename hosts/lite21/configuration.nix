@@ -59,7 +59,6 @@ in {
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
   networking.useDHCP = false;
-  # networking.interfaces.ens3.useDHCP = true;
   networking.interfaces.ens3.ipv4.addresses = [{
     address = ipv4;
     prefixLength = 24;
@@ -69,6 +68,10 @@ in {
     interface = "ens3";
   };
   networking.nameservers = [ "1.1.1.1" ];
+
+  networking.nat.enable = true;
+  networking.nat.internalInterfaces = ["ve-+"];
+  networking.nat.externalInterface = "ens3";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
