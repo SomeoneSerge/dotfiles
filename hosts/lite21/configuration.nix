@@ -5,6 +5,7 @@
 { config, pkgs, lib, ... }:
 
 let
+  ipv4 = "5.2.76.123";
   cjdnsPort = 43211;
   yggdrasilPort = 43212;
   weechat' = builtins.head (import ../../home/weechat.nix { inherit pkgs; }).home.packages;
@@ -57,7 +58,7 @@ in {
   networking.useDHCP = false;
   # networking.interfaces.ens3.useDHCP = true;
   networking.interfaces.ens3.ipv4.addresses = [ {
-      address = "5.2.76.123";
+      address = ipv4;
       prefixLength = 24;
   } ];
   networking.defaultGateway = { address = "5.2.76.1"; interface = "ens3"; };
