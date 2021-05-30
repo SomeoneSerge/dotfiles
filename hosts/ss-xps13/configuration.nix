@@ -162,6 +162,7 @@ in {
     gnome.dconf-editor
     colmap
     dnsutils
+    element-desktop
   ];
 
   environment.sessionVariables.LC_ALL = "en_US.UTF-8";
