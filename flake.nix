@@ -11,9 +11,11 @@
       url = "github:guibou/nixGL";
       flake = false;
     };
+    openconnect-sso.url = "github:SomeoneSerge/openconnect-sso/flake.nix";
   };
 
-  outputs = { self, nixpkgs, nix, home-manager, nixos-hardware, ... }@inputs:
+  outputs = { self, nixpkgs, nix, home-manager, nixos-hardware, openconnect-sso
+    , ... }@inputs:
     let
       system = "x86_64-linux";
       # Apparently, there are multiple nixpkgs spawned.
@@ -80,6 +82,10 @@
             home-manager.useGlobalPkgs = true;
             home-manager.users.ss =
               (import ./home/laptop.nix { inherit pkgs; });
+          }
+          {
+            environment.systemPackages =
+              [ openconnect-sso.packages.${system}.openconnect-sso ];
           }
           ./hosts/ss-xps13/configuration.nix
         ];
