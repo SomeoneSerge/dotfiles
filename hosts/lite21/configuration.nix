@@ -39,7 +39,6 @@ in {
     "net.ipv6.conf.all.forwarding" = 1;
     "net.core.default_qdisc" = "cake";
     "net.ipv4.tcp_congestion_control" = "bbr";
-    # "net.ipv4.tcp_fastopen" = 3;
     "net.ipv4.tcp_rmem" = "4096 87380 16777216";
     "net.ipv4.tcp_wmem" = "4096 16384 16777216";
     "net.core.rmem_default" = 87380;
@@ -47,6 +46,9 @@ in {
     "net.core.rmem_max" = 16777216;
     "net.core.wmem_max" = 16777216;
     "net.core.optmem_max" = 65536;
+    "net.ipv4.route.flush" = 1;
+    "net.ipv4.tcp_fastopen" = 3;
+    "net.ipv4.tcp_window_scaling" = 1;
   };
 
   networking.hostName = "lite21"; # Define your hostname.
