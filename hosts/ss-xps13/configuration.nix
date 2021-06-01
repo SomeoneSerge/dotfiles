@@ -120,6 +120,7 @@ in {
     element-desktop
     ffmpeg-full
     syncplay
+    gimp
   ];
 
   # Enable the X11 windowing system.
