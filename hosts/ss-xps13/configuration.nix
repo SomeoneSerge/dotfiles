@@ -42,8 +42,8 @@ in {
     "net.core.wmem_max" = 16777216;
     "net.core.optmem_max" = 16384;
     "net.ipv4.route.flush" = 1;
-    "net.ipv4.tcp_fastopen" = 3;
     "net.ipv4.tcp_window_scaling" = 1;
+    "net.ipv4.tcp_fastopen" = 0;
   };
 
   networking.hostName = "ss-xps13"; # Define your hostname.
