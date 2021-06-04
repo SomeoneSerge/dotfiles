@@ -97,7 +97,7 @@ in {
     htop
     iotop
     wget
-    qutebrowser
+    brave
     firefox-wayland
     mpv
     vlc
