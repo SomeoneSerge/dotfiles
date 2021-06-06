@@ -90,6 +90,7 @@ in {
     ag
     ripgrep
     fd
+    file
     pass-wayland
     pavucontrol
     wl-clipboard
@@ -118,6 +119,7 @@ in {
     colmap
     dnsutils
     element-desktop
+    mediainfo
     ffmpeg-full
     syncplay
     gimp
