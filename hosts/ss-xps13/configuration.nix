@@ -122,6 +122,7 @@ in {
     syncplay
     gimp
     cinnamon.nemo
+    nix-index
   ];
 
   # Enable the X11 windowing system.
