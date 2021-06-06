@@ -3,7 +3,7 @@
 {
   laptop = username:
     (home-manager.lib.homeManagerConfiguration rec {
-      inherit system;
+      inherit system pkgs;
       homeDirectory = "/home/${username}";
       inherit username;
       configuration = { pkgs, ... }@confInputs: rec {
@@ -12,7 +12,7 @@
       };
     });
   devbox = home-manager.lib.homeManagerConfiguration rec {
-    inherit system;
+    inherit system pkgs;
     homeDirectory = "/home/serge";
     username = "serge";
     configuration = { pkgs, ... }@confInputs: rec {

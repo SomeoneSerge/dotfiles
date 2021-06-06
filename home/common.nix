@@ -46,6 +46,8 @@ in {
     iputils
     ipcalc
     dnsutils
+    file
+    mediainfo
   ];
 
   programs.direnv = {
