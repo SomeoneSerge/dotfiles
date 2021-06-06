@@ -25,7 +25,7 @@ in {
       experimental-features = nix-command flakes ca-derivations ca-references
     '';
     gc.automatic = true;
-    gc.options = "--delete-older-than 8d";
+    gc.options = "--delete-older-than 2d";
     buildCores = 3;
     maxJobs = 12;
   };
@@ -121,6 +121,7 @@ in {
     ffmpeg-full
     syncplay
     gimp
+    cinnamon.nemo
   ];
 
   # Enable the X11 windowing system.
@@ -128,7 +129,15 @@ in {
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.autoSuspend = false;
   services.xserver.desktopManager.gnome.enable = true;
+
   services.gnome.tracker.enable = true;
+  services.gnome.tracker-miners.enable = true;
+
+  environment.gnome.excludePackages = with pkgs; with gnome; [
+    nautilus
+    epiphany
+    geary
+  ];
 
   programs.light.enable = true;
   programs.sway = {
