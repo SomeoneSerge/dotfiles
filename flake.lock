@@ -151,22 +151,6 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1622364474,
-        "narHash": "sha256-bRupByHizbCba3/AgaETL+YySowmfssqWl7+p0jwcPU=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "eae0cabc124702e04bb2098070ca46d661543d29",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-20.09",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_4": {
-      "locked": {
         "lastModified": 1610729867,
         "narHash": "sha256-bk/SBaBLqZX/PEqal27DMQwAHHl0dcZMp8NNksQr80s=",
         "owner": "NixOS",
@@ -183,15 +167,17 @@
     "openconnect-sso": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs_3",
+        "nixpkgs": [
+          "nixpkgs"
+        ],
         "poetry2nix-src": "poetry2nix-src"
       },
       "locked": {
-        "lastModified": 1622445615,
-        "narHash": "sha256-4gU8mPNKBWsByZEgm/JrZNLpCHkLjdnKsAhVRU+K+MU=",
+        "lastModified": 1622968076,
+        "narHash": "sha256-lCezlCNRI+ree9ieE3aOm0uVjRY0F00a2W7A2w4dOQU=",
         "owner": "SomeoneSerge",
         "repo": "openconnect-sso",
-        "rev": "8913b94f72f0b42d47f027b3f70faa0f567262cd",
+        "rev": "ab24fa1be90b2c86b2591836230959ecd116832d",
         "type": "github"
       },
       "original": {
@@ -204,7 +190,7 @@
     "poetry2nix-src": {
       "inputs": {
         "flake-utils": "flake-utils_2",
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1613048408,

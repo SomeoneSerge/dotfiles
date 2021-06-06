@@ -12,6 +12,7 @@
       flake = false;
     };
     openconnect-sso.url = "github:SomeoneSerge/openconnect-sso/flake.nix";
+    openconnect-sso.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, nix, home-manager, nixos-hardware, openconnect-sso
@@ -32,6 +33,10 @@
       homeCfgs = (pkgs.callPackage ./home/default.nix {
         inherit pkgs home-manager system nixGL nix;
       });
+      openconnect-module = {
+        environment.systemPackages =
+          [ openconnect-sso.packages.${system}.openconnect-sso ];
+      };
     in rec {
       defaultPackage.${system} = pkgs.pylinters;
       packages.${system} = {
@@ -57,6 +62,7 @@
         modules = [
           nixos-hardware.nixosModules.lenovo-thinkpad-x230
           (home-manager.nixosModules.home-manager)
+          openconnect-module
           ./hosts/ss-x230/configuration.nix
           {
             home-manager.useGlobalPkgs = true;
@@ -83,10 +89,7 @@
             home-manager.users.ss =
               (import ./home/laptop.nix { inherit pkgs; });
           }
-          {
-            environment.systemPackages =
-              [ openconnect-sso.packages.${system}.openconnect-sso ];
-          }
+          openconnect-module
           ./hosts/ss-xps13/configuration.nix
         ];
       };
