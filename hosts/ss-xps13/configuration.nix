@@ -117,6 +117,7 @@ in {
     gnome.gnome-tweak-tool
     gnome.dconf-editor
     colmap
+    meshlab
     dnsutils
     element-desktop
     mediainfo
@@ -125,6 +126,9 @@ in {
     gimp
     cinnamon.nemo
     nix-index
+    alacritty
+    gopass
+    vpn-slice
   ];
 
   # Enable the X11 windowing system.
@@ -136,6 +140,7 @@ in {
   services.gnome.tracker.enable = true;
   services.gnome.tracker-miners.enable = true;
 
+  programs.gnome-terminal.enable = false;
   environment.gnome.excludePackages = with pkgs; with gnome; [
     nautilus
     epiphany

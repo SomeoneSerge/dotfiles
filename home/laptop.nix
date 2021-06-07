@@ -10,4 +10,5 @@ rec {
 
     nixGLIntel
   ];
+  programs.kitty.enable = true;
 }
