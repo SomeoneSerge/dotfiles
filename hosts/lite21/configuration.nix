@@ -35,7 +35,7 @@ in {
   # boot.loader.grub.device = "nodev";
 
   boot.kernel.sysctl = {
-  
+
     "net.ipv6.conf.all.forwarding" = 1;
     "net.core.default_qdisc" = "cake";
     "net.ipv4.tcp_congestion_control" = "bbr";
@@ -52,6 +52,26 @@ in {
   };
 
   networking.hostName = "lite21"; # Define your hostname.
+
+  networking.wireguard.interfaces.wg24601 = {
+    ips = [ "10.24.60.1/24" ];
+    listenPort = [ 51820 ];
+
+    # Waiting for systemd-networkd official support in NixOS...
+    postSetup = ''
+      ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.24.60.0/24 -o ens3 -j MASQUERADE
+    '';
+    postShutdown = ''
+      ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.24.60.0/24 -o ens3 -j MASQUERADE
+    '';
+
+    privateKeyFile = "/etc/.secrets/wg-lite21.key";
+    peers = [{
+      # ss-xps13
+      publicKey = "BN0ZmyKUe7Ayjovl35jkIei5wpkFy3SVhMrOOoe+6yE=";
+      allowedIPs = [ "10.24.60.11/32" ];
+    }];
+  };
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Set your time zone.
@@ -72,7 +92,7 @@ in {
   networking.nameservers = [ "1.1.1.1" ];
 
   networking.nat.enable = true;
-  networking.nat.internalInterfaces = ["ve-+"];
+  networking.nat.internalInterfaces = [ "ve-+" "wg24601" ];
   networking.nat.externalInterface = "ens3";
 
   # Configure network proxy if necessary
@@ -117,7 +137,8 @@ in {
     htop
     iperf
     dnsutils
-    ag ripgrep
+    ag
+    ripgrep
     weechat'
     wget
     aria2
@@ -280,7 +301,7 @@ in {
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
-  networking.firewall.allowedUDPPorts = [ cjdnsPort 5201 ];
+  networking.firewall.allowedUDPPorts = [ cjdnsPort 5201 51820 ];
   networking.firewall.allowedTCPPorts = [ yggdrasilPort 80 443 5201 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
