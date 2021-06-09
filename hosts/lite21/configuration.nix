@@ -55,7 +55,7 @@ in {
 
   networking.wireguard.interfaces.wg24601 = {
     ips = [ "10.24.60.1/24" ];
-    listenPort = [ 51820 ];
+    listenPort = 51820;
 
     # Waiting for systemd-networkd official support in NixOS...
     postSetup = ''
