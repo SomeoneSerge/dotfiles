@@ -66,11 +66,18 @@ in {
     '';
 
     privateKeyFile = "/etc/.secrets/wg-lite21.key";
-    peers = [{
-      # ss-xps13
-      publicKey = "BN0ZmyKUe7Ayjovl35jkIei5wpkFy3SVhMrOOoe+6yE=";
-      allowedIPs = [ "10.24.60.11/32" ];
-    }];
+    peers = [
+      {
+        # ss-xps13
+        publicKey = "BN0ZmyKUe7Ayjovl35jkIei5wpkFy3SVhMrOOoe+6yE=";
+        allowedIPs = [ "10.24.60.11/32" ];
+      }
+      {
+        # devbox.ferres.ml
+        publicKey = "zet7mw5HkFquB9nFWDXXDvIXjY/neglYeHMu7fFE0RE=";
+        allowedIPs = [ "10.24.60.21/32" ];
+      }
+    ];
   };
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
