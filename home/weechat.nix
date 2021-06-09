@@ -5,13 +5,13 @@
     (pkgs.weechat.override {
       configure = { ... }: {
         init = ''
-          /server add freenode chat.freenode.org
-          /set irc.server.freenode.addresses "chat.freenode.net/7000"
+          /server add libera irc.libera.chat
+          /set irc.server.freenode.addresses "irc.libera.chat/6697"
           /set irc.server.freenode.ssl on
 
-          /set irc.server.freenode.nicks "SomeoneSerge"
-          /set irc.server.freenode.username "someone-serge"
-          /set irc.server.freenode.realname "Serge K"
+          /set irc.server.freenode.nicks "someones"
+          /set irc.server.freenode.username "someones"
+          /set irc.server.freenode.realname "Someone S"
 
           /set irc.server.freenode.autoconnect on
 
