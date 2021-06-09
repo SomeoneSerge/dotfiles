@@ -129,6 +129,8 @@ in {
     alacritty
     gopass
     vpn-slice
+    p7zip
+    blender
   ];
 
   # Enable the X11 windowing system.

@@ -9,6 +9,7 @@ rec {
     haskell-language-server
 
     nixGLIntel
+    graphicsmagick
   ];
   programs.kitty.enable = true;
 }
