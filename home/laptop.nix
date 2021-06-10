@@ -10,6 +10,9 @@ rec {
 
     nixGLIntel
     graphicsmagick
+
+    mat2
+    libreoffice
   ];
   programs.kitty.enable = true;
 }
