@@ -22,6 +22,7 @@ in {
   services.gpg-agent = { pinentryFlavor = "tty"; };
 
   home.packages = with pkgs; [
+    # nixUnstable
     nixModern # imported in ../overlays/default.nix from NixOS/nix flake
     pkgs.nixGLIntel
     # pkgs.nixGLNvidia

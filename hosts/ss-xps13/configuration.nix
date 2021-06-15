@@ -18,6 +18,7 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   nix = {
     package = pkgs.nixFlakes;
@@ -51,6 +52,7 @@ in {
   networking.hosts = {
     "${lite21ipv4}" = [ "lite21" ];
     "fc7f:217a:060b:504b:8538:506a:e573:6615" = [ "lite21.k" ];
+    "200:a734:be5d:b805:fcd5:4526:1937:4832" = [ "lite21.ygg" ];
     "201:898:d5f1:3941:bd2e:229:dcd4:dc9c" = [ "devbox.ygg" ];
     "fc76:d36c:8f3b:bbaa:1ad6:2039:7b99:7ca6" = [ "devbox.k" ];
     "200:cfad:3173:822e:39b:6965:e250:2053" = [ "ss-x230.ygg" ];
@@ -95,9 +97,6 @@ in {
     pavucontrol
     wl-clipboard
     xournalpp
-    htop
-    iotop
-    wget
     brave
     firefox-wayland
     mpv
@@ -111,21 +110,15 @@ in {
     nixfmt
     lm_sensors
     tdesktop
-    sshfs
     brightnessctl
     gnome.gnome-tweaks
     gnome.gnome-tweak-tool
     gnome.dconf-editor
-    colmap
-    meshlab
-    dnsutils
     element-desktop
-    mediainfo
     ffmpeg-full
     syncplay
     gimp
     cinnamon.nemo
-    nix-index
     alacritty
     gopass
     vpn-slice
@@ -139,8 +132,8 @@ in {
   services.xserver.displayManager.gdm.autoSuspend = false;
   services.xserver.desktopManager.gnome.enable = true;
 
-  services.gnome.tracker.enable = true;
-  services.gnome.tracker-miners.enable = true;
+  services.gnome.tracker.enable = false;
+  services.gnome.tracker-miners.enable = false;
 
   programs.gnome-terminal.enable = false;
   environment.gnome.excludePackages = with pkgs; with gnome; [

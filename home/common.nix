@@ -19,8 +19,19 @@ in {
   home.packages = with pkgs; [
     home-manager
 
+    cachix
+    # lorri
+    niv
+
+    nixfmt
+    nix-index
+
     asciinema
     youtubeDL
+    mediainfo
+    graphicsmagick
+    htop
+    iotop
 
     patchelf
     stack
@@ -29,7 +40,18 @@ in {
     leiningen
     nodejs
     ccls
+
+    wget
+    traceroute
+    iputils
+    ipcalc
+    dnsutils
   ];
+
+  programs.direnv = {
+    enable = true;
+    enableNixDirenvIntegration = true;
+  };
 
   programs.man = {
     enable = true;
