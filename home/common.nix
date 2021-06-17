@@ -3,7 +3,6 @@
 let mainLocale = "en_US.UTF-8";
 in {
   imports = [
-    ./common-nixutils.nix
     ./common-fileutils.nix
     ./common-gitutils.nix
     ./program/tmux/default.nix
@@ -25,6 +24,7 @@ in {
 
     nixfmt
     nix-index
+    nix-tree
 
     asciinema
     youtubeDL
