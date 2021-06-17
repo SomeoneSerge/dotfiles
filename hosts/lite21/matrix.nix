@@ -69,7 +69,7 @@ in {
 
       services.matrix-synapse = {
         enable = true;
-	# enable_registration = true;
+        # enable_registration = true;
         server_name = config.networking.domain;
         listeners = [{
           port = 8008;

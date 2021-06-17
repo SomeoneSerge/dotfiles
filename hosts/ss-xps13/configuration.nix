@@ -124,18 +124,20 @@ in {
     vpn-slice
     p7zip
     blender
-    (conda.override { condaDeps = [
-      stdenv.cc
-      xorg.libSM
-      xorg.libICE
-      xorg.libX11
-      xorg.libXau
-      xorg.libXi
-      xorg.libXrender
-      libselinux
-      libGL
-      glib
-    ]; })
+    (conda.override {
+      condaDeps = [
+        stdenv.cc
+        xorg.libSM
+        xorg.libICE
+        xorg.libX11
+        xorg.libXau
+        xorg.libXi
+        xorg.libXrender
+        libselinux
+        libGL
+        glib
+      ];
+    })
   ];
 
   # Enable the X11 windowing system.
@@ -148,11 +150,12 @@ in {
   services.gnome.tracker-miners.enable = false;
 
   programs.gnome-terminal.enable = false;
-  environment.gnome.excludePackages = with pkgs; with gnome; [
-    nautilus
-    epiphany
-    geary
-  ];
+  environment.gnome.excludePackages = with pkgs;
+    with gnome; [
+      nautilus
+      epiphany
+      geary
+    ];
 
   programs.light.enable = true;
   programs.sway = {
