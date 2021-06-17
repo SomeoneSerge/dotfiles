@@ -12,7 +12,6 @@
       flake = false;
     };
     openconnect-sso.url = "github:SomeoneSerge/openconnect-sso/flake.nix";
-    openconnect-sso.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, nix, home-manager, nixos-hardware, openconnect-sso
