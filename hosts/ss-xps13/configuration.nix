@@ -124,6 +124,18 @@ in {
     vpn-slice
     p7zip
     blender
+    (conda.override { condaDeps = [
+      stdenv.cc
+      xorg.libSM
+      xorg.libICE
+      xorg.libX11
+      xorg.libXau
+      xorg.libXi
+      xorg.libXrender
+      libselinux
+      libGL
+      glib
+    ]; })
   ];
 
   # Enable the X11 windowing system.
