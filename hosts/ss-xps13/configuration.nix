@@ -114,6 +114,7 @@ in {
     gnome.gnome-tweaks
     gnome.gnome-tweak-tool
     gnome.dconf-editor
+    fractal
     element-desktop
     ffmpeg-full
     syncplay
