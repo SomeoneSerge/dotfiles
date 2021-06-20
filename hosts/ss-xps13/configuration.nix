@@ -139,6 +139,8 @@ in {
         glib
       ];
     })
+    torsocks
+    tor-browser-bundle-bin
   ];
 
   # Enable the X11 windowing system.
@@ -304,6 +306,9 @@ in {
       };
     };
   };
+
+  services.tor.enable = true;
+  services.tor.client.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
