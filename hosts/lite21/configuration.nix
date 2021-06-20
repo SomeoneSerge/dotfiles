@@ -38,6 +38,7 @@ in {
   boot.kernel.sysctl = {
 
     "net.ipv6.conf.all.forwarding" = 1;
+    "net.ipv4.conf.all.forwarding" = 1;
     "net.core.default_qdisc" = "cake";
     "net.ipv4.tcp_congestion_control" = "bbr";
     "net.ipv4.tcp_rmem" = "4096 87380 16777216";
