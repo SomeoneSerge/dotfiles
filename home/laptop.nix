@@ -8,6 +8,8 @@ rec {
     cmus
     haskell-language-server
 
+    jq
+
     nixGLIntel
 
     mat2
