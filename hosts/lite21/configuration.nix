@@ -33,6 +33,7 @@ in {
   # Define on which hard drive you want to install Grub.
   boot.loader.grub.device = "/dev/vda"; # or "nodev" for efi only
   # boot.loader.grub.device = "nodev";
+  boot.loader.grub.configurationLimit = 24;
 
   boot.kernel.sysctl = {
 

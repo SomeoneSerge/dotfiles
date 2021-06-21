@@ -19,6 +19,7 @@ in {
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
   boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.loader.grub.configurationLimit = 16;
 
   nix = {
     package = pkgs.nixFlakes;

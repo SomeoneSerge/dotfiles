@@ -25,6 +25,7 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
+  boot.loader.grub.configurationLimit = 16;
 
   boot.kernel.sysctl = {
     "net.core.default_qdisc" = "cake";
