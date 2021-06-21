@@ -76,11 +76,42 @@ in {
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.xserver.windowManager.i3.enable = true;
+  xdg.portal.enable = true;
+  programs.sway = {
+    enable = true;
+    wrapperFeatures.gtk = true; # so that gtk works properly
+    extraPackages = with pkgs; [
+      swaylock
+      swayidle
+      wl-clipboard
+      mako # notification daemon
+      alacritty # Alacritty is the default terminal in the config
+      dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
+      waybar
+      kanshi
+    ];
+  };
+  environment.pathsToLink = [ "/libexec" ];
+  environment.etc."sway/config".text = ''
+    # Brightness
+    bindsym XF86MonBrightnessDown exec "brightnessctl set 2%-"
+    bindsym XF86MonBrightnessUp exec "brightnessctl set +2%"
 
-  # Enable the GNOME 3 Desktop Environment.
+    # Volume
+    bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +1%'
+    bindsym XF86AudioLowerVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ -1%'
+    bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'
+
+    # Polkit
+    exec /run/current-system/sw/libexec/polkit-gnome-authentication-agent-1
+  '';
+  programs.light.enable = true;
+
+  # GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.displayManager.gdm.autoSuspend = false;
-  services.xserver.desktopManager.gnome3.enable = true;
+  services.xserver.desktopManager.gnome.enable = false;
   programs.geary.enable = false;
   programs.evolution = {
     enable = true;
@@ -117,11 +148,24 @@ in {
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
     ];
   };
-  home-manager.users.ss = { };
+  home-manager.users.ss = {
+    wayland.windowManager.sway = {
+      enable = true;
+      wrapperFeatures.gtk = true;
+      config = {
+        terminal = "alacritty";
+        startup = [{
+          command =
+            "~/.nix-profile/libexec/polkit-gnome-authentication-agent-1";
+        }];
+      };
+    };
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    polkit_gnome
     ag
     ripgrep
     fd
@@ -197,6 +241,7 @@ in {
 
   hardware.opengl = {
     enable = true;
+    driSupport = true;
     extraPackages = with pkgs; [ intel-compute-runtime ];
   };
 
