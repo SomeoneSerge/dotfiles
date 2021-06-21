@@ -2,11 +2,12 @@
   description = "Someone's dotfiles";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nix.url = "github:NixOS/nix";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    mach-nix.url = "github:DavHau/mach-nix";
     nixGL = {
       url = "github:guibou/nixGL";
       flake = false;
@@ -36,6 +37,12 @@
         environment.systemPackages =
           [ openconnect-sso.packages.${system}.openconnect-sso ];
       };
+      registry = {
+        dotfiles.flake = inputs.self;
+        nixpkgs.flake = inputs.nixpkgs;
+        mach-nix.flake = inputs.mach-nix;
+      };
+      pin-registry = { nix = { inherit registry; }; };
     in rec {
       defaultPackage.${system} = pkgs.pylinters;
       packages.${system} = {
@@ -62,6 +69,7 @@
           nixos-hardware.nixosModules.lenovo-thinkpad-x230
           (home-manager.nixosModules.home-manager)
           openconnect-module
+          pin-registry
           ./hosts/ss-x230/configuration.nix
           {
             home-manager.useGlobalPkgs = true;
@@ -74,7 +82,7 @@
       nixosConfigurations.lite21 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         inherit pkgs;
-        modules = [ ./hosts/lite21/configuration.nix ];
+        modules = [ ./hosts/lite21/configuration.nix pin-registry ];
       };
 
       nixosConfigurations.ss-xps13 = nixpkgs.lib.nixosSystem {
@@ -88,6 +96,7 @@
             home-manager.users.ss =
               (import ./home/laptop.nix { inherit pkgs; });
           }
+          pin-registry
           openconnect-module
           ./hosts/ss-xps13/configuration.nix
         ];
