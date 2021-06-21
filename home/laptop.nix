@@ -19,6 +19,11 @@ rec {
     meshlab
 
     sshfs
+
+    nnn
   ];
+
   programs.kitty.enable = true;
+
+  programs.zathura.enable = true;
 }
