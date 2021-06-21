@@ -4,7 +4,8 @@ rec {
   imports = [ ./common.nix ./weechat.nix ];
 
   home.packages = with pkgs; [
-    nixFlakes
+    sshfs
+    nixfmt
     cmus
     haskell-language-server
 
