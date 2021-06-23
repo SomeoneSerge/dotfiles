@@ -22,6 +22,8 @@ rec {
     sshfs
 
     nnn
+
+    gptfdisk
   ];
 
   programs.kitty.enable = true;
