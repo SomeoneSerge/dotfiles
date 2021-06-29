@@ -79,6 +79,10 @@ in {
         allowedIPs = [ "10.24.60.12/32" ];
       }
       {
+        publicKey = "MMumrXbsxq7t55oNUOT+nV4XPyPRkfiMKKGfM2IXNVg=";
+        allowedIPs = [ "10.24.60.13/32" ];
+      }
+      {
         # devbox.ferres.ml
         publicKey = "zet7mw5HkFquB9nFWDXXDvIXjY/neglYeHMu7fFE0RE=";
         allowedIPs = [ "10.24.60.21/32" ];

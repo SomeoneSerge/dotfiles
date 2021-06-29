@@ -24,6 +24,8 @@ rec {
     nnn
 
     gptfdisk
+
+    wireguard
   ];
 
   programs.kitty.enable = true;
