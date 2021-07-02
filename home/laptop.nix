@@ -20,6 +20,7 @@ rec {
     meshlab
 
     sshfs
+    nmap
 
     nnn
 

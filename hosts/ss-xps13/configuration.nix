@@ -115,7 +115,6 @@ in {
     gnome.gnome-tweaks
     gnome.gnome-tweak-tool
     gnome.dconf-editor
-    fractal
     element-desktop
     ffmpeg-full
     syncplay
@@ -140,6 +139,7 @@ in {
         glib
       ];
     })
+    (python3.withPackages (ps: with ps; [numpy scipy matplotlib opencv4]))
     torsocks
     tor-browser-bundle-bin
   ];
