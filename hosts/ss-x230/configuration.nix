@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   lite21ipv4 = "5.2.76.123";
@@ -10,6 +10,7 @@ let
 in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./hotspot.nix
   ];
 
   nix = {
@@ -43,25 +44,24 @@ in {
   networking.hostName = "ss-x230"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.hosts = {
+    # "151.101.86.217" = [ "cache.nixos.org" ];
     "fc7f:217a:060b:504b:8538:506a:e573:6615" = [ "lite21.cjd" ];
     "201:898:d5f1:3941:bd2e:229:dcd4:dc9c" = [ "devbox.ygg" ];
     "fc76:d36c:8f3b:bbaa:1ad6:2039:7b99:7ca6" = [ "devbox.k" ];
   };
+
   networking.networkmanager = {
-    enable = true; # already enabled by gnome
+    enable = true;
+    # unmanaged = [ "type:tun" "interface-name:enp0s25" ];
     unmanaged = [ "type:tun" ];
   };
+  networking.interfaces.enp0s25.useDHCP = true;
+
   networking.nameservers = [ "1.1.1.1" ];
+  # networking.resolvconf.extraConfig = lib.strings.concatMapStringsSep "\n" (ip: "prepend_nameservers=${ip}") config.networking.nameservers;
 
   # Set your time zone.
   time.timeZone = "Europe/Helsinki";
-
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.useDHCP = false;
-  networking.interfaces.enp0s25.useDHCP = true;
-  networking.interfaces.wlp3s0.useDHCP = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -290,6 +290,8 @@ in {
       };
     };
   };
+
+  services.haveged.enable = true;
 
   services.flatpak.enable = true;
 
