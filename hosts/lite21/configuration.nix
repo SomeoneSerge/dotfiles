@@ -79,6 +79,7 @@ in {
         allowedIPs = [ "10.24.60.12/32" ];
       }
       {
+        # ss-x230
         publicKey = "MMumrXbsxq7t55oNUOT+nV4XPyPRkfiMKKGfM2IXNVg=";
         allowedIPs = [ "10.24.60.13/32" ];
       }

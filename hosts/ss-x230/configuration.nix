@@ -67,6 +67,28 @@ in {
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
+  # Open ports in the firewall.
+  networking.firewall.allowedTCPPorts = [ 5201 ];
+  networking.firewall.allowedUDPPorts = [ 5201 ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
+
+  networking.nat = {
+    enable = true;
+    externalInterface = "enp0s25";
+    internalInterfaces = [ "wg24601" "tun0" "tun1" ];
+  };
+
+  networking.wg-quick.interfaces.wg24601 = {
+    address = [ "10.24.60.13" ];
+    privateKeyFile = "/var/lib/wireguard/wg-x230.key";
+    peers = [{
+      publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
+      endpoint = "5.2.76.123:51820";
+      allowedIPs = [ "10.24.60.0/24" ];
+    }];
+  };
+
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   # console = {
@@ -138,9 +160,7 @@ in {
 
   # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
-  services.xserver.libinput.touchpad = {
-    naturalScrolling = true;
-  };
+  services.xserver.libinput.touchpad = { naturalScrolling = true; };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ss = {
@@ -236,12 +256,6 @@ in {
     enable = true;
     passwordAuthentication = false;
   };
-
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 5201 ];
-  networking.firewall.allowedUDPPorts = [ 5201 ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   hardware.opengl = {
     enable = true;
