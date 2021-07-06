@@ -2,15 +2,21 @@
   services.hostapd = {
     enable = true;
     interface = "wlp3s0";
-    hwMode = "b";
     ssid = "Ziferblat";
     wpaPassphrase = "allyouneedislove";
+    hwMode = "g";
+    extraConfig = ''
+      ieee80211n=1
+      rsn_pairwise=CCMP
+      wpa_pairwise=TKIP
+      wpa_key_mgmt=WPA-PSK
+    '';
   };
 
   services.dnsmasq = lib.optionalAttrs config.services.hostapd.enable {
     enable = true;
     extraConfig = ''
-      interface=${config.services.hostapd.interface};
+      interface=${config.services.hostapd.interface}
       bind-dynamic
       bogus-priv
       dhcp-range=192.168.24.10,192.168.24.254,24h
