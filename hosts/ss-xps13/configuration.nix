@@ -22,7 +22,7 @@ in {
   boot.loader.grub.configurationLimit = 16;
 
   nix = {
-    package = pkgs.nixFlakes;
+    package = pkgs.nixUnstable;
     extraOptions = ''
       experimental-features = nix-command flakes ca-derivations ca-references
     '';

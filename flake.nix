@@ -96,9 +96,9 @@
             home-manager.users.ss =
               (import ./home/laptop.nix { inherit pkgs; });
           }
-          pin-registry
           openconnect-module
           ./hosts/ss-xps13/configuration.nix
+          pin-registry
         ];
       };
 
