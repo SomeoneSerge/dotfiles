@@ -89,7 +89,24 @@
       nixosConfigurations.lite21 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         inherit pkgs;
-        modules = [ ./hosts/lite21/configuration.nix pin-registry ];
+        modules = [
+          (home-manager.nixosModules.home-manager)
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.users.ss = {
+                programs.ssh = {
+                    enable = true;
+                    matchBlocks = {
+                        "*" = {
+                            identityFile = "/home/ss/.ssh/ss-lite21";
+                        };
+                    };
+                };
+            };
+          }
+          ./hosts/lite21/configuration.nix
+          pin-registry
+        ];
       };
 
       nixosConfigurations.ss-xps13 = nixpkgs.lib.nixosSystem {
