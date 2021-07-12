@@ -99,7 +99,6 @@ in {
     wl-clipboard
     xournalpp
     brave
-    firefox-wayland
     mpv
     vlc
     obs-studio
@@ -139,10 +138,19 @@ in {
         glib
       ];
     })
-    (python3.withPackages (ps: with ps; [numpy scipy matplotlib opencv4]))
+    (python3.withPackages (ps: with ps; [ numpy scipy matplotlib opencv4 ]))
+    firefox-wayland
     torsocks
     tor-browser-bundle-bin
+    chromium
   ];
+
+  programs.chromium = {
+    enable = true;
+    defaultSearchProviderSearchURL = "https://duckduckgo.com/?q={searchTerms}";
+    defaultSearchProviderSuggestURL =
+      "https://duckduckgo.com/ac/?q={searchTerms}&type=list";
+  };
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
