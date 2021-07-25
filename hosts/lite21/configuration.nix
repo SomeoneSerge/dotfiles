@@ -93,6 +93,11 @@ in {
         publicKey = "zet7mw5HkFquB9nFWDXXDvIXjY/neglYeHMu7fFE0RE=";
         allowedIPs = [ "10.24.60.21/32" ];
       }
+      # ferres
+      {
+        publicKey = "+AKen1JkXsII++GUCB9a16RcguGCOXwJVODIpLKQPBY=";
+        allowedIPs = [ "10.24.60.22/32" ];
+      }
     ];
   };
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -311,6 +316,12 @@ in {
         enableACME = true;
         serverAliases = [ "www.someonex.net" ];
         locations."/" = { root = "/var/www/someonex.net"; };
+        locations."/~aziz" = {
+          extraConfig = ''
+            rewrite /~aziz(/.*) $1 break;
+          '';
+          proxyPass = "http://10.24.60.21:8000/$1";
+        };
       };
       "someones.tf" = {
         forceSSL = true;
