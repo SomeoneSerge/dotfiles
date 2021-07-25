@@ -36,17 +36,16 @@ in {
   boot.loader.grub.configurationLimit = 24;
 
   boot.kernel.sysctl = {
-
     "net.ipv6.conf.all.forwarding" = 1;
     "net.ipv4.conf.all.forwarding" = 1;
     "net.core.default_qdisc" = "cake";
     "net.ipv4.tcp_congestion_control" = "bbr";
-    "net.ipv4.tcp_rmem" = "4096 87380 16777216";
-    "net.ipv4.tcp_wmem" = "4096 16384 16777216";
+    "net.ipv4.tcp_rmem" = "4096 87380 4194304";
+    "net.ipv4.tcp_wmem" = "4096 16384 4194304";
     "net.core.rmem_default" = 87380;
     "net.core.wmem_default" = 16384;
-    "net.core.rmem_max" = 16777216;
-    "net.core.wmem_max" = 16777216;
+    "net.core.rmem_max" = 4194304;
+    "net.core.wmem_max" = 4194304;
     "net.core.optmem_max" = 65536;
     "net.ipv4.route.flush" = 1;
     "net.ipv4.tcp_fastopen" = 3;
