@@ -336,7 +336,7 @@ in {
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   networking.firewall.allowedUDPPorts = [ cjdnsPort 5201 51820 ];
-  networking.firewall.allowedTCPPorts = [ yggdrasilPort 80 443 5201 ];
+  networking.firewall.allowedTCPPorts = [ yggdrasilPort 80 443 5201 22 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
