@@ -3,16 +3,21 @@
 
   inputs = {
     nix.url = "github:NixOS/nix";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    home-manager.url = "github:nix-community/home-manager";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-21.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     mach-nix.url = "github:DavHau/mach-nix";
     nixGL = {
       url = "github:guibou/nixGL";
       flake = false;
     };
-    openconnect-sso.url = "github:SomeoneSerge/openconnect-sso/flake.nix";
+    openconnect-sso = {
+      url = "github:SomeoneSerge/openconnect-sso/flake.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, nix, home-manager, nixos-hardware, openconnect-sso
