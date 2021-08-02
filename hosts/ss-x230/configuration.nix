@@ -86,6 +86,7 @@ in {
       publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
       endpoint = "5.2.76.123:51820";
       allowedIPs = [ "10.24.60.0/24" ];
+      persistentKeepalive = 24;
     }];
   };
 
@@ -296,6 +297,14 @@ in {
   services.flatpak.enable = true;
 
   programs.singularity.enable = true;
+
+  users.users.steam = {
+    isNormalUser = true;
+    description = "Some Steam User";
+    hashedPassword =
+      "$6$Pvct6qT3o/OSJO3/$8Kkx8/g/rO4Bqj9W.xrpyZdWmr9/99Z3n3As6RI9Jd.srZN4wzQSetIzqFbefccJGt0snBNOFeFn6ITLL2hQs.";
+  };
+  programs.steam.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
