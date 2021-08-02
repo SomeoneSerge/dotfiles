@@ -79,6 +79,8 @@ in {
     internalInterfaces = [ "wg24601" "tun0" "tun1" ];
   };
 
+  networking.firewall.trustedInterfaces = [ "wg24601" ];
+
   networking.wg-quick.interfaces.wg24601 = {
     address = [ "10.24.60.13" ];
     privateKeyFile = "/var/lib/wireguard/wg-x230.key";
