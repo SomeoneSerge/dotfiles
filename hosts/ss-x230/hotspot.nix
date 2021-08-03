@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }: {
   services.hostapd = {
     enable = true;
-    interface = "wlp3s0";
+    interface = "wlp0s20u1";
     ssid = "Ziferblat";
     wpaPassphrase = "allyouneedislove";
     hwMode = "g";
@@ -27,7 +27,7 @@
     ++ lib.optional config.services.hostapd.enable
     "interface-name:${config.services.hostapd.interface}";
 
-  networking.interfaces.wlp3s0.ipv4.addresses =
+  networking.interfaces.${config.services.hostapd.interface}.ipv4.addresses =
     lib.optionals config.services.hostapd.enable [{
       address = "192.168.24.1";
       prefixLength = 24;
