@@ -7,6 +7,8 @@
     hwMode = "g";
     extraConfig = ''
       ieee80211n=1
+      wme_enabled=1
+      ht_capab=[HT40+][SHORT-GI-40][DSSS_CCK-40]
       rsn_pairwise=CCMP
       wpa_pairwise=TKIP
       wpa_key_mgmt=WPA-PSK
