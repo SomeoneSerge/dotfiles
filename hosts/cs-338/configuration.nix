@@ -143,6 +143,26 @@
     imv
     vlc
     wireguard
+    logseq
+    ffmpeg-full
+    gimp
+    vpn-slice
+    p7zip
+    blender
+    (conda.override {
+      condaDeps = [
+        stdenv.cc
+        xorg.libSM
+        xorg.libICE
+        xorg.libX11
+        xorg.libXau
+        xorg.libXi
+        xorg.libXrender
+        libselinux
+        libGL
+        glib
+      ];
+    })
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -203,6 +223,9 @@
     };
   };
 
+
+  services.flatpak.enable = true;
+  programs.singularity.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
