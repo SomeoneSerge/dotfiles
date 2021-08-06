@@ -25,11 +25,14 @@ in {
     package = pkgs.nixUnstable;
     extraOptions = ''
       experimental-features = nix-command flakes ca-derivations ca-references
+      keep-outputs = true
+      keep-derivations = true
     '';
+    trustedUsers = [ "root" "ss" ];
     gc.automatic = true;
-    gc.options = "--delete-older-than 2d";
-    buildCores = 3;
-    maxJobs = 12;
+    gc.options = "--delete-older-than 3d";
+    buildCores = 2;
+    maxJobs = 8;
   };
 
   boot.kernel.sysctl = {
