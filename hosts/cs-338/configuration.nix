@@ -11,6 +11,11 @@
   ];
 
   programs.cuda-env.enable = true;
+  programs.atop = {
+    enable = true;
+    setuidWrapper.enable = true;
+    atopgpu.enable = true;
+  };
 
   nix = {
     package = pkgs.nixUnstable;
