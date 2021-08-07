@@ -7,10 +7,10 @@
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./cuda-fhs.nix
+    ./cuda-env.nix
   ];
 
-  programs.cuda-fhs.enable = true;
+  programs.cuda-env.enable = true;
 
   nix = {
     package = pkgs.nixUnstable;
@@ -170,6 +170,9 @@
         libselinux
         libGL
         glib
+        # maybe add this? doesn't appear to be required
+        # config.boot.kernelPackages.nvidia_x11
+        # cudatoolkit_11_2
       ];
     })
     # nixGLNvidia
