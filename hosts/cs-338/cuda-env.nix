@@ -9,7 +9,7 @@ let
     targetPkgs = pkgs:
       with pkgs; [
         cfg.cudaPackage
-        cfg.nvidiaDriver
+        cfg.nvidiaPackage
         git
         gitRepo
         gnupg
@@ -39,8 +39,8 @@ let
     runScript = "bash";
     profile = ''
       export CUDA_PATH=${cfg.cudaPackage}
-      # export LD_LIBRARY_PATH=${cfg.nvidiaDriver}/lib
-      export EXTRA_LDFLAGS="-L/lib -L${cfg.nvidiaDriver}/lib"
+      # export LD_LIBRARY_PATH=${cfg.nvidiaPackage}/lib
+      export EXTRA_LDFLAGS="-L/lib -L${cfg.nvidiaPackage}/lib"
       export EXTRA_CCFLAGS="-I/usr/include"
     '';
   };
@@ -68,7 +68,7 @@ let
       gperf
       unzip
       cfg.cudaPackage
-      cfg.nvidiaDriver
+      cfg.nvidiaPackage
       libGLU
       libGL
       xorg.libXi
@@ -86,8 +86,8 @@ let
 
     shellHook = ''
       export CUDA_PATH=${cfg.cudaPackage}
-      # export LD_LIBRARY_PATH=${cfg.nvidiaDriver}/lib:${pkgs.ncurses5}/lib
-      export EXTRA_LDFLAGS="-L/lib -L${cfg.nvidiaDriver}/lib"
+      # export LD_LIBRARY_PATH=${cfg.nvidiaPackage}/lib:${pkgs.ncurses5}/lib
+      export EXTRA_LDFLAGS="-L/lib -L${cfg.nvidiaPackage}/lib"
       export EXTRA_CCFLAGS="-I/usr/include"
     '';
   };
@@ -101,9 +101,9 @@ in {
         type = types.package;
         default = pkgs.cudatoolkit_11_2;
       };
-      nvidiaDriver = mkOption {
+      nvidiaPackage = mkOption {
         type = types.package;
-        default = config.boot.kernelPackages.nvidia_x11;
+        default = config.hardware.nvidia.package;
       };
     };
 
