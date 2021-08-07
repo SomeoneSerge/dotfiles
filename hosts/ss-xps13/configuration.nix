@@ -338,6 +338,21 @@ in {
   services.tor.enable = true;
   services.tor.client.enable = true;
 
+  services.beesd = {
+    filesystems = {
+      nixcrypt = {
+        spec = "/dev/mapper/nixcrypt";
+        hashTableSizeMB = 4096;
+        extraOptions = [ "--thread-count" "1" ];
+      };
+    };
+  };
+
+  services.btrfs.autoScrub = {
+    enable = true;
+    fileSystems = [ "/" ];
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
