@@ -120,16 +120,16 @@ in {
   environment.pathsToLink = [ "/libexec" ];
   environment.etc."sway/config".text = ''
     # Brightness
-    bindsym XF86MonBrightnessDown exec "brightnessctl set 2%-"
-    bindsym XF86MonBrightnessUp exec "brightnessctl set +2%"
+    bindsym XF86MonBrightnessDown exec "${pkgs.brightnessctl}/bin/brightnessctl set 2%-"
+    bindsym XF86MonBrightnessUp exec "${pkgs.brightnessctl}/bin/brightnessctl set +2%"
 
     # Volume
-    bindsym XF86AudioRaiseVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ +1%'
-    bindsym XF86AudioLowerVolume exec 'pactl set-sink-volume @DEFAULT_SINK@ -1%'
-    bindsym XF86AudioMute exec 'pactl set-sink-mute @DEFAULT_SINK@ toggle'
+    bindsym XF86AudioRaiseVolume exec '${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +1%'
+    bindsym XF86AudioLowerVolume exec '${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -1%'
+    bindsym XF86AudioMute exec '${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle'
 
     # Polkit
-    exec /run/current-system/sw/libexec/polkit-gnome-authentication-agent-1
+    exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
   '';
   programs.light.enable = true;
 
@@ -250,6 +250,7 @@ in {
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+    pinentryFlavor = "gnome3";
   };
 
   # List services that you want to enable:
