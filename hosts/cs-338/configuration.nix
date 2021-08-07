@@ -23,6 +23,7 @@
   hardware.opengl = {
     enable = true;
     driSupport = true;
+    driSupport32Bit = true;
   };
   hardware.nvidia.modesetting.enable = true;
   services.xserver.displayManager.gdm.nvidiaWayland = true;
@@ -31,6 +32,10 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.configurationLimit = 16;
+  boot.blacklistedKernelModules = [ "nouveau" ];
+  
+  virtualisation.docker.enable = true;
+  virtualisation.docker.enableNvidia = true;
 
   networking.domain = "aalto.fi";
   networking.hostName = "cs-338"; # Define your hostname.
@@ -163,6 +168,7 @@
         glib
       ];
     })
+  # nixGLNvidia
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

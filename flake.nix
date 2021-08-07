@@ -4,7 +4,10 @@
   inputs = {
     nix.url = "github:NixOS/nix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     home-manager = {
       url = "github:nix-community/home-manager/release-21.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,7 +33,6 @@
       overlays = (import ./overlays { inherit system nixGL nix; });
       pkgsArgs = { inherit system overlays; };
       pkgs = import nixpkgs pkgsArgs;
-      pkgs' = pkgs;
       pkgsUnfree = import nixpkgs (pkgsArgs // { config.allowUnfree = true; });
 
       nixGL = import inputs.nixGL { pkgs = pkgsUnfree; };
@@ -103,6 +105,23 @@
           }
           openconnect-module
           ./hosts/ss-xps13/configuration.nix
+          pin-registry
+        ];
+      };
+
+      nixosConfigurations.cs-338 = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        pkgs = pkgsUnfree;
+        modules = [
+          (home-manager.nixosModules.home-manager)
+          nixos-hardware.nixosModules.common-cpu-amd
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.users.ss =
+              (import ./home/common.nix { inherit pkgs; });
+          }
+          openconnect-module
+          ./hosts/cs-338/configuration.nix
           pin-registry
         ];
       };
