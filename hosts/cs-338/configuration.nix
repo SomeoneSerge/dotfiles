@@ -7,7 +7,10 @@
 {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./cuda-fhs.nix
   ];
+
+  programs.cuda-fhs.enable = true;
 
   nix = {
     package = pkgs.nixUnstable;
@@ -33,10 +36,10 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub.configurationLimit = 16;
   boot.blacklistedKernelModules = [ "nouveau" ];
-  
+
   virtualisation.docker.enable = true;
   virtualisation.docker.enableNvidia = true;
-  systemd.enableUnifiedCgroupHierarchy = false;  # otherwise nvidia-docker fails
+  systemd.enableUnifiedCgroupHierarchy = false; # otherwise nvidia-docker fails
 
   networking.domain = "aalto.fi";
   networking.hostName = "cs-338"; # Define your hostname.
@@ -169,7 +172,7 @@
         glib
       ];
     })
-  # nixGLNvidia
+    # nixGLNvidia
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -229,7 +232,6 @@
       };
     };
   };
-
 
   services.flatpak.enable = true;
   programs.singularity.enable = true;
