@@ -61,6 +61,8 @@ in {
     "fc76:d36c:8f3b:bbaa:1ad6:2039:7b99:7ca6" = [ "devbox.k" ];
     "200:cfad:3173:822e:39b:6965:e250:2053" = [ "ss-x230.ygg" ];
     "fc1e:8533:2b39:a16a:24d1:87a5:2c6b:7f35" = [ "ss-x230.k" ];
+    "fc16:d86c:486f:dc9e:b916:f727:7122:cfe7" = [ "cs-338.k" ];
+    "200:b157:d9e8:bf43:344b:13eb:10dc:8658" = [ "cs-338.ygg" ];
   };
 
   # Set your time zone.
