@@ -338,15 +338,15 @@ in {
   services.tor.enable = true;
   services.tor.client.enable = true;
 
-  services.beesd = {
-    filesystems = {
-      nixcrypt = {
-        spec = "/dev/mapper/nixcrypt";
-        hashTableSizeMB = 4096;
-        extraOptions = [ "--thread-count" "1" ];
-      };
-    };
-  };
+  # services.beesd = {
+  #   filesystems = {
+  #     nixcrypt = {
+  #       spec = "/dev/mapper/nixcrypt";
+  #       hashTableSizeMB = 4096;
+  #       extraOptions = [ "--thread-count" "1" ];
+  #     };
+  #   };
+  # };
 
   services.btrfs.autoScrub = {
     enable = true;
