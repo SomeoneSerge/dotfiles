@@ -98,6 +98,11 @@ in {
         publicKey = "+AKen1JkXsII++GUCB9a16RcguGCOXwJVODIpLKQPBY=";
         allowedIPs = [ "10.24.60.22/32" ];
       }
+      # aziz-thinkpad
+      {
+        publicKey = "o/nWTwDjhZLIcJVSTYXVr8yoQI2l8dXQwqO+lRBOw24=";
+        allowedIPs = [ "10.24.60.31/32" ];
+      }
     ];
   };
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
