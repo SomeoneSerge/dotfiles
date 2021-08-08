@@ -22,6 +22,9 @@ in {
   boot.loader.grub.configurationLimit = 16;
 
   nix = {
+    nixPath = [
+      "nixpkgs=${pkgs.path}"
+    ];
     package = pkgs.nixUnstable;
     extraOptions = ''
       experimental-features = nix-command flakes ca-derivations ca-references
