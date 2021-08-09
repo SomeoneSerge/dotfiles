@@ -22,9 +22,7 @@ in {
   boot.loader.grub.configurationLimit = 16;
 
   nix = {
-    nixPath = [
-      "nixpkgs=${pkgs.path}"
-    ];
+    nixPath = [ "nixpkgs=${pkgs.path}" ];
     package = pkgs.nixUnstable;
     extraOptions = ''
       experimental-features = nix-command flakes ca-derivations ca-references
@@ -355,6 +353,18 @@ in {
   services.btrfs.autoScrub = {
     enable = true;
     fileSystems = [ "/" ];
+  };
+
+  networking.wg-quick.interfaces.wg24601 = {
+    address = [ "10.24.60.11" ];
+    privateKeyFile = "/var/lib/wireguard/wg-${config.networking.hostName}";
+    dns = [ "10.24.60.1" ];
+    peers = [{
+      publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
+      endpoint = "5.2.76.123:51820";
+      allowedIPs = [ "10.24.60.0/24" ];
+      persistentKeepalive = 24;
+    }];
   };
 
   # This value determines the NixOS release from which the default
