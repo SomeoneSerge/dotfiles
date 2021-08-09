@@ -25,6 +25,26 @@ let
         address = "10.24.60.31";
       };
     };
+    ss-xps13.wireguard = {
+      publicKey = "BN0ZmyKUe7Ayjovl35jkIei5wpkFy3SVhMrOOoe+6yE=";
+      address = "10.24.60.11";
+    };
+    ss-wf.wireguard = {
+      publicKey = "8hwA4Pz21JKy0aqOT02SfU7gqqBlk5N5t6b4igs8aXk=";
+      address = "10.24.60.12";
+    };
+    ss-x230.wireguard = {
+      publicKey = "MMumrXbsxq7t55oNUOT+nV4XPyPRkfiMKKGfM2IXNVg=";
+      address = "10.24.60.13";
+    };
+    ferres.wireguard = {
+      publicKey = "+AKen1JkXsII++GUCB9a16RcguGCOXwJVODIpLKQPBY=";
+      address = "10.24.60.22";
+    };
+    cs-338.wireguard = {
+      publicKey = "7UpQ3zxZ23lzsHsxz6hbPgElb0kQrCEw7+K7vOU3owI=";
+      address = "10.24.60.14";
+    };
   };
 in {
   imports = [ # Include the results of the hardware scan.
@@ -83,8 +103,8 @@ in {
     "fc16:d86c:486f:dc9e:b916:f727:7122:cfe7" = [ "cs-338.k" ];
     "200:b157:d9e8:bf43:344b:13eb:10dc:8658" = [ "cs-338.ygg" ];
   } // (lib.mapAttrs' (hostName: cfg:
-    lib.nameValuePair (cfg.wireguard.address) [ "${hostName}.wg.${config.networking.domain}" ])
-    hosts);
+    lib.nameValuePair (cfg.wireguard.address)
+    [ "${hostName}.wg.${config.networking.domain}" ]) hosts);
 
   networking.wireguard.interfaces.wg24601 = {
     ips = [ "10.24.60.1/24" ];
@@ -99,43 +119,13 @@ in {
     '';
 
     privateKeyFile = "/etc/.secrets/wg-lite21.key";
-    peers = [
-      {
-        # ss-xps13
-        publicKey = "BN0ZmyKUe7Ayjovl35jkIei5wpkFy3SVhMrOOoe+6yE=";
-        allowedIPs = [ "10.24.60.11/32" ];
-      }
-      {
-        # wf
-        publicKey = "8hwA4Pz21JKy0aqOT02SfU7gqqBlk5N5t6b4igs8aXk=";
-        allowedIPs = [ "10.24.60.12/32" ];
-      }
-      {
-        # ss-x230
-        publicKey = "MMumrXbsxq7t55oNUOT+nV4XPyPRkfiMKKGfM2IXNVg=";
-        allowedIPs = [ "10.24.60.13/32" ];
-      }
-      {
-        # cs-338
-        publicKey = "7UpQ3zxZ23lzsHsxz6hbPgElb0kQrCEw7+K7vOU3owI=";
-        allowedIPs = [ "10.24.60.14/32" ];
-      }
-      {
-        # devbox.ferres.ml
-        publicKey = hosts.devbox.wireguard.publicKey;
-        allowedIPs = [ "${hosts.devbox.wireguard.address}/32" ];
-      }
-      # ferres
-      {
-        publicKey = "+AKen1JkXsII++GUCB9a16RcguGCOXwJVODIpLKQPBY=";
-        allowedIPs = [ "10.24.60.22/32" ];
-      }
-      # aziz-thinkpad
-      (with hosts.aziz-thinkpad.wireguard; {
-        inherit publicKey;
-        allowedIPs = [ "${address}/32" ];
-      })
-    ];
+    peers =
+
+      lib.mapAttrsToList (hostName: cfg:
+        with cfg.wireguard; {
+          inherit publicKey;
+          allowedIPs = [ "${address}/32" ];
+        }) hosts;
   };
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
