@@ -8,8 +8,18 @@ let
   ipv4 = "5.2.76.123";
   cjdnsPort = 43211;
   yggdrasilPort = 43212;
+  wgInterface =
+    builtins.head (builtins.attrNames config.networking.wireguard.interfaces);
   weechat' = builtins.head
     (import ../../home/weechat.nix { inherit pkgs; }).home.packages;
+  hosts = {
+    devbox = {
+      wireguard = {
+        publicKey = "zet7mw5HkFquB9nFWDXXDvIXjY/neglYeHMu7fFE0RE=";
+        address = "10.24.60.21";
+      };
+    };
+  };
 in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -53,6 +63,21 @@ in {
   };
 
   networking.hostName = "lite21"; # Define your hostname.
+  networking.domain = "someonex.net";
+
+  networking.hosts = {
+    "${ipv4}" = [ "lite21" ];
+    "${hosts.devbox.wireguard.address}" =
+      [ "devbox.ferres.ml" "devbox.someonex.net" ];
+    "fc7f:217a:060b:504b:8538:506a:e573:6615" = [ "lite21.k" ];
+    "200:a734:be5d:b805:fcd5:4526:1937:4832" = [ "lite21.ygg" ];
+    "201:898:d5f1:3941:bd2e:229:dcd4:dc9c" = [ "devbox.ygg" ];
+    "fc76:d36c:8f3b:bbaa:1ad6:2039:7b99:7ca6" = [ "devbox.k" ];
+    "200:cfad:3173:822e:39b:6965:e250:2053" = [ "ss-x230.ygg" ];
+    "fc1e:8533:2b39:a16a:24d1:87a5:2c6b:7f35" = [ "ss-x230.k" ];
+    "fc16:d86c:486f:dc9e:b916:f727:7122:cfe7" = [ "cs-338.k" ];
+    "200:b157:d9e8:bf43:344b:13eb:10dc:8658" = [ "cs-338.ygg" ];
+  };
 
   networking.wireguard.interfaces.wg24601 = {
     ips = [ "10.24.60.1/24" ];
@@ -90,8 +115,8 @@ in {
       }
       {
         # devbox.ferres.ml
-        publicKey = "zet7mw5HkFquB9nFWDXXDvIXjY/neglYeHMu7fFE0RE=";
-        allowedIPs = [ "10.24.60.21/32" ];
+        publicKey = hosts.devbox.wireguard.publicKey;
+        allowedIPs = [ "${hosts.devbox.wireguard.address}/32" ];
       }
       # ferres
       {
@@ -344,6 +369,22 @@ in {
   networking.firewall.allowedTCPPorts = [ yggdrasilPort 80 443 5201 22 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+  networking.firewall.trustedInterfaces = [ wgInterface ];
+
+  services.dnsmasq = {
+    enable = true;
+    servers = [ "1.1.1.1" "8.8.4.4" ];
+    extraConfig = ''
+      domain-needed
+      interface=${wgInterface}
+      bind-dynamic
+      bogus-priv
+      dhcp-authoritative
+      dhcp-range=10.24.60.100,10.24.60.254,24h
+      domain=${config.networking.domain}
+    '';
+  };
+  systemd.services.dnsmasq.after = [ "wireguard-${wgInterface}.service" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
