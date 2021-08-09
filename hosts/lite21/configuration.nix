@@ -50,6 +50,7 @@ in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./matrix.nix
+    ./aziz-calibre.nix
   ];
 
   nix = {
