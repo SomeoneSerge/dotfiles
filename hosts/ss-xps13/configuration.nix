@@ -55,6 +55,7 @@ in {
   };
 
   networking.hostName = "ss-xps13"; # Define your hostname.
+  networking.domain = "someonex.net";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.hosts = {
     "${lite21ipv4}" = [ "lite21" ];
