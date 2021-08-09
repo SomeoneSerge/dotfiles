@@ -19,6 +19,12 @@ let
         address = "10.24.60.21";
       };
     };
+    aziz-thinkpad = {
+      wireguard = {
+        publicKey = "o/nWTwDjhZLIcJVSTYXVr8yoQI2l8dXQwqO+lRBOw24=";
+        address = "10.24.60.31";
+      };
+    };
   };
 in {
   imports = [ # Include the results of the hardware scan.
@@ -67,8 +73,7 @@ in {
 
   networking.hosts = {
     "${ipv4}" = [ "lite21" ];
-    "${hosts.devbox.wireguard.address}" =
-      [ "devbox.ferres.ml" "devbox.someonex.net" ];
+    "${hosts.devbox.wireguard.address}" = [ "devbox.ferres.ml" ];
     "fc7f:217a:060b:504b:8538:506a:e573:6615" = [ "lite21.k" ];
     "200:a734:be5d:b805:fcd5:4526:1937:4832" = [ "lite21.ygg" ];
     "201:898:d5f1:3941:bd2e:229:dcd4:dc9c" = [ "devbox.ygg" ];
@@ -77,7 +82,9 @@ in {
     "fc1e:8533:2b39:a16a:24d1:87a5:2c6b:7f35" = [ "ss-x230.k" ];
     "fc16:d86c:486f:dc9e:b916:f727:7122:cfe7" = [ "cs-338.k" ];
     "200:b157:d9e8:bf43:344b:13eb:10dc:8658" = [ "cs-338.ygg" ];
-  };
+  } // (lib.mapAttrs' (hostName: cfg:
+    lib.nameValuePair (cfg.wireguard.address) [ "${hostName}.wg.${config.networking.domain}" ])
+    hosts);
 
   networking.wireguard.interfaces.wg24601 = {
     ips = [ "10.24.60.1/24" ];
@@ -124,10 +131,10 @@ in {
         allowedIPs = [ "10.24.60.22/32" ];
       }
       # aziz-thinkpad
-      {
-        publicKey = "o/nWTwDjhZLIcJVSTYXVr8yoQI2l8dXQwqO+lRBOw24=";
-        allowedIPs = [ "10.24.60.31/32" ];
-      }
+      (with hosts.aziz-thinkpad.wireguard; {
+        inherit publicKey;
+        allowedIPs = [ "${address}/32" ];
+      })
     ];
   };
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
