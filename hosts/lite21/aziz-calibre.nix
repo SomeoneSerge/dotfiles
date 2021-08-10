@@ -17,6 +17,7 @@ let
         proxy_hide_header 'x-frame-options';
         add_header x-frame-options "allowall";
         proxy_read_timeout 90;
+        client_max_body_size 256m;
       '';
     };
   };
