@@ -49,6 +49,7 @@ let
 in {
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    ./hardening.nix
     ./matrix.nix
     ./aziz-calibre.nix
   ];
@@ -72,6 +73,8 @@ in {
   # boot.loader.grub.device = "nodev";
   boot.loader.grub.configurationLimit = 24;
 
+
+  boot.kernelModules = [ "tcp_bbr" ];
   boot.kernel.sysctl = {
     "net.ipv6.conf.all.forwarding" = 1;
     "net.ipv4.conf.all.forwarding" = 1;
@@ -85,7 +88,6 @@ in {
     "net.core.wmem_max" = 4194304;
     "net.core.optmem_max" = 65536;
     "net.ipv4.route.flush" = 1;
-    "net.ipv4.tcp_fastopen" = 3;
     "net.ipv4.tcp_window_scaling" = 1;
   };
 
