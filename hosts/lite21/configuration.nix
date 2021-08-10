@@ -368,6 +368,7 @@ in {
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
   networking.firewall.trustedInterfaces = [ wgInterface ];
+  networking.firewall.logRefusedConnections = false;
 
   services.dnsmasq = {
     enable = true;
@@ -383,6 +384,13 @@ in {
     '';
   };
   systemd.services.dnsmasq.after = [ "wireguard-${wgInterface}.service" ];
+
+  services.fail2ban = {
+    enable = true;
+    ignoreIP = [ "10.24.60.0/24" ];
+    
+  };
+  systemd.services.fail2ban.serviceConfig.LimitSTACK = 256 * 1024;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
