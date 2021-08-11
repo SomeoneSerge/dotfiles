@@ -51,7 +51,8 @@ in {
     boot.loader.grub.configurationLimit = mkDefault 16;
     boot.kernelModules = [ "tcp_bbr" ];
 
-    boot.kernel.sysctl = mkDefAttrs ({
+    # 999 is like mkDefault only overrides defaults from nixos
+    boot.kernel.sysctl = mapAttrs (key: value: mkOverride 999 value) ({
       "net.ipv6.conf.all.forwarding" = 1;
       "net.ipv4.conf.all.forwarding" = 1;
       "net.core.default_qdisc" = "cake";
