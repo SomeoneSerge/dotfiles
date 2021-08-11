@@ -82,6 +82,7 @@
   };
 
   # Enable the X11 windowing system.
+  fonts.fonts = with pkgs; [ roboto ];
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -192,6 +193,8 @@
   # started in user sessions.
   # programs.mtr.enable = true;
   services.gnome.gnome-keyring.enable = true;
+  programs.gnupg.agent.enable = true;
+  programs.gnupg.agent.enableSSHSupport = true;
 
   # List services that you want to enable:
 

@@ -24,7 +24,8 @@ in {
       package = mkDefault pkgs.i3-gaps;
       extraPackages = with pkgs; [ dmenu i3status-rust i3lock-fancy ];
     };
-    environment.systemPackages = with pkgs; [ alacritty ];
+    environment.systemPackages = with pkgs; [ alacritty polkit_gnome ];
+    security.polkit.enable = true;
     home-manager.users.${config.something.mainUser} = let
       someBg =
         "${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/Tree.jpg";
@@ -125,6 +126,9 @@ in {
                 "i3status-rs .config/i3status-rust/config-bottom.toml";
             }];
           };
+          extraConfig = ''
+            exec --no-startup-id ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
+          '';
         };
       });
   };
