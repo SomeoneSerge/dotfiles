@@ -54,6 +54,21 @@ in {
     services.xserver.libinput.touchpad.naturalScrolling = mkDefault true;
     hardware.opengl.driSupport = mkDefault true;
 
+    fonts.fonts = with pkgs;
+      mkDefault (mkIf xOn [
+        opensans-ttf
+        noto-fonts
+        noto-fonts-cjk
+        noto-fonts-emoji
+        liberation_ttf
+        fira-code
+        fira-code-symbols
+        mplus-outline-fonts
+        dina-font
+        proggyfonts
+        roboto
+      ]);
+
     networking.firewall.enable = mkDefault true;
 
     boot.loader.grub.configurationLimit = mkDefault 16;
