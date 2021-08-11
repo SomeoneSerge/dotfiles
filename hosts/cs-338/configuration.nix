@@ -220,6 +220,7 @@
       ${pkgs.unixtools.ping}/bin/ping 10.24.60.1
     '';
     after = [ "wg-quick-wg24601.service" ];
+    requiredBy = [ "wg-quick-wg24601.service" ];
     serviceConfig = { LogLevelMax = 0; };
   };
 
