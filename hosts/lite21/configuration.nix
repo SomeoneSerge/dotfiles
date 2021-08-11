@@ -73,7 +73,6 @@ in {
   # boot.loader.grub.device = "nodev";
   boot.loader.grub.configurationLimit = 24;
 
-
   boot.kernelModules = [ "tcp_bbr" ];
   boot.kernel.sysctl = {
     "net.ipv6.conf.all.forwarding" = 1;
@@ -390,7 +389,7 @@ in {
   services.fail2ban = {
     enable = true;
     ignoreIP = [ "10.24.60.0/24" ];
-    
+
   };
   systemd.services.fail2ban.serviceConfig.LimitSTACK = 256 * 1024;
 

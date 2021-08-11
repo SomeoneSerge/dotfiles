@@ -2,10 +2,10 @@
 
 with lib;
 
-let cfg = config.something.i3;
+let cfg = config.some.i3;
 in {
   options = {
-    something.i3 = {
+    some.i3 = {
       enable = mkEnableOption "Someone's i3 setup";
       brightnessDelta = mkOption {
         type = types.int;
@@ -26,7 +26,7 @@ in {
     };
     environment.systemPackages = with pkgs; [ alacritty polkit_gnome ];
     security.polkit.enable = true;
-    home-manager.users.${config.something.mainUser} = let
+    home-manager.users.${config.some.mainUser} = let
       someBg =
         "${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/Tree.jpg";
       nixosConfig = config;

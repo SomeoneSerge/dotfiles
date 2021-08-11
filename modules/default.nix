@@ -3,7 +3,7 @@
 with lib; {
   imports = [ ./i3.nix ];
   options = {
-    something.mainUser = mkOption {
+    some.mainUser = mkOption {
       default = "ss";
       type = types.str;
     };

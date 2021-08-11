@@ -8,7 +8,7 @@ let
   lite21ipv4 = "5.2.76.123";
   yggdrasilPort = 43212;
 in {
-  something.i3.enable = true;
+  some.i3.enable = true;
 
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -147,7 +147,7 @@ in {
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
     ];
   };
-  home-manager.users.ss = {};
+  home-manager.users.ss = { };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

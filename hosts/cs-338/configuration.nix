@@ -86,10 +86,8 @@
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  # Enable the Plasma 5 Desktop Environment.
-  something.i3.enable = true;
+  some.i3.enable = true;
   services.xserver.displayManager.sddm.enable = true;
-  # services.xserver.desktopManager.gnome.enable = true;
 
   services.haveged.enable = true;
 
