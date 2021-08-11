@@ -212,7 +212,7 @@
       publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
       endpoint = "5.2.76.123:51820";
       allowedIPs = [ "10.24.60.0/24" ];
-      persistentKeepalive = 16;
+      persistentKeepalive = 24;
     }];
   };
 
