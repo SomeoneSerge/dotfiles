@@ -23,36 +23,7 @@ in {
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.loader.grub.configurationLimit = 16;
 
-  nix = {
-    nixPath = [ "nixpkgs=${pkgs.path}" ];
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes ca-derivations ca-references
-      keep-outputs = true
-      keep-derivations = true
-    '';
-    trustedUsers = [ "root" "ss" ];
-    gc.automatic = true;
-    gc.options = "--delete-older-than 3d";
-    buildCores = 2;
-    maxJobs = 8;
-  };
-
-  boot.kernel.sysctl = {
-    "net.ipv6.conf.all.forwarding" = 1;
-    "net.core.default_qdisc" = "cake";
-    "net.ipv4.tcp_congestion_control" = "bbr";
-    "net.ipv4.tcp_rmem" = "4096 87380 16777216";
-    "net.ipv4.tcp_wmem" = "4096 16384 16777216";
-    "net.core.rmem_default" = 87380;
-    "net.core.wmem_default" = 16384;
-    "net.core.rmem_max" = 16777216;
-    "net.core.wmem_max" = 16777216;
-    "net.core.optmem_max" = 16384;
-    "net.ipv4.route.flush" = 1;
-    "net.ipv4.tcp_window_scaling" = 1;
-    "net.ipv4.tcp_fastopen" = 0;
-  };
+  nix = { trustedUsers = [ "root" "ss" ]; };
 
   networking.hostName = "ss-xps13"; # Define your hostname.
   networking.domain = "someonex.net";
@@ -69,34 +40,14 @@ in {
     "200:b157:d9e8:bf43:344b:13eb:10dc:8658" = [ "cs-338.ygg" ];
   };
 
-  # Set your time zone.
-  # time.timeZone = "Europe/Amsterdam";
   time.timeZone = "Europe/Helsinki";
 
-  # The global useDHCP flag is deprecated, therefore explicitly set to false here.
-  # Per-interface useDHCP will be mandatory in the future, so this generated config
-  # replicates the default behaviour.
-  networking.useDHCP = false;
   networking.interfaces.wlp58s0.useDHCP = true;
   networking.networkmanager = {
     enable = true;
     unmanaged = [ "type:tun" ];
   };
-  networking.nameservers = [ "1.1.1.1" ];
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
     logseq
     ag
@@ -179,19 +130,6 @@ in {
     ];
 
   programs.light.enable = true;
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true; # so that gtk works properly
-    extraPackages = with pkgs; [
-      swaylock
-      swayidle
-      wl-clipboard
-      mako
-      alacritty
-      wofi
-      dmenu
-    ];
-  };
 
   fonts.fonts = with pkgs; [
     opensans-ttf
@@ -221,15 +159,8 @@ in {
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
-  # Enable touchpad support (enabled default in most desktopManager).
   services.xserver.libinput.enable = true;
-  services.xserver.libinput.touchpad.tapping = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.jane = {
-  #   isNormalUser = true;
-  #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-  # };
   users.users.ss = {
     isNormalUser = true;
     description = "Someone Serge";
@@ -239,56 +170,6 @@ in {
       # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
     ];
   };
-
-  environment.sessionVariables.LC_ALL = "en_US.UTF-8";
-
-  programs.neovim = {
-    enable = true;
-
-    defaultEditor = true;
-
-    configure = {
-      customRC = ''
-        :set smartindent
-        :set expandtab
-        :set tabstop=4
-        :set shiftwidth=4
-        :set numberwidth=4
-        :set number
-      '';
-    };
-  };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    passwordAuthentication = false;
-  };
-
-  programs.mosh.enable = true;
-  programs.tmux = {
-    enable = true;
-    clock24 = true;
-    escapeTime = 100;
-    keyMode = "vi";
-    newSession = true;
-  };
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   nixpkgs.config.packageOverrides = pkgs: {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
@@ -310,34 +191,6 @@ in {
   xdg.portal.enable = true;
   services.flatpak.enable = true;
   programs.singularity.enable = true;
-
-  services.yggdrasil = {
-    enable = true;
-    persistentKeys = true;
-    config = {
-      Peers = [ "tcp://${lite21ipv4}:${toString yggdrasilPort}" ];
-      NodeInfo = { name = config.networking.hostName; };
-      SessionFirewall = {
-        enable = true;
-        AllowFromDirect = true;
-      };
-    };
-  };
-
-  services.cjdns = {
-    enable = true;
-    UDPInterface = {
-      bind = "0.0.0.0:22623";
-      connectTo = {
-        "${lite21ipv4}:43211" = {
-          password =
-            "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq";
-          hostname = "lite21";
-          publicKey = "ld0wgbr2wr4ku7vfnhg16py5bpnpkjd0cmn046l51g4gsxvzllg0.k";
-        };
-      };
-    };
-  };
 
   services.tor.enable = true;
   services.tor.client.enable = true;
@@ -376,6 +229,5 @@ in {
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.09"; # Did you read the comment?
-
 }
 

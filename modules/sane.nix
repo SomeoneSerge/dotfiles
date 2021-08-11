@@ -11,10 +11,17 @@ in {
   options = { some.sane.enable = mkEnableOption "Enable sane defaults"; };
   config = mkIf cfg.enable {
     nix = mkDefAttrs {
+      nixPath = [ "nixpkgs=${pkgs.path}" ];
       package = pkgs.nixUnstable;
       extraOptions = ''
         experimental-features = nix-command flakes ca-derivations ca-references
+        keep-outputs = true
+        keep-derivations = true
       '';
+      gc.automatic = true;
+      gc.options = "--delete-older-than 7d";
+      buildCores = 2;
+      maxJobs = 8;
     };
     i18n.defaultLocale = mkDefault "en_US.UTF-8";
     i18n.extraLocaleSettings = {
@@ -43,7 +50,8 @@ in {
     hardware.pulseaudio.enable = mkDefault xOn;
     xdg.portal.enable = mkDefault xOn;
     services.xserver.libinput.enable = mkDefault xOn;
-    services.xserver.libinput.touchpad = { naturalScrolling = mkDefault xOn; };
+    services.xserver.libinput.touchpad.tapping = mkDefault true;
+    services.xserver.libinput.touchpad.naturalScrolling = mkDefault true;
     hardware.opengl.driSupport = mkDefault true;
 
     networking.firewall.enable = mkDefault true;
