@@ -55,7 +55,7 @@ in {
     hardware.opengl.driSupport = mkDefault true;
 
     fonts.fonts = with pkgs;
-      mkDefault (mkIf xOn [
+      mkDefault (if xOn then [
         opensans-ttf
         noto-fonts
         noto-fonts-cjk
@@ -67,7 +67,8 @@ in {
         dina-font
         proggyfonts
         roboto
-      ]);
+      ] else
+        [ ]);
 
     networking.firewall.enable = mkDefault true;
 
