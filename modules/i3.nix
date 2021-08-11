@@ -104,6 +104,7 @@ in {
               "${modifier}+Shift+j" = "move down";
               "${modifier}+Shift+k" = "move up";
               "${modifier}+Shift+l" = "move right";
+              "${modifier}+x" = "exec i3lock-fancy";
             };
             modes = mkOptionDefault {
               resize = {
