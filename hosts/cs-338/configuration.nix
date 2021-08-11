@@ -86,9 +86,9 @@
   services.xserver.videoDrivers = [ "nvidia" ];
 
   # Enable the Plasma 5 Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-  services.xserver.displayManager.gdm.autoSuspend = false;
+  something.i3.enable = true;
+  services.xserver.displayManager.sddm.enable = true;
+  # services.xserver.desktopManager.gnome.enable = true;
 
   services.haveged.enable = true;
 
@@ -139,6 +139,7 @@
   programs.neovim.enable = true;
   programs.mosh.enable = true;
   programs.tmux.enable = true;
+  programs.thefuck.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -191,11 +192,6 @@
   # started in user sessions.
   # programs.mtr.enable = true;
   services.gnome.gnome-keyring.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    pinentryFlavor = "gnome3";
-  };
 
   # List services that you want to enable:
 
@@ -255,6 +251,7 @@
     };
   };
 
+  xdg.portal.enable = true;
   services.flatpak.enable = true;
   programs.singularity.enable = true;
 

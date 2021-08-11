@@ -50,6 +50,7 @@
         mach-nix.flake = inputs.mach-nix;
       };
       pin-registry = { nix = { inherit registry; }; };
+      someModules = import ./modules;
     in rec {
       defaultPackage.${system} = pkgs.pylinters;
       packages.${system} = {
@@ -73,6 +74,7 @@
         system = "x86_64-linux";
         pkgs = pkgsUnfree;
         modules = [
+          someModules
           nixos-hardware.nixosModules.lenovo-thinkpad-x230
           (home-manager.nixosModules.home-manager)
           openconnect-module
@@ -90,18 +92,17 @@
         system = "x86_64-linux";
         inherit pkgs;
         modules = [
+          someModules
           (home-manager.nixosModules.home-manager)
           {
             home-manager.useGlobalPkgs = true;
             home-manager.users.ss = {
-                programs.ssh = {
-                    enable = true;
-                    matchBlocks = {
-                        "*" = {
-                            identityFile = "/home/ss/.ssh/ss-lite21";
-                        };
-                    };
+              programs.ssh = {
+                enable = true;
+                matchBlocks = {
+                  "*" = { identityFile = "/home/ss/.ssh/ss-lite21"; };
                 };
+              };
             };
           }
           ./hosts/lite21/configuration.nix
@@ -113,6 +114,7 @@
         system = "x86_64-linux";
         inherit pkgs;
         modules = [
+          someModules
           (home-manager.nixosModules.home-manager)
           nixos-hardware.nixosModules.dell-xps-13-9360
           {
@@ -130,6 +132,7 @@
         system = "x86_64-linux";
         pkgs = pkgsUnfree;
         modules = [
+          someModules
           (home-manager.nixosModules.home-manager)
           nixos-hardware.nixosModules.common-cpu-amd
           {
