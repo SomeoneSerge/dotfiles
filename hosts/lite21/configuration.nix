@@ -54,13 +54,6 @@ in {
     ./aziz-calibre.nix
   ];
 
-  nix = {
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
-  };
-
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
@@ -74,23 +67,8 @@ in {
   boot.loader.grub.configurationLimit = 24;
 
   boot.kernelModules = [ "tcp_bbr" ];
-  boot.kernel.sysctl = {
-    "net.ipv6.conf.all.forwarding" = 1;
-    "net.ipv4.conf.all.forwarding" = 1;
-    "net.core.default_qdisc" = "cake";
-    "net.ipv4.tcp_congestion_control" = "bbr";
-    "net.ipv4.tcp_rmem" = "4096 87380 4194304";
-    "net.ipv4.tcp_wmem" = "4096 16384 4194304";
-    "net.core.rmem_default" = 87380;
-    "net.core.wmem_default" = 16384;
-    "net.core.rmem_max" = 4194304;
-    "net.core.wmem_max" = 4194304;
-    "net.core.optmem_max" = 65536;
-    "net.ipv4.route.flush" = 1;
-    "net.ipv4.tcp_window_scaling" = 1;
-  };
 
-  networking.hostName = "lite21"; # Define your hostname.
+  networking.hostName = "lite21";
   networking.domain = "someonex.net";
 
   networking.hosts = {
@@ -137,7 +115,6 @@ in {
   # The global useDHCP flag is deprecated, therefore explicitly set to false here.
   # Per-interface useDHCP will be mandatory in the future, so this generated config
   # replicates the default behaviour.
-  networking.useDHCP = false;
   networking.interfaces.ens3.ipv4.addresses = [{
     address = ipv4;
     prefixLength = 24;
@@ -151,31 +128,6 @@ in {
   networking.nat.enable = true;
   networking.nat.internalInterfaces = [ "ve-+" "wg24601" ];
   networking.nat.externalInterface = "ens3";
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
-
-  # Configure keymap in X11
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
-
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ss = {
@@ -211,32 +163,6 @@ in {
     escapeTime = 100;
     keyMode = "vi";
     newSession = true;
-  };
-
-  programs.neovim = {
-    enable = true;
-
-    defaultEditor = true;
-    vimAlias = true;
-
-    configure = {
-      customRC = ''
-        :set smartindent
-        :set expandtab
-        :set tabstop=4
-        :set shiftwidth=4
-        :set numberwidth=4
-        :set number
-      '';
-    };
-  };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
   };
 
   services.cjdns = {
@@ -320,17 +246,9 @@ in {
     };
   };
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    passwordAuthentication = false;
-  };
-  programs.mosh.enable = true;
-
   security.acme.email = "smnXXs@protonmail.com";
   security.acme.acceptTerms = true;
+
   services.nginx = {
     enable = true;
 
@@ -361,13 +279,9 @@ in {
     };
   };
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
   networking.firewall.allowedUDPPorts = [ cjdnsPort 5201 51820 ];
   networking.firewall.allowedTCPPorts = [ yggdrasilPort 80 443 5201 22 ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+
   networking.firewall.trustedInterfaces = [ wgInterface ];
   networking.firewall.logRefusedConnections = false;
 
@@ -400,6 +314,4 @@ in {
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.09"; # Did you read the comment?
-
 }
-

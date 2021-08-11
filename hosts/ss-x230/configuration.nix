@@ -4,23 +4,16 @@
 
 { config, pkgs, lib, ... }:
 
-let
-  lite21ipv4 = "5.2.76.123";
-  yggdrasilPort = 43212;
+let lite21ipv4 = "5.2.76.123";
 in {
   some.i3.enable = true;
+  some.sane.enable = true;
 
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./hotspot.nix
   ];
 
-  nix = {
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes ca-derivations ca-references
-    '';
-  };
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
 
@@ -28,22 +21,9 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
-  boot.loader.grub.configurationLimit = 16;
-
-  boot.kernel.sysctl = {
-    "net.core.default_qdisc" = "cake";
-    "net.ipv4.tcp_congestion_control" = "bbr";
-    "net.ipv4.tcp_fastopen" = 0;
-    "net.ipv4.tcp_rmem" = "4096 87380 16777216";
-    "net.ipv4.tcp_wmem" = "4096 16384 16777216";
-    "net.core.rmem_default" = 87380;
-    "net.core.wmem_default" = 16384;
-    "net.core.rmem_max" = 16777216;
-    "net.core.wmem_max" = 16777216;
-    "net.core.optmem_max" = 16384;
-  };
 
   networking.hostName = "ss-x230"; # Define your hostname.
+  networking.domain = "someonex.net";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.hosts = {
     # "151.101.86.217" = [ "cache.nixos.org" ];
@@ -94,16 +74,8 @@ in {
     }];
   };
 
-  # Select internationalisation properties.
-  i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  # };
-
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  xdg.portal.enable = true;
   programs.light.enable = true;
 
   # GNOME Desktop Environment.
@@ -129,14 +101,6 @@ in {
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
-
-  # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
-  services.xserver.libinput.touchpad = { naturalScrolling = true; };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ss = {
@@ -175,84 +139,14 @@ in {
     yrd
     vim
   ];
-  environment.variables.LC_ALL = "en_US.UTF-8";
-  i18n.extraLocaleSettings = { LC_ALL = "en_US.UTF-8"; };
-
-  programs.neovim = {
-    enable = true;
-
-    defaultEditor = true;
-
-    configure = {
-      customRC = ''
-        :set smartindent
-        :set expandtab
-        :set tabstop=4
-        :set shiftwidth=4
-        :set numberwidth=4
-        :set number
-      '';
-    };
-  };
 
   programs.mosh.enable = true;
-  programs.tmux = {
-    enable = true;
-    clock24 = true;
-    escapeTime = 100;
-    keyMode = "vi";
-    newSession = true;
-  };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    pinentryFlavor = "gnome3";
-  };
-
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    passwordAuthentication = false;
-  };
 
   hardware.opengl = {
     enable = true;
     driSupport = true;
     extraPackages = with pkgs; [ intel-compute-runtime ];
-  };
-
-  services.cjdns = {
-    enable = true;
-    UDPInterface = {
-      bind = "0.0.0.0:22623";
-      connectTo = {
-        "${lite21ipv4}:43211" = {
-          password =
-            "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq";
-          hostname = "lite21";
-          publicKey = "ld0wgbr2wr4ku7vfnhg16py5bpnpkjd0cmn046l51g4gsxvzllg0.k";
-        };
-      };
-    };
-  };
-
-  services.yggdrasil = {
-    enable = true;
-    persistentKeys = true;
-    config = {
-      Peers = [ "tcp://${lite21ipv4}:${toString yggdrasilPort}" ];
-      NodeInfo = { name = "ss-x230"; };
-      SessionFirewall = {
-        enable = true;
-        AllowFromDirect = true;
-      };
-    };
   };
 
   services.haveged.enable = true;
@@ -276,6 +170,4 @@ in {
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.09"; # Did you read the comment?
-
 }
-
