@@ -213,8 +213,16 @@
       publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
       endpoint = "5.2.76.123:51820";
       allowedIPs = [ "10.24.60.0/24" ];
-      persistentKeepalive = 24;
+      persistentKeepalive = 5;
     }];
+  };
+  systemd.services.ping-wireguard = {
+    enable = true;
+    script = ''
+      ${pkgs.unixtools.ping}/bin/ping 10.24.60.1 -i 24
+    '';
+    after = [ "wg-quick-wg24601.service" ];
+    serviceConfig = { LogLevelMax = 0; };
   };
 
   services.cjdns = {
