@@ -8,6 +8,8 @@ let
   lite21ipv4 = "5.2.76.123";
   yggdrasilPort = 43212;
 in {
+  something.i3.enable = true;
+
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./hotspot.nix
@@ -101,36 +103,7 @@ in {
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.windowManager.i3.enable = true;
   xdg.portal.enable = true;
-  programs.sway = {
-    enable = true;
-    wrapperFeatures.gtk = true; # so that gtk works properly
-    extraPackages = with pkgs; [
-      swaylock
-      swayidle
-      wl-clipboard
-      mako # notification daemon
-      alacritty # Alacritty is the default terminal in the config
-      dmenu # Dmenu is the default in the config but i recommend wofi since its wayland native
-      waybar
-      kanshi
-    ];
-  };
-  environment.pathsToLink = [ "/libexec" ];
-  environment.etc."sway/config".text = ''
-    # Brightness
-    bindsym XF86MonBrightnessDown exec "${pkgs.brightnessctl}/bin/brightnessctl set 2%-"
-    bindsym XF86MonBrightnessUp exec "${pkgs.brightnessctl}/bin/brightnessctl set +2%"
-
-    # Volume
-    bindsym XF86AudioRaiseVolume exec '${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ +1%'
-    bindsym XF86AudioLowerVolume exec '${pkgs.pulseaudio}/bin/pactl set-sink-volume @DEFAULT_SINK@ -1%'
-    bindsym XF86AudioMute exec '${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle'
-
-    # Polkit
-    exec ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
-  '';
   programs.light.enable = true;
 
   # GNOME Desktop Environment.
@@ -174,20 +147,7 @@ in {
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
     ];
   };
-  home-manager.users.ss = {
-    wayland.windowManager.sway = {
-      enable = true;
-      wrapperFeatures.gtk = true;
-      config = {
-        terminal = "alacritty";
-        modifier = "Mod4";
-        startup = [{
-          command =
-            "~/.nix-profile/libexec/polkit-gnome-authentication-agent-1";
-        }];
-      };
-    };
-  };
+  home-manager.users.ss = {};
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
