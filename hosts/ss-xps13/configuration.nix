@@ -12,6 +12,8 @@ in {
     ./hardware-configuration.nix
   ];
 
+  some.sane.enable = true;
+
   hardware.enableRedistributableFirmware = true;
 
   # Use the systemd-boot EFI boot loader.
