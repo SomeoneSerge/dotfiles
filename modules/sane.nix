@@ -51,6 +51,8 @@ in {
     services.xserver.libinput.touchpad.tapping = mkDefault true;
     services.xserver.libinput.touchpad.naturalScrolling = mkDefault true;
     hardware.opengl.driSupport = mkDefault true;
+    services.xserver.layout = mkDefault "us,ru";
+    services.xserver.xkbOptions = mkDefault "grp:shift_caps_switch";
 
     fonts.enableDefaultFonts = mkDefault true;
     fonts.enableGhostscriptFonts = mkDefault true;

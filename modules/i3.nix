@@ -25,6 +25,7 @@ in {
   };
   config = mkIf cfg.enable {
     environment.pathsToLink = [ "/libexec" ];
+
     services.xserver.displayManager.defaultSession = "none+i3";
     services.xserver.windowManager.i3 = {
       enable = mkDefault true;
@@ -44,6 +45,7 @@ in {
         home.file."Pictures/Backgrounds/someBg.jpg".source = someBg;
         services.random-background.enable = true;
         services.random-background.imageDirectory = "%h/Pictures/Backgrounds";
+
         services.gnome-keyring.enable = true;
         services.gnome-keyring.components = [ "ssh" "secrets" "pkcs11" ];
         programs.alacritty = { enable = true; };
