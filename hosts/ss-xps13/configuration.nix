@@ -14,6 +14,7 @@ in {
 
   some.sane.enable = true;
   some.i3.enable = true;
+  some.mesh.enable = true;
 
   hardware.enableRedistributableFirmware = true;
 
@@ -22,7 +23,6 @@ in {
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
   boot.kernelPackages = pkgs.linuxPackages_zen;
-  boot.loader.grub.configurationLimit = 16;
 
   nix = { trustedUsers = [ "root" "ss" ]; };
 

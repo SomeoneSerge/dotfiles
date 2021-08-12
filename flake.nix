@@ -137,8 +137,7 @@
           nixos-hardware.nixosModules.common-cpu-amd
           {
             home-manager.useGlobalPkgs = true;
-            home-manager.users.ss =
-              (import ./home/common.nix { inherit pkgs; });
+            home-manager.users.ss = (import ./home/common.nix);
           }
           openconnect-module
           ./hosts/cs-338/configuration.nix

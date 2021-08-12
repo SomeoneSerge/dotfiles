@@ -10,6 +10,9 @@
     ./cuda-env.nix
   ];
 
+  some.sane.enable = true;
+  some.mesh.enable = true;
+
   programs.cuda-env.enable = true;
   programs.atop = {
     enable = true;
@@ -17,22 +20,9 @@
     atopgpu.enable = true;
   };
 
-  nix = {
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes ca-derivations ca-references
-    '';
-    trustedUsers = [ "root" "ss" "kozluks1" ];
-    gc.automatic = true;
-    gc.options = "--delete-older-than 2d";
-  };
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
+  hardware.opengl.driSupport32Bit = true;
   hardware.nvidia.modesetting.enable = true;
   services.xserver.displayManager.gdm.nvidiaWayland = true;
 
@@ -82,7 +72,6 @@
   };
 
   # Enable the X11 windowing system.
-  fonts.fonts = with pkgs; [ roboto ];
   services.xserver.enable = true;
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -187,23 +176,10 @@
     # nixGLNvidia
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  services.gnome.gnome-keyring.enable = true;
-  programs.gnupg.agent.enable = true;
-  programs.gnupg.agent.enableSSHSupport = true;
-
-  # List services that you want to enable:
-
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
   networking.firewall.enable = true;
+  networking.firewall.trustedInterfaces = [ "wg24601" ];
 
   networking.wg-quick.interfaces.wg24601 = {
     address = [ "10.24.60.14" ];
@@ -223,34 +199,6 @@
     after = [ "wg-quick-wg24601.service" ];
     requiredBy = [ "wg-quick-wg24601.service" ];
     serviceConfig = { LogLevelMax = 0; };
-  };
-
-  services.cjdns = {
-    enable = true;
-    UDPInterface = {
-      bind = "0.0.0.0:22623";
-      connectTo = {
-        "5.2.76.123:43211" = {
-          password =
-            "luDcKSyS0SpvLx3nSkTFAwMjL6JSpG7ZwzbfEcALYB2ceFSBiBNJJ0AfCY9yjPSq";
-          hostname = "lite21";
-          publicKey = "ld0wgbr2wr4ku7vfnhg16py5bpnpkjd0cmn046l51g4gsxvzllg0.k";
-        };
-      };
-    };
-  };
-
-  services.yggdrasil = {
-    enable = true;
-    persistentKeys = true;
-    config = {
-      Peers = [ "tcp://5.2.76.123:43212" ];
-      NodeInfo = { name = config.networking.hostName; };
-      SessionFirewall = {
-        enable = true;
-        AllowFromDirect = true;
-      };
-    };
   };
 
   xdg.portal.enable = true;

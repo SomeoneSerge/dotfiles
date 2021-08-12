@@ -8,6 +8,7 @@ let lite21ipv4 = "5.2.76.123";
 in {
   some.i3.enable = true;
   some.sane.enable = true;
+  some.mesh.enable = true;
 
   imports = [ # Include the results of the hardware scan.
     ./hardware-configuration.nix
