@@ -9,7 +9,7 @@ in {
       enable = mkEnableOption "Someone's i3 setup";
       fontsize = mkOption {
         type = types.float;
-        default = 18.0;
+        default = 10.0;
         description = ''
           Font size for i3 and i3bar
         '';

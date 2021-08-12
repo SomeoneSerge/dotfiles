@@ -146,6 +146,8 @@ in {
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
 
+  services.xserver.dpi = 192;
+  hardware.video.hidpi.enable = true;
   hardware.opengl = {
     enable = true;
     driSupport = true;
