@@ -20,8 +20,6 @@ in {
       '';
       gc.automatic = true;
       gc.options = "--delete-older-than 7d";
-      buildCores = 2;
-      maxJobs = 8;
     };
     i18n.defaultLocale = mkDefault "en_US.UTF-8";
     i18n.extraLocaleSettings = {
@@ -54,21 +52,29 @@ in {
     services.xserver.libinput.touchpad.naturalScrolling = mkDefault true;
     hardware.opengl.driSupport = mkDefault true;
 
+    fonts.enableDefaultFonts = mkDefault true;
+    fonts.enableGhostscriptFonts = mkDefault true;
+    fonts.fontDir.enable = mkDefault true;
     fonts.fonts = with pkgs;
-      mkDefault (if xOn then [
-        opensans-ttf
-        noto-fonts
-        noto-fonts-cjk
-        noto-fonts-emoji
-        liberation_ttf
-        fira-code
-        fira-code-symbols
-        mplus-outline-fonts
-        dina-font
-        proggyfonts
+      if xOn then [
+        source-code-pro
+        anonymousPro
+        hasklig
         roboto
+        noto-fonts
+        noto-fonts-extra
+        noto-fonts-emoji
+        font-awesome_5
+        powerline-fonts
+        powerline-symbols
       ] else
-        [ ]);
+        [ ];
+    fonts.fontconfig.defaultFonts = {
+      monospace = [ "hasklig" "Source Code Pro" "Anonymous Pro" ];
+      emoji = [ "FontAwesome5Free" "Noto Color Emoji" "Powerline Symbols" ];
+      sansSerif = [ "Noto Sans" "DejaVu Sans" ];
+      serif = [ "Noto Serif" "DejaVu Serif" ];
+    };
 
     networking.firewall.enable = mkDefault true;
 

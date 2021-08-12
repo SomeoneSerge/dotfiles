@@ -24,7 +24,7 @@ in {
       package = mkDefault pkgs.i3-gaps;
       extraPackages = with pkgs; [ dmenu i3status-rust i3lock-fancy ];
     };
-    environment.systemPackages = with pkgs; [ alacritty polkit_gnome ];
+    environment.systemPackages = with pkgs; [ polkit_gnome ];
     security.polkit.enable = true;
     home-manager.users.${config.some.mainUser} = let
       someBg =
@@ -39,6 +39,9 @@ in {
         services.random-background.imageDirectory = "%h/Pictures/Backgrounds";
         services.gnome-keyring.enable = true;
         services.gnome-keyring.components = [ "ssh" "secrets" "pkcs11" ];
+        programs.alacritty = {
+          enable = true;
+        };
         programs.i3status-rust = {
           enable = true;
           bars = {
@@ -117,11 +120,13 @@ in {
                 "Return" = "mode default";
               };
             };
+            fonts.names = mkDefault [ "Hasklig" "FontAwesome5Free" ];
             workspaceAutoBackAndForth = true;
             terminal = "alacritty";
             bars = [{
               mode = "dock";
               position = "bottom";
+              fonts.names = fonts.names;
               statusCommand =
                 "i3status-rs .config/i3status-rust/config-bottom.toml";
             }];
