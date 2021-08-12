@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 let mainLocale = "en_US.UTF-8";
 in {
@@ -30,7 +30,6 @@ in {
     youtubeDL
     mediainfo
     graphicsmagick
-    htop
     iotop
 
     patchelf
@@ -59,6 +58,11 @@ in {
   programs.man = {
     enable = true;
     generateCaches = true;
+  };
+
+  programs.htop = {
+    enable = true;
+    settings.highlight_base_name = true;
   };
 
   programs.zsh = {
