@@ -115,26 +115,9 @@ in {
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.autoSuspend = false;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  services.gnome.tracker.enable = false;
-  services.gnome.tracker-miners.enable = false;
-
-  programs.gnome-terminal.enable = false;
-  environment.gnome.excludePackages = with pkgs;
-    with gnome; [
-      nautilus
-      epiphany
-      geary
-    ];
+  services.xserver.displayManager.lightdm.enable = true;
 
   programs.light.enable = true;
-
-  # Configure keymap in X11
-  # services.xserver.layout = "us";
-  # services.xserver.xkbOptions = "eurosign:e";
 
   services.packagekit.enable = true;
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
