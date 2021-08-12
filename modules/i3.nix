@@ -7,6 +7,13 @@ in {
   options = {
     some.i3 = {
       enable = mkEnableOption "Someone's i3 setup";
+      fontsize = mkOption {
+        type = types.float;
+        default = 18.0;
+        description = ''
+          Font size for i3 and i3bar
+        '';
+      };
       brightnessDelta = mkOption {
         type = types.int;
         default = 2;
@@ -39,9 +46,7 @@ in {
         services.random-background.imageDirectory = "%h/Pictures/Backgrounds";
         services.gnome-keyring.enable = true;
         services.gnome-keyring.components = [ "ssh" "secrets" "pkcs11" ];
-        programs.alacritty = {
-          enable = true;
-        };
+        programs.alacritty = { enable = true; };
         programs.i3status-rust = {
           enable = true;
           bars = {
@@ -120,13 +125,16 @@ in {
                 "Return" = "mode default";
               };
             };
-            fonts.names = mkDefault [ "Hasklig" "FontAwesome5Free" ];
+            fonts = {
+              names = mkDefault [ "Hasklig" "FontAwesome5Free" ];
+              size = cfg.fontsize;
+            };
             workspaceAutoBackAndForth = true;
             terminal = "alacritty";
             bars = [{
               mode = "dock";
               position = "bottom";
-              fonts.names = fonts.names;
+              fonts = fonts;
               statusCommand =
                 "i3status-rs .config/i3status-rust/config-bottom.toml";
             }];

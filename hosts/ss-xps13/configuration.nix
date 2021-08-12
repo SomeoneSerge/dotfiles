@@ -13,6 +13,7 @@ in {
   ];
 
   some.sane.enable = true;
+  some.i3.enable = true;
 
   hardware.enableRedistributableFirmware = true;
 
