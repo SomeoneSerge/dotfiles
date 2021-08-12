@@ -131,6 +131,7 @@ in {
   hardware.pulseaudio.enable = true;
 
   services.xserver.libinput.enable = true;
+  services.xserver.libinput.touchpad.accelSpeed = "0.5";
 
   users.users.ss = {
     isNormalUser = true;
