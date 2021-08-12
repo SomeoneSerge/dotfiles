@@ -13,6 +13,8 @@
   some.sane.enable = true;
   some.mesh.enable = true;
 
+  networking.nameservers = [ "10.24.60.1" ];
+
   programs.cuda-env.enable = true;
   programs.atop = {
     enable = true;
@@ -25,6 +27,7 @@
   hardware.opengl.driSupport32Bit = true;
   hardware.nvidia.modesetting.enable = true;
   services.xserver.displayManager.gdm.nvidiaWayland = true;
+  hardware.video.hidpi.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
