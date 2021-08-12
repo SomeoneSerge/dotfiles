@@ -79,14 +79,7 @@ in {
   programs.light.enable = true;
 
   # GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.displayManager.gdm.autoSuspend = false;
-  services.xserver.desktopManager.gnome.enable = false;
-  programs.geary.enable = false;
-  programs.evolution = {
-    enable = true;
-    plugins = with pkgs; [ evolution-ews ];
-  };
+  services.xserver.displayManager.lightdm.enable = true;
   services.davmail = {
     # enable = true;
     url = "https://mail.aalto.fi/owa/";
