@@ -80,7 +80,6 @@ in {
     syncplay
     gimp
     cinnamon.nemo
-    alacritty
     gopass
     vpn-slice
     p7zip

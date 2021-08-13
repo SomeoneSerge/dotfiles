@@ -55,7 +55,19 @@ in {
 
         services.gnome-keyring.enable = true;
         services.gnome-keyring.components = [ "ssh" "secrets" "pkcs11" ];
-        programs.alacritty = { enable = true; };
+        programs.alacritty = {
+          enable = true;
+          settings = {
+            key_bindings = [
+              {
+                key = "Return";
+                mods = "Control|Shift";
+                action = "SpawnNewInstance";
+              }
+            ];
+            dynamic_title = true;
+          };
+        };
         programs.i3status-rust = {
           enable = true;
           bars = {
