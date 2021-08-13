@@ -101,12 +101,16 @@ in {
 
           };
         };
-        xsession.windowManager.i3 = {
+        xsession.windowManager.i3 = let
+          i3Final = hc.xsession.windowManager.i3;
+          i3Cfg = i3Final.config;
+        in {
           enable = true;
           package = pkgs.i3-gaps;
-          config = rec {
-            modifier = "Mod4";
-            keybindings = mkOptionDefault {
+          config = {
+            modifier = mkDefault "Mod4";
+            keybindings = mkOptionDefault (let modifier = i3Cfg.modifier;
+            in {
               "${modifier}+h" = "focus left";
               "${modifier}+j" = "focus down";
               "${modifier}+k" = "focus up";
@@ -116,7 +120,7 @@ in {
               "${modifier}+Shift+k" = "move up";
               "${modifier}+Shift+l" = "move right";
               "${modifier}+x" = "exec i3lock-fancy";
-            };
+            });
             modes = mkOptionDefault {
               resize = {
                 "h" = "resize shrink width 10 px or 10 ppt";
@@ -136,7 +140,7 @@ in {
             bars = [{
               mode = "dock";
               position = "bottom";
-              fonts = fonts;
+              fonts = i3Cfg.fonts;
               statusCommand =
                 "i3status-rs .config/i3status-rust/config-bottom.toml";
             }];
