@@ -21,6 +21,13 @@ in {
           Stepsize for brightnessctl in per cent
         '';
       };
+      batteryIndicator = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Enable battery indicator in i3status/etc
+        '';
+      };
     };
   };
   config = mkIf cfg.enable {
@@ -53,7 +60,11 @@ in {
           enable = true;
           bars = {
             bottom = {
-              blocks = [
+              blocks = (lib.optional cfg.batteryIndicator {
+                block = "battery";
+                interval = 10;
+                format = "{percentage} {time}";
+              }) ++ [
                 {
                   block = "disk_space";
                   path = "/";
