@@ -58,13 +58,11 @@ in {
         programs.alacritty = {
           enable = true;
           settings = {
-            key_bindings = [
-              {
-                key = "Return";
-                mods = "Control|Shift";
-                action = "SpawnNewInstance";
-              }
-            ];
+            key_bindings = [{
+              key = "Return";
+              mods = "Control|Shift";
+              action = "SpawnNewInstance";
+            }];
             dynamic_title = true;
           };
         };
@@ -127,6 +125,7 @@ in {
         xsession.windowManager.i3 = let
           i3Final = hc.xsession.windowManager.i3;
           i3Cfg = i3Final.config;
+          refresh_i3status = "killall -SIGUSR1 i3status-rs";
         in {
           enable = true;
           package = pkgs.i3-gaps;
@@ -145,6 +144,14 @@ in {
             "${modifier}+Shift+k" = "move up";
             "${modifier}+Shift+l" = "move right";
             "${modifier}+x" = "exec i3lock-fancy";
+            "XF86AudioRaiseVolume" =
+              "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && ${refresh_i3status}";
+            "XF86AudioLowerVolume" =
+              "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && ${refresh_i3status}";
+            "XF86AudioMute" =
+              "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && ${refresh_i3status}";
+            "XF86AudioMicMute" =
+              "exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && ${refresh_i3status}";
           });
           config.modes = mkOptionDefault {
             resize = {
