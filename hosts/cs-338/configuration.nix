@@ -207,6 +207,7 @@
   xdg.portal.enable = true;
   services.flatpak.enable = true;
   programs.singularity.enable = true;
+  home-manager.users.ss = { services.random-background.enableXinerama = true; };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

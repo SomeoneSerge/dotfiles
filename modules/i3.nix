@@ -140,6 +140,7 @@ in {
               statusCommand =
                 "i3status-rs .config/i3status-rust/config-bottom.toml";
             }];
+            gaps.inner = mkDefault 10;
           };
           extraConfig = ''
             exec --no-startup-id ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
