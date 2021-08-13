@@ -14,6 +14,7 @@ in {
 
   some.sane.enable = true;
   some.i3.enable = true;
+  some.i3.batteryIndicator = true;
   some.mesh.enable = true;
 
   hardware.enableRedistributableFirmware = true;
