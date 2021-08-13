@@ -107,48 +107,44 @@ in {
         in {
           enable = true;
           package = pkgs.i3-gaps;
-          config = {
-            modifier = mkDefault "Mod4";
-            keybindings = mkOptionDefault (let modifier = i3Cfg.modifier;
-            in {
-              "${modifier}+h" = "focus left";
-              "${modifier}+j" = "focus down";
-              "${modifier}+k" = "focus up";
-              "${modifier}+l" = "focus right";
-              "${modifier}+Shift+h" = "move left";
-              "${modifier}+Shift+j" = "move down";
-              "${modifier}+Shift+k" = "move up";
-              "${modifier}+Shift+l" = "move right";
-              "${modifier}+x" = "exec i3lock-fancy";
-            });
-            modes = mkOptionDefault {
-              resize = {
-                "h" = "resize shrink width 10 px or 10 ppt";
-                "j" = "resize grow height 10 px or 10 ppt";
-                "k" = "resize shrink height 10 px or 10 ppt";
-                "l" = "resize grow width 10 px or 10 ppt";
-                "Escape" = "mode default";
-                "Return" = "mode default";
-              };
-            };
-            fonts = {
-              names = mkDefault [ "Hasklig" "FontAwesome5Free" ];
-              size = cfg.fontsize;
-            };
-            workspaceAutoBackAndForth = true;
-            terminal = "alacritty";
-            bars = [{
-              mode = "dock";
-              position = "bottom";
-              fonts = i3Cfg.fonts;
-              statusCommand =
-                "i3status-rs .config/i3status-rust/config-bottom.toml";
-            }];
-            gaps.inner = mkDefault 10;
-          };
           extraConfig = ''
             exec --no-startup-id ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
           '';
+          config.modifier = mkDefault "Mod4";
+          config.keybindings = mkOptionDefault (let modifier = i3Cfg.modifier;
+          in {
+            "${modifier}+h" = "focus left";
+            "${modifier}+j" = "focus down";
+            "${modifier}+k" = "focus up";
+            "${modifier}+l" = "focus right";
+            "${modifier}+Shift+h" = "move left";
+            "${modifier}+Shift+j" = "move down";
+            "${modifier}+Shift+k" = "move up";
+            "${modifier}+Shift+l" = "move right";
+            "${modifier}+x" = "exec i3lock-fancy";
+          });
+          config.modes = mkOptionDefault {
+            resize = {
+              "h" = "resize shrink width 10 px or 10 ppt";
+              "j" = "resize grow height 10 px or 10 ppt";
+              "k" = "resize shrink height 10 px or 10 ppt";
+              "l" = "resize grow width 10 px or 10 ppt";
+              "Escape" = "mode default";
+              "Return" = "mode default";
+            };
+          };
+          config.fonts.names = mkDefault [ "Hasklig" "FontAwesome5Free" ];
+          config.fonts.size = mkDefault cfg.fontsize;
+          config.workspaceAutoBackAndForth = mkDefault true;
+          config.terminal = mkDefault "alacritty";
+          config.bars = mkDefault [{
+            mode = "dock";
+            position = "bottom";
+            fonts = i3Cfg.fonts;
+            statusCommand =
+              "i3status-rs .config/i3status-rust/config-bottom.toml";
+          }];
+          config.gaps.inner = mkDefault 10;
         };
       });
   };
