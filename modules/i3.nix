@@ -71,6 +71,7 @@ in {
             dynamic_title = true;
           };
         };
+        services.flameshot.enable = true;
         programs.i3status-rust = {
           enable = true;
           bars = {
@@ -157,6 +158,9 @@ in {
               "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && ${refresh_i3status}";
             "XF86AudioMicMute" =
               "exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && ${refresh_i3status}";
+            "Print" = "exec flameshot full -p $HOME/Pictures/";
+            "Control+Print" = "exec flameshot full -c -p $HOME/Pictures/";
+            "Shift+Print" = "exec flameshot gui";
           });
           config.modes = mkOptionDefault {
             resize = {
