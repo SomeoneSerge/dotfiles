@@ -48,6 +48,7 @@
       clang-tools
       cmake-language-server
       cpplint
+      ccls
       haskell-language-server
       rust-analyzer
       pyright
@@ -58,6 +59,7 @@
       yaml-language-server
       nodePackages.typescript
       nodePackages.typescript-language-server
+      nodePackages.bash-language-server
       gopls
       sumneko-lua-language-server
       luaformatter
