@@ -69,6 +69,7 @@ in {
               action = "SpawnNewInstance";
             }];
             dynamic_title = true;
+            font.size = mkDefault 8.0;
           };
         };
         services.flameshot.enable = true;
