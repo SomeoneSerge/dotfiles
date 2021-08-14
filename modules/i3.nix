@@ -48,6 +48,11 @@ in {
     in ({ config, options, ... }:
       let hc = config; # home config
       in {
+        xsession.pointerCursor = {
+          name = "breeze_cursors";
+          package = pkgs.breeze-qt5;
+          size = 32;
+        };
         home.file.".background-image".source = someBg;
         home.file."Pictures/Backgrounds/someBg.jpg".source = someBg;
         services.random-background.enable = true;
