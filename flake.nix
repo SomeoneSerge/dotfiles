@@ -4,6 +4,7 @@
   inputs = {
     nix.url = "github:NixOS/nix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
+    neovim-nightly = { url = "github:neovim/neovim?dir=contrib"; };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,13 +25,19 @@
   };
 
   outputs = { self, nixpkgs, nix, home-manager, nixos-hardware, openconnect-sso
-    , ... }@inputs:
+    , neovim-nightly, ... }@inputs:
     let
       system = "x86_64-linux";
-      # Apparently, there are multiple nixpkgs spawned.
-      # These nixpkgs are used to build home-manager.
-      # Nixpkgs that home-manager configs get in their arguments are different
-      overlays = (import ./overlays { inherit system nixGL nix; });
+
+      # take neovim-nightly built with upstream's nixpkgs
+      # (thus with upstream's libc)
+      neovimOverlay = final: prev:
+        let system = prev.system;
+        in { neovim-nightly = neovim-nightly.packages.${system}.neovim; };
+
+      overlays = (import ./overlays { inherit system nixGL nix; })
+        ++ [ neovimOverlay ];
+
       pkgsArgs = { inherit system overlays; };
       pkgs = import nixpkgs pkgsArgs;
       pkgsUnfree = import nixpkgs (pkgsArgs // { config.allowUnfree = true; });

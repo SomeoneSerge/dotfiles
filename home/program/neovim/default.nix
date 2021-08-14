@@ -1,29 +1,10 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-let
-  pyPkgs = (ps:
-    with ps; [
-      # Currently useless, because
-      # https://github.com/NixOS/nixpkgs/issues/98166
-      pylint
-      black
-      flake8
-      isort
-      pydocstyle
-      mypy
-      yapf
-      pkgs.pylinters
-    ]);
-  cocConfigDict = import ./coc.nix {
-    inherit pkgs config;
-    pylinters = pkgs.pylinters;
-    pythonPackages = pkgs.python38Packages;
-  };
-  cocConfig =
-    (pkgs.writeText "coc-settings.json" (builtins.toJSON cocConfigDict));
-in {
+{
   programs.neovim = {
     enable = true;
+
+    package = pkgs.neovim-nightly;
 
     extraConfig = ''
       :imap jk <Esc>
@@ -44,24 +25,60 @@ in {
       noremap <Leader>s :Ag<CR>
       noremap <Leader>f :Files<CR>
 
-    '' + (builtins.readFile ./coc.vim);
+      lua << EOF
+      ${lib.strings.fileContents ./lsp.lua}
+      EOF
+    '';
 
     # Neovim plugins
     plugins = with pkgs.vimPlugins; [
+      nvim-lspconfig
+      nvim-compe
+      nvim-treesitter
       fzf-vim
       gruvbox
       tabular
-      fugitive
+      # FIXME:
+      # fugitive
       vim-nix
-      coc-nvim
-      coc-yaml
-      coc-json
-      coc-pyright
     ];
 
+    extraPackages = with pkgs; [
+      tree-sitter
+      clang-tools
+      cmake-language-server
+      cpplint
+      haskell-language-server
+      rust-analyzer
+      pyright
+      python3Packages.python-language-server
+      black
+      rnix-lsp
+      nixpkgs-fmt
+      yaml-language-server
+      nodePackages.typescript
+      nodePackages.typescript-language-server
+      gopls
+      sumneko-lua-language-server
+      luaformatter
+      (let sumneko = sumneko-lua-language-server;
+      in pkgs.writeScriptBin "sumneko_lua" ''
+        ${sumneko}/bin/lua-language-server -E ${sumneko}/extras/main.lua $@
+      '')
+    ];
+    extraPython3Packages = ps:
+      with ps; [
+        pyls-black
+        pyls-isort
+        pyls-mypy
+        pylint
+        black
+        flake8
+        isort
+        pydocstyle
+        mypy
+        yapf
+      ];
     withPython3 = true;
-    extraPython3Packages = pyPkgs;
   };
-
-  xdg.configFile."nvim/coc-settings.json".source = cocConfig;
 }
