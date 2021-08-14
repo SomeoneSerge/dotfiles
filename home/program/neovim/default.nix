@@ -61,10 +61,13 @@
       gopls
       sumneko-lua-language-server
       luaformatter
-      (let sumneko = sumneko-lua-language-server;
-      in pkgs.writeScriptBin "sumneko_lua" ''
-        ${sumneko}/bin/lua-language-server -E ${sumneko}/extras/main.lua $@
-      '')
+      (
+        let sumneko = sumneko-lua-language-server;
+        in
+        pkgs.writeScriptBin "sumneko_lua" ''
+          ${sumneko}/bin/lua-language-server -E ${sumneko}/extras/main.lua $@
+        ''
+      )
     ];
     extraPython3Packages = ps:
       with ps; [

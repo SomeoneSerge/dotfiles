@@ -24,8 +24,16 @@
     };
   };
 
-  outputs = { self, nixpkgs, nix, home-manager, nixos-hardware, openconnect-sso
-    , neovim-nightly, ... }@inputs:
+  outputs =
+    { self
+    , nixpkgs
+    , nix
+    , home-manager
+    , nixos-hardware
+    , openconnect-sso
+    , neovim-nightly
+    , ...
+    }@inputs:
     let
       system = "x86_64-linux";
 
@@ -58,7 +66,8 @@
       };
       pin-registry = { nix = { inherit registry; }; };
       someModules = import ./modules;
-    in rec {
+    in
+    rec {
       defaultPackage.${system} = pkgs.pylinters;
       packages.${system} = {
         home-laptop = (homeCfgs.laptop "nk").activationPackage;

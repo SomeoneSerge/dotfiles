@@ -24,4 +24,5 @@ let
     useModernNix
     vpnSliceReadonlyHosts
   ];
-in overlays
+in
+overlays

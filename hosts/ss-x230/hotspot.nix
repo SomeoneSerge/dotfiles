@@ -42,5 +42,5 @@
 
   networking.nat.internalInterfaces =
     lib.optional config.services.hostapd.enable
-    config.services.hostapd.interface;
+      config.services.hostapd.interface;
 }

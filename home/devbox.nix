@@ -1,7 +1,8 @@
 { config, pkgs, ... }:
 
 let mainLocale = "en_US.UTF-8";
-in {
+in
+{
   imports = [ ./common.nix ];
 
   home.sessionVariables = {

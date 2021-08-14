@@ -91,7 +91,8 @@ let
       export EXTRA_CCFLAGS="-I/usr/include"
     '';
   };
-in {
+in
+{
   options = {
     programs.cuda-env = {
       enable = mkEnableOption "Dev environments for CUDA";

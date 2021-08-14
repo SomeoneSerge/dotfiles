@@ -7,7 +7,8 @@ let
   cfg = config.some.sane;
   xOn = config.services.xserver.enable;
   mkDefAttrs = mapAttrs (key: value: mkDefault value);
-in {
+in
+{
   options = { some.sane.enable = mkEnableOption "Enable sane defaults"; };
   config = mkIf cfg.enable {
     nix = mkDefAttrs {

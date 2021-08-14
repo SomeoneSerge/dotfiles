@@ -10,7 +10,8 @@ let
     ygg = 43212;
   };
   portss = mapAttrs (key: value: toString value) ports;
-in {
+in
+{
   options = {
     some.mesh.enable = mkEnableOption
       "Connect to CJDNS and Yggdrasil thourgh the default server";

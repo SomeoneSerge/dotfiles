@@ -21,7 +21,8 @@ let
       '';
     };
   };
-in {
+in
+{
   services.nginx.virtualHosts = {
     "5.2.76.123".locations = calibreLocations;
     "someonex.net".locations = calibreLocations;

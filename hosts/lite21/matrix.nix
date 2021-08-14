@@ -5,11 +5,14 @@ let
   localAddress = "192.168.100.11";
   hostName = "matrix";
   domain = "someonex.net";
-  fqdn = let
-    join = hostName: domain:
-      hostName + lib.optionalString (domain != null) ".${domain}";
-  in join hostName domain;
-in {
+  fqdn =
+    let
+      join = hostName: domain:
+        hostName + lib.optionalString (domain != null) ".${domain}";
+    in
+    join hostName domain;
+in
+{
   services.nginx.virtualHosts = {
     "${domain}" = {
       enableACME = true;
@@ -17,20 +20,23 @@ in {
 
       locations."= /.well-known/matrix/server".extraConfig =
         let server = { "m.server" = "${fqdn}:443"; };
-        in ''
+        in
+        ''
           add_header Content-Type application/json;
           return 200 '${builtins.toJSON server}';
         '';
-      locations."= /.well-known/matrix/client".extraConfig = let
-        client = {
-          "m.homeserver" = { "base_url" = "https://${fqdn}"; };
-          "m.identity_server" = { "base_url" = "https://vector.im"; };
-        };
-      in ''
-        add_header Content-Type application/json;
-        add_header Access-Control-Allow-Origin *;
-        return 200 '${builtins.toJSON client}';
-      '';
+      locations."= /.well-known/matrix/client".extraConfig =
+        let
+          client = {
+            "m.homeserver" = { "base_url" = "https://${fqdn}"; };
+            "m.identity_server" = { "base_url" = "https://vector.im"; };
+          };
+        in
+        ''
+          add_header Content-Type application/json;
+          add_header Access-Control-Allow-Origin *;
+          return 200 '${builtins.toJSON client}';
+        '';
     };
 
     # Reverse proxy for Matrix client-server and server-server communication

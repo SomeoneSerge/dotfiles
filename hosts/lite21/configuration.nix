@@ -46,8 +46,10 @@ let
       address = "10.24.60.14";
     };
   };
-in {
-  imports = [ # Include the results of the hardware scan.
+in
+{
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./hardening.nix
     ./matrix.nix
@@ -84,9 +86,11 @@ in {
     "fc1e:8533:2b39:a16a:24d1:87a5:2c6b:7f35" = [ "ss-x230.k" ];
     "fc16:d86c:486f:dc9e:b916:f727:7122:cfe7" = [ "cs-338.k" ];
     "200:b157:d9e8:bf43:344b:13eb:10dc:8658" = [ "cs-338.ygg" ];
-  } // (lib.mapAttrs' (hostName: cfg:
-    lib.nameValuePair (cfg.wireguard.address)
-    [ "${hostName}.wg.${config.networking.domain}" ]) hosts);
+  } // (lib.mapAttrs'
+    (hostName: cfg:
+      lib.nameValuePair (cfg.wireguard.address)
+        [ "${hostName}.wg.${config.networking.domain}" ])
+    hosts);
 
   networking.wireguard.interfaces.wg24601 = {
     ips = [ "10.24.60.1/24" ];
@@ -103,11 +107,13 @@ in {
     privateKeyFile = "/etc/.secrets/wg-lite21.key";
     peers =
 
-      lib.mapAttrsToList (hostName: cfg:
-        with cfg.wireguard; {
-          inherit publicKey;
-          allowedIPs = [ "${address}/32" ];
-        }) hosts;
+      lib.mapAttrsToList
+        (hostName: cfg:
+          with cfg.wireguard; {
+            inherit publicKey;
+            allowedIPs = [ "${address}/32" ];
+          })
+        hosts;
   };
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 

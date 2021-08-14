@@ -7,8 +7,10 @@
 let
   lite21ipv4 = "5.2.76.123";
   yggdrasilPort = 43212;
-in {
-  imports = [ # Include the results of the hardware scan.
+in
+{
+  imports = [
+    # Include the results of the hardware scan.
     ./hardware-configuration.nix
   ];
 

@@ -1,7 +1,8 @@
 { config, pkgs, ... }:
 
 let mainLocale = "en_US.UTF-8";
-in {
+in
+{
   imports = [
     ./common-fileutils.nix
     ./common-gitutils.nix
@@ -22,7 +23,7 @@ in {
     # lorri
     niv
 
-    nixfmt
+    nixpkgs-fmt
     nix-index
     nix-tree
 
@@ -101,7 +102,7 @@ in {
     bashrcExtra = ''
       . ${pkgs.bash-completion}/share/bash-completion/bash_completion
            PROMPT_COMMAND="history -a; history -r"
-           '';
+    '';
     shellOptions = [
       # Default
       "histappend"
