@@ -133,6 +133,7 @@ in
 
             };
           };
+          services.dunst.enable = true;
           xsession.windowManager.i3 =
             let
               i3Final = hc.xsession.windowManager.i3;
@@ -158,7 +159,7 @@ in
                   "${modifier}+Shift+j" = "move down";
                   "${modifier}+Shift+k" = "move up";
                   "${modifier}+Shift+l" = "move right";
-                  "${modifier}+x" = "exec i3lock-fancy";
+                  "${modifier}+x" = "exec ${pkgs.xautolock}/bin/xautolock -locknow";
                   "XF86AudioRaiseVolume" =
                     "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && ${refresh_i3status}";
                   "XF86AudioLowerVolume" =
