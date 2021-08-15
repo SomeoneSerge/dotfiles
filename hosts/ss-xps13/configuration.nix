@@ -118,12 +118,6 @@ in
   # Enable the X11 windowing system.
   services.xserver.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.xautolock = rec {
-    enable = true;
-    locker = "${pkgs.i3lock-fancy}/bin/i3lock-fancy";
-    nowlocker = locker;
-    killer = "/run/current-system/systemd/bin/systemctl suspend";
-  };
 
   programs.light.enable = true;
 

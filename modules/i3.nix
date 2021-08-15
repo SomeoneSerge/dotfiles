@@ -134,6 +134,14 @@ in
             };
           };
           services.dunst.enable = true;
+          services.screen-locker = {
+            enable = true;
+            lockCmd = "${pkgs.i3lock-fancy}/bin/i3lock-fancy";
+            xautolockExtraOptions = [
+              "-killer"
+              "/run/current-system/systemd/bin/systemctl suspend"
+            ];
+          };
           xsession.windowManager.i3 =
             let
               i3Final = hc.xsession.windowManager.i3;
