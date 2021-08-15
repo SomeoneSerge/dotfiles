@@ -86,13 +86,17 @@ in
   programs.powerline-go = {
     enable = true;
     newline = false;
-    modules = [ "host" "nix-shell" "cwd" "git" ];
+    modules = [ "host" "nix-shell" "cwd" "git" "exit" ];
     # pathAliases = { "\\~/project/foo" = "prj-foo"; };
     settings = {
       cwd-max-depth = 2;
       git-mode = "simple";
       #   ignore-repos = [ "/home/me/project1" "/home/me/project2" ];
     };
+    extraUpdatePS1 = ''
+      PS1_SET_TITLE='\[\e]0;\u@\h:\w\a\]'
+      PS1="$PS1_SET_TITLE""$PS1"
+    '';
   };
 
   programs.fzf = { enable = true; };
@@ -101,7 +105,9 @@ in
     enable = true;
     bashrcExtra = ''
       . ${pkgs.bash-completion}/share/bash-completion/bash_completion
-           PROMPT_COMMAND="history -a; history -r"
+      PROMPT_COMMAND="history -a; history -r"
+      PS1_SET_TITLE='\[\e]0;\u@\h:\w\a\]'
+      PS1="$PS1_SET_TITLE""$PS1"
     '';
     shellOptions = [
       # Default
