@@ -82,6 +82,8 @@
   some.i3.enable = true;
   services.xserver.displayManager.sddm.enable = true;
 
+  services.printing.enable = true;
+
   services.haveged.enable = true;
 
   # Configure keymap in X11
