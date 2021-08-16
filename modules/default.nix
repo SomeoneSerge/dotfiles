@@ -7,5 +7,6 @@ with lib; {
       default = "ss";
       type = types.str;
     };
+    some.autosuspend = mkEnableOption "Enable various autosuspend defaults (e.g. xautlock will be called with `systemctl suspend` as a killer script)";
   };
 }

@@ -15,6 +15,7 @@ in
   ];
 
   some.sane.enable = true;
+  some.autosuspend = true;
   some.i3.enable = true;
   some.i3.batteryIndicator = true;
   some.mesh.enable = true;

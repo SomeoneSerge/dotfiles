@@ -2,7 +2,9 @@
 
 with lib;
 
-let cfg = config.some.i3;
+let
+  cfg = config.some.i3;
+  some = config.some;
 in
 {
   options = {
@@ -42,7 +44,7 @@ in
     };
     environment.systemPackages = with pkgs; [ polkit_gnome ];
     security.polkit.enable = true;
-    home-manager.users.${config.some.mainUser} =
+    home-manager.users.${some.mainUser} =
       let
         someBg =
           "${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/Tree.jpg";
@@ -137,7 +139,7 @@ in
           services.screen-locker = {
             enable = true;
             lockCmd = "${pkgs.i3lock-fancy}/bin/i3lock-fancy";
-            xautolockExtraOptions = [
+            xautolockExtraOptions = optionals some.autosuspend [
               "-killer"
               "'/run/current-system/systemd/bin/systemctl suspend'"
             ];
