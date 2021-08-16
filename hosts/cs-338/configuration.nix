@@ -2,7 +2,9 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
+
+with builtins;
 
 {
   imports = [
@@ -81,6 +83,40 @@
 
   some.i3.enable = true;
   services.xserver.displayManager.sddm.enable = true;
+
+  home-manager.users.ss.programs.autorandr = {
+    enable = true;
+    profiles = {
+      default = {
+        fingerprint = {
+          DP-1 = "00ffffffffffff0010ac67d0533151301e1c0103803c2278ee4455a9554d9d260f5054a54b00b300d100714fa9408180778001010101565e00a0a0a029503020350055502100001a000000ff00474838354438374e305131530a000000fc0044454c4c205532373135480a20000000fd0038561e711e000a20202020202001c6020322f14f1005040302071601141f1213202122230907078301000065030c001000023a801871382d40582c250055502100001e011d8018711c1620582c250055502100009e011d007251d01e206e28550055502100001e8c0ad08a20e02d10103e9600555021000018483f00ca808030401a50130055502100001e00000094";
+          DP-2 = "00ffffffffffff0009d1258045540000051f0104b54628783e87d1a8554d9f250e5054a56b80818081c08100a9c0b300d1c0010101014dd000a0f0703e8030203500c48f2100001a000000ff0035324d30333833373031390a20000000fd00324c1e8c3c000a202020202020000000fc0042656e5120504433323030550a010002031ef15161605f5e5d101f222120051404131203012309070783010000a36600a0f0701f8030203500c48f2100001a565e00a0a0a029502f203500c48f2100001a0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000050";
+        };
+        config =
+          let
+            benqRes = [ 3840 2160 ];
+            dellRes = [ 2048 1152 ];
+            dellPos = [ 0 0 ];
+            add = lib.zipListsWith (fst: snd: fst + snd);
+            rightOf = pos: res: [ (elemAt pos 0 + elemAt res 0) (elemAt pos 1) ];
+            vecStr = lib.concatMapStringsSep "x" (x: toString x);
+          in
+          {
+            DP-2 = {
+              enable = true;
+              primary = true;
+              mode = vecStr benqRes;
+              position = vecStr (rightOf dellPos dellRes);
+            };
+            DP-1 = {
+              enable = true;
+              mode = vecStr dellRes;
+              position = vecStr dellPos;
+            };
+          };
+      };
+    };
+  };
 
   services.printing.enable = true;
 
