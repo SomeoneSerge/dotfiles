@@ -10,6 +10,13 @@ in
   options = {
     some.i3 = {
       enable = mkEnableOption "Someone's i3 setup";
+      package = mkOption {
+        type = types.package;
+        default = pkgs.i3-gaps;
+        description = ''
+          i3 package to use
+          '';
+      };
       fontsize = mkOption {
         type = types.float;
         default = 10.0;
@@ -39,7 +46,7 @@ in
     services.xserver.displayManager.defaultSession = "none+i3";
     services.xserver.windowManager.i3 = {
       enable = mkDefault true;
-      package = mkDefault pkgs.i3-gaps;
+      package = mkDefault cfg.package;
       extraPackages = with pkgs; [ dmenu i3status-rust i3lock-fancy ];
     };
     environment.systemPackages = with pkgs; [ polkit_gnome ];
@@ -152,7 +159,7 @@ in
             in
             {
               enable = true;
-              package = pkgs.i3-gaps;
+              package = cfg.package;
               extraConfig = ''
                 exec --no-startup-id ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
               '';

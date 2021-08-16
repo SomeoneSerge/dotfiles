@@ -6,7 +6,8 @@
 
 with builtins;
 
-{
+let some = config.some;
+in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -86,6 +87,11 @@ with builtins;
 
   home-manager.users.ss.programs.autorandr = {
     enable = true;
+    hooks.postswitch = {
+      "notify-i3" = "${some.i3.package}/bin/i3-msg restart";
+      # FIXME: optionalAttrs
+      "update-background" = "/run/current-system/systemd/bin/systemctl --user restart random-background";
+    };
     profiles = {
       default = {
         fingerprint = {
