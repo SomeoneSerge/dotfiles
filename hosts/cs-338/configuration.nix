@@ -115,7 +115,7 @@
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBpLSTazXGDwpor/rUv3jKzvgQw3xaAc9ujseMr3KzA ss@ss-x230"
       ];
       hashedPassword =
-        "$6$akk0q5A5Df$tPay1nhDoPDGjy0Y68jd0cgmGq.gv6hPSV/28Bnzwqh4sD8pWCBgTI2H9VoFvtPbYffzBLnYOz8nGrUuHc5V4/";
+        "$6$QCzeutqVN3tQTT$1IUxUOhy.AuoT3qQO3fMXkGmVFoHRHn7rlso00.XO6RbY.ByBW8Xzzp92pUEzdWIQkckh3LG1yQU1v6jcwGip.";
     };
     ss = {
       isNormalUser = true;
