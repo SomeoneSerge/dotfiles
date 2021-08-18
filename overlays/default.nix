@@ -23,6 +23,7 @@ let
     addPythonLinters
     useModernNix
     vpnSliceReadonlyHosts
+    (import ./nix-visualize.nix)
   ];
 in
 overlays

@@ -222,6 +222,7 @@ in {
       ];
     })
     # nixGLNvidia
+    nix-visualize
   ];
 
   # Enable the OpenSSH daemon.
