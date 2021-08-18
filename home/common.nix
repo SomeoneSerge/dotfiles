@@ -39,6 +39,7 @@ in
     meson
     leiningen
     nodejs
+    jq
     ccls
 
     wget
