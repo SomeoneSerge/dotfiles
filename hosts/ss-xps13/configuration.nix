@@ -63,7 +63,6 @@ in
     pavucontrol
     wl-clipboard
     xournalpp
-    brave
     mpv
     vlc
     obs-studio
