@@ -228,6 +228,7 @@ in
     )
     # nixGLNvidia
     nix-visualize
+    xsel
   ];
 
   services.jhub = {
