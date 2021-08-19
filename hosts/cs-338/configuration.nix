@@ -4,10 +4,13 @@
 
 { lib, config, pkgs, ... }:
 
+with lib;
 with builtins;
 
-let some = config.some;
-in {
+let
+  some = config.some;
+in
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -204,26 +207,37 @@ in {
     vpn-slice
     p7zip
     blender
-    (conda.override {
-      condaDeps = [
-        stdenv.cc
-        xorg.libSM
-        xorg.libICE
-        xorg.libX11
-        xorg.libXau
-        xorg.libXi
-        xorg.libXrender
-        libselinux
-        libGL
-        glib
-        # maybe add this? doesn't appear to be required
-        # config.boot.kernelPackages.nvidia_x11
-        # cudatoolkit_11_2
-      ];
-    })
+    (
+      conda.override {
+        condaDeps = [
+          stdenv.cc
+          xorg.libSM
+          xorg.libICE
+          xorg.libX11
+          xorg.libXau
+          xorg.libXi
+          xorg.libXrender
+          libselinux
+          libGL
+          glib
+          # maybe add this? doesn't appear to be required
+          # config.boot.kernelPackages.nvidia_x11
+          # cudatoolkit_11_2
+        ];
+      }
+    )
     # nixGLNvidia
     nix-visualize
   ];
+
+  services.jhub = {
+    enable = true;
+    host = "0.0.0.0";
+    authentication = "jupyterhub.auth.DummyAuthenticator";
+    extraConfig = ''
+      c.DummyAuthenticator.password = "allyouneedisnix"
+    '';
+  };
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
@@ -233,12 +247,14 @@ in {
   networking.wg-quick.interfaces.wg24601 = {
     address = [ "10.24.60.14" ];
     privateKeyFile = "/var/lib/wireguard/wg-${config.networking.hostName}";
-    peers = [{
-      publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
-      endpoint = "5.2.76.123:51820";
-      allowedIPs = [ "10.24.60.0/24" ];
-      persistentKeepalive = 5;
-    }];
+    peers = [
+      {
+        publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
+        endpoint = "5.2.76.123:51820";
+        allowedIPs = [ "10.24.60.0/24" ];
+        persistentKeepalive = 5;
+      }
+    ];
   };
   systemd.services.ping-wireguard = {
     enable = true;
@@ -264,4 +280,3 @@ in {
   system.stateVersion = "21.05"; # Did you read the comment?
 
 }
-
