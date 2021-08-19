@@ -141,13 +141,6 @@ let
 
           argv = mkOption {
             type = types.listOf types.str;
-            example = [
-              "{customEnv.interpreter}"
-              "-m"
-              "ipykernel_launcher"
-              "-f"
-              "{connection_file}"
-            ];
             description = ''
               Command and arguments to start the kernel.
             '';
@@ -161,22 +154,28 @@ let
             '';
           };
 
-          logo32 = mkOption {
-            type = types.nullOr types.path;
-            default = null;
-            example = "{env.sitePackages}/ipykernel/resources/logo-32x32.png";
-            description = ''
-              Path to 32x32 logo png.
-            '';
-          };
-          logo64 = mkOption {
-            type = types.nullOr types.path;
-            default = null;
-            example = "{env.sitePackages}/ipykernel/resources/logo-64x64.png";
-            description = ''
-              Path to 64x64 logo png.
-            '';
-          };
+          logo32 =
+            let
+              py3 = pkgs.python3.withPackages (ps: [ ps.ipykernel ]);
+            in
+            mkOption {
+              type = types.nullOr types.path;
+              default = "${py3}/${py3.sitePackages}/ipykernel/resources/logo-32x32.png";
+              description = ''
+                Path to 32x32 logo png.
+              '';
+            };
+          logo64 =
+            let
+              py3 = pkgs.python3.withPackages (ps: [ ps.ipykernel ]);
+            in
+            mkOption {
+              type = types.nullOr types.path;
+              default = "${py3}/${py3.sitePackages}/ipykernel/resources/logo-64x64.png";
+              description = ''
+                Path to 64x64 logo png.
+              '';
+            };
         };
       }
     );
@@ -261,38 +260,21 @@ in
     };
 
     kernels = mkOption {
-      type = types.nullOr (
+      type =
         types.attrsOf (
           types.submodule (
             kernelOptions { inherit lib; }
           )
         )
-      );
+      ;
 
-      default = null;
-      example = literalExample ''
-        {
-          python3 = let
-            env = (pkgs.python3.withPackages (pythonPackages: with pythonPackages; [
-                    ipykernel
-                    pandas
-                    scikit-learn
-                  ]));
-          in {
-            displayName = "Python 3 for machine learning";
-            argv = [
-              "''${env.interpreter}"
-              "-m"
-              "ipykernel_launcher"
-              "-f"
-              "{connection_file}"
-            ];
-            language = "python";
-            logo32 = "''${env}/''${env.sitePackages}/ipykernel/resources/logo-32x32.png";
-            logo64 = "''${env}/''${env.sitePackages}/ipykernel/resources/logo-64x64.png";
-          };
-        }
-      '';
+      default = {
+        python3 = {
+          displayName = "Petty python";
+          argv = [ cfg.jupyterhubEnv.interpreter "-m" "ipykernel_launcher" "-f" "{connection_file}" ];
+          language = "python";
+        };
+      };
       description = ''
         Declarative kernel config
 
