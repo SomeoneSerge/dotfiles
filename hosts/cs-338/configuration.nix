@@ -227,7 +227,6 @@ in
       }
     )
     # nixGLNvidia
-    nix-visualize
     xsel
   ];
 

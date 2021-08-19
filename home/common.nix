@@ -49,6 +49,11 @@ in
     dnsutils
     file
     mediainfo
+
+    nixfmt
+    nixpkgs-fmt
+    nixpkgs-review
+    nix-visualize
   ];
 
   programs.direnv = {
