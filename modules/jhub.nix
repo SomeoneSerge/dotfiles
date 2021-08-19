@@ -247,6 +247,18 @@ in
           jupyterlab
           jupyterhub
           (cfg.spawnerPackage ps)
+
+          jupyterlab-pygments
+          jupyterlab-widgets
+
+          numpy
+          matplotlib
+          networkx
+          pygraphviz
+          joblib
+          scikit-learn
+          cufflinks
+          plotly
         ]
       );
       description = ''
