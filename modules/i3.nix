@@ -15,7 +15,7 @@ in
         default = pkgs.i3-gaps;
         description = ''
           i3 package to use
-          '';
+        '';
       };
       fontsize = mkOption {
         type = types.float;
