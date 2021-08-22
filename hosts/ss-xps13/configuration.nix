@@ -131,6 +131,10 @@ in
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    package = pkgs.bluezFull;
+  };
 
   services.xserver.libinput.enable = true;
   services.xserver.libinput.touchpad.accelSpeed = "0.5";
