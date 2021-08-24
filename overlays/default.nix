@@ -24,6 +24,7 @@ let
     useModernNix
     vpnSliceReadonlyHosts
     (import ./nix-visualize.nix)
+    (import ./conda/overlay.nix)
   ];
 in
 overlays

@@ -14,73 +14,17 @@ let
         cfg.jupyterhubEnv
 
       ]
-      ++ (condaPatchelfLibs pkgs')
-      ++ [ condaInstall ]
+      ++ [ pkgs'.conda.condaInstaller config.boot.kernelPackages.nvidia_x11 ]
     );
     runScript = ''
       /bin/jupyterhub --config ${jupyterhubConfig}
     '';
 
-    profile = with pkgs; ''
-      export PATH=${installationPath}/bin:$PATH
-      # Paths for gcc if compiling some C sources with pip
-      export NIX_CFLAGS_COMPILE="-I${installationPath}/include"
-      export NIX_CFLAGS_LINK="-L${installationPath}lib"
-      # Some other required environment variables
-      export FONTCONFIG_FILE=/etc/fonts/fonts.conf
-      export QTCOMPOSE=${xorg.libX11}/share/X11/locale
-      export LIBARCHIVE=${libarchive.lib}/lib/libarchive.so
-      # Allows `conda activate` to work properly
-      [[ -f "${condaSh}" ]] || conda-install || echo "Failed to conda-install"
-      [[ -f "${condaSh}" ]] && source "${condaSh}" || echo "Failed to source ${condaSh}"
-    '';
-  };
+    inherit (pkgs.conda) profile;
 
-  condaPatchelfLibs = pkgs: builtins.map (p: p.lib or p) (
-    [
-      pkgs.alsaLib
-      pkgs.cups
-      pkgs.gcc-unwrapped
-      pkgs.libGL
-    ] ++ (
-      with pkgs.xorg; [
-        libSM
-        libICE
-        libX11
-        libXau
-        libXdamage
-        libXi
-        libXrender
-        libXrandr
-        libXcomposite
-        libXcursor
-        libXtst
-        libXScrnSaver
-      ]
-    ) ++ [ config.boot.kernelPackages.nvidia_x11 ] # FIXME: should link /run/opengl-driver/lib instead
-  );
+  };
 
   installationPath = "${jupyterhubWorkDir}/conda";
-  condaSh = "${installationPath}/etc/profile.d/conda.sh";
-
-  condaInstallerSh = fetchurl {
-    url = "https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh";
-    sha256 = "sha256:1m6x4s6n3xyal4s4v2i3kb0gcxvhf4a4q9qisgcv91a18cn5c5sh";
-  };
-
-  condaInstall = pkgs.runCommand "conda-install" { buildInputs = [ pkgs.makeWrapper ]; }
-    ''
-      mkdir -p $out/bin
-      cp ${condaInstallerSh} $out/bin/miniconda-installer.sh
-      chmod +x $out/bin/miniconda-installer.sh
-
-      makeWrapper                            \
-        $out/bin/miniconda-installer.sh      \
-        $out/bin/conda-install               \
-        --add-flags "-p ${installationPath}" \
-        --add-flags "-b"
-    '';
-
 
   jupyterhubExecStart = "${jupyterhubFhs}/bin/${jupyterhubFhs.name}";
 
