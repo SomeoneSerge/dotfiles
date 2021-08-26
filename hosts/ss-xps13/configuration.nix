@@ -21,6 +21,9 @@ in
   some.mesh.enable = true;
 
   hardware.enableRedistributableFirmware = true;
+  services.throttled = {
+    enable = true;
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
