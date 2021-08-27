@@ -155,6 +155,7 @@ in
               "-killer"
               "'/run/current-system/systemd/bin/systemctl suspend'"
             ];
+            inactiveInterval = 60;
           };
           xsession.windowManager.i3 =
             let
