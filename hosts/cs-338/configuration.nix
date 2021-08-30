@@ -88,6 +88,24 @@ in
   some.i3.enable = true;
   services.xserver.displayManager.sddm.enable = true;
 
+  home-manager.users.ss.programs.mpv = {
+    enable = true;
+    defaultProfiles = [ "gpu-hq" ];
+    config = {
+      profile = "gpu-hq";
+      force-window = true;
+      ytdl-format = "bestvideo+bestaudio";
+      cache-default = 4000000;
+    };
+  };
+  home-manager.users.ss.xdg = {
+    mimeApps.defaultApplications = {
+      "image/vnd.djvu" = "zathura.desktop";
+    };
+  };
+  home-manager.users.ss.programs.zathura = {
+    enable = true;
+  };
   home-manager.users.ss.programs.autorandr = {
     enable = true;
     hooks.postswitch = {
@@ -110,19 +128,19 @@ in
             rightOf = pos: res: [ (elemAt pos 0 + elemAt res 0) (elemAt pos 1) ];
             vecStr = lib.concatMapStringsSep "x" (x: toString x);
           in
-          {
-            DP-2 = {
-              enable = true;
-              primary = true;
-              mode = vecStr benqRes;
-              position = vecStr (rightOf dellPos dellRes);
+            {
+              DP-2 = {
+                enable = true;
+                primary = true;
+                mode = vecStr benqRes;
+                position = vecStr (rightOf dellPos dellRes);
+              };
+              DP-1 = {
+                enable = true;
+                mode = vecStr dellRes;
+                position = vecStr dellPos;
+              };
             };
-            DP-1 = {
-              enable = true;
-              mode = vecStr dellRes;
-              position = vecStr dellPos;
-            };
-          };
       };
     };
   };
@@ -228,6 +246,9 @@ in
     )
     # nixGLNvidia
     xsel
+    aria2
+    nnn
+    mc
   ];
 
   services.jhub = {
