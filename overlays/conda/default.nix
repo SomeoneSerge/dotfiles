@@ -39,8 +39,8 @@
     )
   )
   # Any extra nixpkgs you'd like available in the FHS env for Conda to use
-, extraPkgs ? (pkgs: [])
-, extraPkgsMulti ? (pkgs: [])
+, extraPkgs ? (pkgs: [ ])
+, extraPkgsMulti ? (pkgs: [ ])
 , # Whether to run installer automatically when one enters the conda-shell
   autoInstall ? true
 , # Whether to use miniforge, mambaforge, or anaconda
