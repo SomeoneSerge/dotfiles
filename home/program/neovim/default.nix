@@ -44,6 +44,7 @@
     ];
 
     extraPackages = with pkgs; [
+      texlab
       tree-sitter
       clang-tools
       cmake-language-server
