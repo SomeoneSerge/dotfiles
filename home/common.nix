@@ -54,6 +54,8 @@ in
     nixpkgs-fmt
     nixpkgs-review
     nix-visualize
+
+    tree
   ];
 
   programs.direnv = {
