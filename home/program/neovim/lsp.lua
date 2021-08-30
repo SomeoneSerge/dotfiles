@@ -52,7 +52,7 @@ end
 
 local servers = {
     "clangd", "cmake", "ccls", "pyright", "rust_analyzer", "hls", "jsonls",
-    "yamlls", "tsserver", "gopls", "rnix", "terraformls", "texlab",
+    "yamlls", "tsserver", "gopls", "rnix", "terraformls",
     "clojure_lsp"
 }
 
@@ -60,6 +60,36 @@ for _, lsp in ipairs(servers) do nvim_lsp[lsp].setup {on_attach = on_attach} end
 
 nvim_lsp["sumneko_lua"].setup {cmd = {"sumneko_lua"}, on_attach = on_attach}
 nvim_lsp["pylsp"].setup {cmd = {"pyls"}, on_attach = on_attach}
+nvim_lsp["texlab"].setup {
+    cmd = { "texlab" },
+    on_attach = on_attach,
+    filetypes = { "tex", "bib" },
+    settings = {
+      texlab = {
+        bibtexFormatter = "texlab",
+        build = {
+          args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
+          executable = "latexmk",
+          forwardSearchAfter = true,
+          onSave = true
+        },
+        chktex = {
+          onEdit = true,
+          onOpenAndSave = true
+        },
+        diagnosticsDelay = 300,
+        formatterLineLength = 80,
+        forwardSearch = {
+            executable = "zathura",
+            args = { "--synctex-forward", "%l:1:%f", "%p" }
+        },
+        latexFormatter = "latexindent",
+        latexindent = {
+          modifyLineBreaks = false
+        }
+      }
+    }
+}
 
 -- compe
 vim.o.completeopt = "menuone,noselect"

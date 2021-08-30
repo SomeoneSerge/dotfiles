@@ -108,6 +108,12 @@ in
   };
   home-manager.users.ss.programs.zathura = {
     enable = true;
+    extraConfig = ''
+      set synctex true
+    '';
+    options = {
+      synctex-editor-command = "gvim --remote-silent +%{input}:%{line}";
+    };
   };
   home-manager.users.ss.programs.autorandr = {
     enable = true;
