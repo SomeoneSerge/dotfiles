@@ -112,7 +112,7 @@ in
       set synctex true
     '';
     options = {
-      synctex-editor-command = "gvim --remote-silent +%{input}:%{line}";
+      synctex-editor-command = "nvr --remote-silent +%{input}:%{line}";
     };
   };
   home-manager.users.ss.programs.autorandr = {
@@ -258,6 +258,7 @@ in
     aria2
     nnn
     mc
+    neovim-remote
   ];
 
   services.jhub = {
