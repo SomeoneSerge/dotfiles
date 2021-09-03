@@ -43,7 +43,12 @@ in
   config = mkIf cfg.enable {
     environment.pathsToLink = [ "/libexec" ];
 
-    services.xserver.displayManager.defaultSession = "none+i3";
+    services.xserver.desktopManager.xfce = {
+      enable = true;
+      noDesktop = true;
+      enableXfwm = false;
+    };
+    services.xserver.displayManager.defaultSession = "xfce+i3";
     services.xserver.windowManager.i3 = {
       enable = mkDefault true;
       package = mkDefault cfg.package;
