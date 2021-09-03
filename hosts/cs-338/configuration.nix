@@ -259,6 +259,7 @@ in
     nnn
     mc
     neovim-remote
+    torbrowser
   ];
 
   services.jhub = {
