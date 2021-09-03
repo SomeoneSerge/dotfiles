@@ -33,7 +33,6 @@ in
   hardware.enableAllFirmware = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.nvidia.modesetting.enable = true;
-  services.xserver.displayManager.gdm.nvidiaWayland = true;
   hardware.video.hidpi.enable = true;
 
   # Use the systemd-boot EFI boot loader.
@@ -89,7 +88,28 @@ in
   };
 
   some.i3.enable = true;
-  services.xserver.displayManager.sddm.enable = true;
+  services.xserver.displayManager.lightdm.enable = true;
+
+  services.xserver.exportConfiguration = true;
+  services.xserver.xrandrHeads = [
+    {
+      # dell
+      output = "DP-1";
+      monitorConfig = ''
+        DisplaySize 596.74 335.66
+        Option "PreferredMode" "2048x1152_60.0"
+      '';
+    }
+    {
+      # benq
+      output = "DP-2";
+      primary = true;
+      monitorConfig = ''
+        DisplaySize 708.40 398.50
+        Option "PreferredMode" "3840x2160_60.0"
+      '';
+    }
+  ];
 
   home-manager.users.ss.programs.mpv = {
     enable = true;
