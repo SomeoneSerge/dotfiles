@@ -94,25 +94,28 @@ in
     vpn-slice
     p7zip
     blender
-    (conda.override {
-      condaDeps = [
-        stdenv.cc
-        xorg.libSM
-        xorg.libICE
-        xorg.libX11
-        xorg.libXau
-        xorg.libXi
-        xorg.libXrender
-        libselinux
-        libGL
-        glib
-      ];
-    })
+    (
+      conda.override {
+        condaDeps = [
+          stdenv.cc
+          xorg.libSM
+          xorg.libICE
+          xorg.libX11
+          xorg.libXau
+          xorg.libXi
+          xorg.libXrender
+          libselinux
+          libGL
+          glib
+        ];
+      }
+    )
     (python3.withPackages (ps: with ps; [ numpy scipy matplotlib opencv4 ]))
     firefox-wayland
     torsocks
     tor-browser-bundle-bin
     chromium
+    aria2
   ];
 
   programs.chromium = {
@@ -201,12 +204,14 @@ in
     address = [ "10.24.60.11" ];
     privateKeyFile = "/var/lib/wireguard/wg-${config.networking.hostName}";
     dns = [ "10.24.60.1" ];
-    peers = [{
-      publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
-      endpoint = "5.2.76.123:51820";
-      allowedIPs = [ "10.24.60.0/24" ];
-      persistentKeepalive = 24;
-    }];
+    peers = [
+      {
+        publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
+        endpoint = "5.2.76.123:51820";
+        allowedIPs = [ "10.24.60.0/24" ];
+        persistentKeepalive = 24;
+      }
+    ];
   };
 
   # This value determines the NixOS release from which the default
@@ -217,4 +222,3 @@ in
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "20.09"; # Did you read the comment?
 }
-
