@@ -66,7 +66,11 @@ in
     pavucontrol
     wl-clipboard
     xournalpp
-    mpv
+    (
+      mpv-with-scripts.override {
+        scripts = [ pkgs.mpvScripts.mpris ];
+      }
+    )
     vlc
     obs-studio
     git
