@@ -98,6 +98,7 @@ in
       monitorConfig = ''
         DisplaySize 596.74 335.66
         Option "PreferredMode" "2048x1152_60.0"
+        Option "Rotate" "left"
       '';
     }
     {
@@ -157,19 +158,19 @@ in
             rightOf = pos: res: [ (elemAt pos 0 + elemAt res 0) (elemAt pos 1) ];
             vecStr = lib.concatMapStringsSep "x" (x: toString x);
           in
-          {
-            DP-2 = {
-              enable = true;
-              primary = true;
-              mode = vecStr benqRes;
-              position = vecStr (rightOf dellPos dellRes);
+            {
+              DP-2 = {
+                enable = true;
+                primary = true;
+                mode = vecStr benqRes;
+                position = vecStr (rightOf dellPos dellRes);
+              };
+              DP-1 = {
+                enable = true;
+                mode = vecStr dellRes;
+                position = vecStr dellPos;
+              };
             };
-            DP-1 = {
-              enable = true;
-              mode = vecStr dellRes;
-              position = vecStr dellPos;
-            };
-          };
       };
     };
   };
