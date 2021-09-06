@@ -214,6 +214,16 @@ in
     ];
   };
 
+  users.users.munge = {
+    home = "/etc/munge";
+    createHome = true;
+  };
+  services.slurm = {
+    enableStools = true;
+    clusterName = "cs-338";
+    controlMachine = "10.24.60.14";
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
