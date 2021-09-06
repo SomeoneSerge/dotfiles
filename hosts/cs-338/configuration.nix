@@ -321,8 +321,69 @@ in
 
   xdg.portal.enable = true;
   services.flatpak.enable = true;
-  programs.singularity.enable = true;
   home-manager.users.ss = { services.random-background.enableXinerama = true; };
+
+  programs.singularity.enable = true;
+  services.munge = {
+    enable = true;
+  };
+  services.slurm = let
+    hostName = config.networking.hostName;
+  in
+    {
+      server.enable = true;
+      client.enable = true;
+      dbdserver.enable = true;
+      dbdserver.extraConfig = ''
+        StorageLoc=slurm_acct_db
+      '';
+      clusterName = hostName;
+      controlMachine = hostName;
+      dbdserver.dbdHost = hostName;
+      package = pkgs.slurm-full;
+      nodeName = [
+        ''
+          ${hostName} CPUs=24 State=UNKNOWN
+        ''
+      ];
+      partitionName = [
+        "B310 Nodes=${hostName} Default=YES MaxTime=INFINITE State=UP"
+      ];
+    };
+  services.mysql = let
+    slurmdbdEnabled = config.services.slurm.dbdserver.enable;
+  in
+    {
+      package = pkgs.mariadb;
+      bind = "127.0.0.1";
+      ensureDatabases = lib.optional slurmdbdEnabled "slurm_acct_db";
+      ensureUsers = lib.optional slurmdbdEnabled {
+        name = config.services.slurm.dbdserver.storageUser;
+        ensurePermissions = {
+          "slurm_acct_db.*" = "ALL PRIVILEGES";
+        };
+      };
+    };
+  systemd.services.generateMungeKey = let
+    keyFile = config.services.munge.password;
+  in
+    {
+      enable = true;
+      before = [ "munged.service" ];
+      requiredBy = [ "munged.service" ];
+      partOf = [ "munged.service" ];
+      script = ''
+        [[ -f "${keyFile}" ]] || ${pkgs.munge}/bin/mungekey --keyfile="${keyFile}" --verbose
+      '';
+      serviceConfig = {
+        Type = "oneshot";
+        User = "munge";
+      };
+    };
+  users.users.munge = {
+    createHome = true;
+    home = "/etc/munge";
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
