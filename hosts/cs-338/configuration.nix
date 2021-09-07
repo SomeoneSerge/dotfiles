@@ -158,19 +158,19 @@ in
             rightOf = pos: res: [ (elemAt pos 0 + elemAt res 0) (elemAt pos 1) ];
             vecStr = lib.concatMapStringsSep "x" (x: toString x);
           in
-            {
-              DP-2 = {
-                enable = true;
-                primary = true;
-                mode = vecStr benqRes;
-                position = vecStr (rightOf dellPos dellRes);
-              };
-              DP-1 = {
-                enable = true;
-                mode = vecStr dellRes;
-                position = vecStr dellPos;
-              };
+          {
+            DP-2 = {
+              enable = true;
+              primary = true;
+              mode = vecStr benqRes;
+              position = vecStr (rightOf dellPos dellRes);
             };
+            DP-1 = {
+              enable = true;
+              mode = vecStr dellRes;
+              position = vecStr dellPos;
+            };
+          };
       };
     };
   };
@@ -327,9 +327,10 @@ in
   services.munge = {
     enable = true;
   };
-  services.slurm = let
-    hostName = config.networking.hostName;
-  in
+  services.slurm =
+    let
+      hostName = config.networking.hostName;
+    in
     {
       server.enable = true;
       client.enable = true;
@@ -350,9 +351,10 @@ in
         "B310 Nodes=${hostName} Default=YES MaxTime=INFINITE State=UP"
       ];
     };
-  services.mysql = let
-    slurmdbdEnabled = config.services.slurm.dbdserver.enable;
-  in
+  services.mysql =
+    let
+      slurmdbdEnabled = config.services.slurm.dbdserver.enable;
+    in
     {
       package = pkgs.mariadb;
       bind = "127.0.0.1";
@@ -364,9 +366,10 @@ in
         };
       };
     };
-  systemd.services.generateMungeKey = let
-    keyFile = config.services.munge.password;
-  in
+  systemd.services.generateMungeKey =
+    let
+      keyFile = config.services.munge.password;
+    in
     {
       enable = true;
       before = [ "munged.service" ];
