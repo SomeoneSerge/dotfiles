@@ -69,6 +69,8 @@ in
   networking.interfaces.enp4s0.useDHCP = true;
   networking.networkmanager.enable = false;
 
+  programs.gnupg.agent.pinentryFlavor = "curses";
+
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -330,6 +332,9 @@ in
   services.slurm =
     let
       hostName = config.networking.hostName;
+      gresConf = pkgs.writeTextDir "gres.conf" ''
+        NodeName=${hostName} Name=gpu Type=rtx3090 File=/dev/nvidia[0-3] AutoDetect=nvml
+      '';
     in
     {
       server.enable = true;
@@ -341,16 +346,48 @@ in
       clusterName = hostName;
       controlMachine = hostName;
       dbdserver.dbdHost = hostName;
-      package = pkgs.slurm-full;
+      package =
+        let
+          nvidia = config.boot.kernelPackages.nvidia_x11;
+        in
+        (
+          # https://pastebin.com/EjtDZDp7
+          # https://pastebin.com/N17WKRQn
+          pkgs.slurm.overrideAttrs (
+            args: args // {
+              buildInputs = args.buildInputs ++ [
+                pkgs.cudatoolkit
+              ];
+              LDFLAGS = "-L${pkgs.cudatoolkit}/lib/stubs";
+              configureFlags = args.configureFlags ++ [
+                "--with-nvml=${pkgs.cudatoolkit}"
+              ];
+              nativeBuildInputs = [
+                pkgs.addOpenGLRunpath
+              ];
+              postFixup = ''
+                for bin in $out/bin/*; do
+                  patchelf --add-needed "/run/opengl-driver/lib/libnvidia-ml.so" "$bin"
+                  addOpenGLRunpath "$bin"
+                done
+              '';
+            }
+          )
+        );
+      extraConfig = ''
+        GresTypes=gpu
+      '';
+      extraConfigPaths = [ gresConf ];
       nodeName = [
-        ''
-          ${hostName} CPUs=24 State=UNKNOWN
-        ''
+        "${hostName} CPUs=24 SocketsPerBoard=1 ThreadsPerCore=2 CoresPerSocket=12 Gres=gpu:rtx3090:4 State=UNKNOWN"
       ];
       partitionName = [
         "B310 Nodes=${hostName} Default=YES MaxTime=INFINITE State=UP"
       ];
     };
+  systemd.services.slurmd.environment = {
+    LD_DEBUG = "libs";
+  };
   services.mysql =
     let
       slurmdbdEnabled = config.services.slurm.dbdserver.enable;
