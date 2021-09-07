@@ -76,10 +76,10 @@ in
   networking.domain = "someonex.net";
 
   networking.hosts = {
-    "${ipv4}" = [ "lite21" ];
+    "${ipv4}" = [ "someonex.net" "ns1.someonex.net" "mail.someonex.net" "matrix.someonex.net" "www.someonex.net" "someones.tf" "lite21" ];
     "${hosts.devbox.wireguard.address}" = [ "devbox.ferres.ml" ];
     "fc7f:217a:060b:504b:8538:506a:e573:6615" = [ "lite21.k" ];
-    "200:a734:be5d:b805:fcd5:4526:1937:4832" = [ "lite21.ygg" ];
+    "203:14db:1510:5009:f390:b491:a31c:68b3" = [ "lite21.ygg" ];
     "201:898:d5f1:3941:bd2e:229:dcd4:dc9c" = [ "devbox.ygg" ];
     "fc76:d36c:8f3b:bbaa:1ad6:2039:7b99:7ca6" = [ "devbox.k" ];
     "200:cfad:3173:822e:39b:6965:e250:2053" = [ "ss-x230.ygg" ];
