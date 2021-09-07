@@ -287,7 +287,7 @@ in
     };
   };
 
-  networking.firewall.allowedUDPPorts = [ cjdnsPort 5201 51820 ];
+  networking.firewall.allowedUDPPorts = [ cjdnsPort 5201 51820 53 ];
   networking.firewall.allowedTCPPorts = [ yggdrasilPort 80 443 5201 22 ];
 
   networking.firewall.trustedInterfaces = [ wgInterface ];
@@ -298,11 +298,10 @@ in
     servers = [ "1.1.1.1" "8.8.4.4" ];
     extraConfig = ''
       domain-needed
-      interface=${wgInterface}
       bind-dynamic
       bogus-priv
       dhcp-authoritative
-      dhcp-range=10.24.60.100,10.24.60.254,24h
+      dhcp-range=interface:${wgInterface},10.24.60.100,10.24.60.254,24h
       domain=${config.networking.domain}
     '';
   };
