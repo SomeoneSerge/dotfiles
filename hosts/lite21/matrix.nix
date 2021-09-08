@@ -59,9 +59,18 @@ in
     privateNetwork = true;
     inherit hostAddress localAddress;
     config = ({ config, pkgs, lib, ... }: {
+      environment.systemPackages = [ pkgs.dnsutils ];
       networking = {
         inherit domain hostName;
         firewall.allowedTCPPorts = [ 80 443 8008 ];
+        nameservers = [ hostAddress ];
+      };
+
+      networking.resolvconf = {
+        enable = true;
+        extraConfig = ''
+          prepend_nameservers=${hostAddress}
+        '';
       };
 
       services.postgresql.enable = true;
