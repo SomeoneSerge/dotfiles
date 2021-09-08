@@ -58,6 +58,7 @@ in
 
   some.sane.enable = true;
 
+  boot.kernelPackages = pkgs.linuxPackages;  # _hardened fails to build
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.version = 2;
