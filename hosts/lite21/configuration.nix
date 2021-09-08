@@ -303,6 +303,13 @@ in
       dhcp-authoritative
       dhcp-range=interface:${wgInterface},10.24.60.100,10.24.60.254,24h
       domain=${config.networking.domain}
+
+      auth-server=someonex.net
+      host-record=someonex.net,${ipv4}
+      auth-zone=someonex.net,5.2.76.123/32,10.24.60.0/24
+
+      srv-host=_matrix._tcp,matrix.someonex.net,10,100,443
+      mx-host=someonex.net,mail.someonex.net
     '';
   };
   systemd.services.dnsmasq.after = [ "wireguard-${wgInterface}.service" ];
