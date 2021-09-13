@@ -333,7 +333,7 @@ in
     let
       hostName = config.networking.hostName;
       gresConf = pkgs.writeTextDir "gres.conf" ''
-        NodeName=${hostName} Name=gpu Type=rtx3090 File=/dev/nvidia[0-3] AutoDetect=nvml
+        NodeName=${hostName} Name=gpu Type=rtx_3090 File=/dev/nvidia[0-3] AutoDetect=nvml
       '';
     in
     {
@@ -379,7 +379,7 @@ in
       '';
       extraConfigPaths = [ gresConf ];
       nodeName = [
-        "${hostName} CPUs=24 SocketsPerBoard=1 ThreadsPerCore=2 CoresPerSocket=12 Gres=gpu:rtx3090:4 State=UNKNOWN"
+        "${hostName} CPUs=24 SocketsPerBoard=1 ThreadsPerCore=2 CoresPerSocket=12 Gres=gpu:rtx_3090:4 State=UNKNOWN"
       ];
       partitionName = [
         "B310 Nodes=${hostName} Default=YES MaxTime=INFINITE State=UP"
