@@ -337,6 +337,7 @@ in
       '';
     in
     {
+      user = "slurm";
       server.enable = true;
       client.enable = true;
       dbdserver.enable = true;
@@ -346,6 +347,7 @@ in
       clusterName = hostName;
       controlMachine = hostName;
       dbdserver.dbdHost = hostName;
+      dbdserver.storageUser = "slurm";
       package =
         let
           nvidia = config.boot.kernelPackages.nvidia_x11;
@@ -385,14 +387,13 @@ in
         "B310 Nodes=${hostName} Default=YES MaxTime=INFINITE State=UP"
       ];
     };
-  systemd.services.slurmd.environment = {
-    LD_DEBUG = "libs";
-  };
+  systemd.services.slurmdbd.serviceConfig.User = "slurm";
   services.mysql =
     let
       slurmdbdEnabled = config.services.slurm.dbdserver.enable;
     in
     {
+      enable = true;
       package = pkgs.mariadb;
       bind = "127.0.0.1";
       ensureDatabases = lib.optional slurmdbdEnabled "slurm_acct_db";
