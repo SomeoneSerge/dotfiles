@@ -367,7 +367,7 @@ in
               ];
               postFixup = ''
                 for bin in $out/bin/*; do
-                  patchelf --add-needed "/run/opengl-driver/lib/libnvidia-ml.so" "$bin"
+                  patchelf --add-needed "libnvidia-ml.so" "$bin"
                   addOpenGLRunpath "$bin"
                 done
               '';
