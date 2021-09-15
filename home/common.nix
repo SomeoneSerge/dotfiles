@@ -24,6 +24,8 @@ in
     niv
 
     nixpkgs-fmt
+    nixpkgs-review
+    nix-visualize
     nix-index
     nix-tree
 
@@ -49,11 +51,6 @@ in
     dnsutils
     file
     mediainfo
-
-    nixfmt
-    nixpkgs-fmt
-    nixpkgs-review
-    nix-visualize
 
     tree
   ];
