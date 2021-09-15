@@ -9,6 +9,7 @@ with builtins;
 
 let
   some = config.some;
+  slurmDir = "/run/slurm";
 in
 {
   imports = [
@@ -332,8 +333,24 @@ in
   services.slurm =
     let
       hostName = config.networking.hostName;
+      nodeName = [
+        "${hostName} CPUs=24 SocketsPerBoard=1 ThreadsPerCore=2 CoresPerSocket=12 RealMemory=128000 Gres=gpu:rtx_3090:4 State=UNKNOWN"
+      ];
+      partitionName = [
+        "B310 Nodes=${hostName} Default=YES MaxTime=INFINITE State=UP"
+      ];
       gresConf = pkgs.writeTextDir "gres.conf" ''
-        NodeName=${hostName} Name=gpu Type=rtx_3090 File=/dev/nvidia[0-3] AutoDetect=nvml
+        AutoDetect=nvml
+        Name=gpu Type=rtx_3090 File=/dev/nvidia[0-3]
+      '';
+      extraConfig = ''
+        SelectType=select/cons_tres
+        SelectTypeParameters=CR_CPU_Memory
+        GresTypes=gpu
+        SlurmctldPidFile=${slurmDir}/slurmctld.pid
+        SlurmdPidFile=${slurmDir}/slurmd.pid
+        SlurmctldDebug=3
+        # SlurmdUser=slurm
       '';
     in
     {
@@ -376,18 +393,31 @@ in
             }
           )
         );
-      extraConfig = ''
-        GresTypes=gpu
-      '';
+      procTrackType = "proctrack/cgroup";
       extraConfigPaths = [ gresConf ];
-      nodeName = [
-        "${hostName} CPUs=24 SocketsPerBoard=1 ThreadsPerCore=2 CoresPerSocket=12 Gres=gpu:rtx_3090:4 State=UNKNOWN"
-      ];
-      partitionName = [
-        "B310 Nodes=${hostName} Default=YES MaxTime=INFINITE State=UP"
-      ];
+      inherit extraConfig nodeName partitionName;
     };
   systemd.services.slurmdbd.serviceConfig.User = "slurm";
+  systemd.services.slurmctld.serviceConfig.User = "slurm";
+  # systemd.services.slurmd.serviceConfig.User = "slurm";
+  systemd.services.slurmd.serviceConfig.PIDFile = lib.mkForce "${slurmDir}/slurmd.pid";
+  systemd.services.slurmctld.serviceConfig.PIDFile = lib.mkForce "${slurmDir}/slurmctld.pid";
+  systemd.services.mk-slurm-dir =
+    let
+      deps = [ "slurmd.service" "slurmctld.service" "slurmdbd.service" ];
+      cfg = config.services.slurm;
+    in
+    {
+      enable = true;
+      before = deps;
+      partOf = deps;
+      requiredBy = deps;
+      serviceConfig.Type = "oneshot";
+      script = ''
+        mkdir -p "${cfg.stateSaveLocation}" "${slurmDir}"
+        chown -R ${cfg.user}:slurm ${cfg.stateSaveLocation} ${slurmDir}
+      '';
+    };
   services.mysql =
     let
       slurmdbdEnabled = config.services.slurm.dbdserver.enable;
