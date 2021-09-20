@@ -30,6 +30,13 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
   boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.extraModprobeConfig = ''
+    options usb-storage quirks=1d6b:0003:u
+  '';
+  boot.kernelParams = [
+    "pci=nommconf"
+  ];
+  services.fwupd.enable = true;
 
   nix = { trustedUsers = [ "root" "ss" ]; };
 
@@ -140,7 +147,6 @@ in
 
   services.packagekit.enable = true;
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
-  services.fwupd.enable = true;
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
