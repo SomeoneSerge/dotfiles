@@ -284,6 +284,7 @@ in
     mc
     neovim-remote
     torbrowser
+    nvtop
   ];
 
   services.jhub = {
