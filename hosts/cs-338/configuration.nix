@@ -230,6 +230,7 @@ in
   programs.mosh.enable = true;
   programs.tmux.enable = true;
   programs.thefuck.enable = true;
+  programs.adb.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -285,6 +286,9 @@ in
     neovim-remote
     torbrowser
     nvtop
+
+    wineWowPackages.full
+    (winetricks.override { wine = wineWowPackages.full; })
   ];
 
   services.jhub = {
