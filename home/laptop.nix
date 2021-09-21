@@ -11,8 +11,6 @@ rec {
 
     jq
 
-    nixGLIntel
-
     mat2
     libreoffice
 
