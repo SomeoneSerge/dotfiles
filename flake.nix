@@ -127,8 +127,7 @@
       };
 
       nixosConfigurations.ss-xps13 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        inherit pkgs;
+        inherit pkgs system;
         modules = [
           someModules
           (home-manager.nixosModules.home-manager)
