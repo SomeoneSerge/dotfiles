@@ -132,6 +132,8 @@ in
     aria2
   ];
 
+  programs.adb.enable = true;
+
   programs.chromium = {
     enable = true;
     defaultSearchProviderSearchURL = "https://duckduckgo.com/?q={searchTerms}";
