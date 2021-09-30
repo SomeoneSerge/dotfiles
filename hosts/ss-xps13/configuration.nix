@@ -239,6 +239,15 @@ in
     controlMachine = "10.24.60.14";
   };
 
+  services.syncthing = {
+    enable = true;
+    # FIXME
+    user = "ss";
+    group = "users";
+    dataDir = "/home/ss/.syncthing";
+    configDir = "/home/ss/.config/syncthing";
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
