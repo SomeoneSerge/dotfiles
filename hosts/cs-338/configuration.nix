@@ -94,6 +94,11 @@ in
   services.xserver.displayManager.lightdm.enable = true;
 
   services.xserver.exportConfiguration = true;
+  services.xserver.deviceSection = ''
+  '';
+  services.xserver.screenSection = ''
+    Option "MetaModeOrientation" "DP-2 RightOf DP-1"
+  '';
   services.xserver.xrandrHeads = [
     {
       # dell
@@ -102,6 +107,7 @@ in
         DisplaySize 596.74 335.66
         Option "PreferredMode" "2048x1152_60.0"
         Option "Rotate" "left"
+        Option "MetaModes" "2048x1152 +0+0 {ForceFullCompositionPipeline=On}"
       '';
     }
     {
@@ -111,6 +117,7 @@ in
       monitorConfig = ''
         DisplaySize 708.40 398.50
         Option "PreferredMode" "3840x2160_60.0"
+        Option "MetaModes" "3840x2160 +1152+0 {{ForceFullCompositionPipeline=On}"
       '';
     }
   ];
