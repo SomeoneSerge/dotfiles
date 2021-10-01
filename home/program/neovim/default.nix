@@ -26,6 +26,19 @@
       noremap <Leader>f :Files<CR>
 
       lua << EOF
+        local opts = {
+          log_level = 'info',
+          auto_session_enable_last_session = true,
+          auto_session_root_dir = "/home/ss/.local/share/auto-session",
+          auto_session_enabled = true,
+          auto_save_enabled = true,
+          auto_restore_enabled = true,
+          auto_session_suppress_dirs = nil
+        }
+        require('auto-session').setup(opts)
+      EOF
+
+      lua << EOF
       ${lib.strings.fileContents ./lsp.lua}
       EOF
     '';
@@ -41,6 +54,7 @@
       # FIXME:
       # fugitive
       vim-nix
+      auto-session
     ];
 
     extraPackages = with pkgs; [

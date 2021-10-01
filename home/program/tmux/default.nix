@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ lib, config, pkgs, ... }:
 
 {
   programs.tmux = {
@@ -19,7 +19,40 @@
       fpp
       {
         plugin = resurrect;
-        extraConfig = "set -g @resurrect-strategy-nvim 'session'";
+        extraConfig =
+          let
+            resurrectPrograms' = [
+              "vi"
+              "~vim->vim"
+              "~nvim->nvim"
+              "less"
+              "more"
+              "man"
+              "info"
+              "~tail"
+              "git log"
+              "git diff"
+              "git show"
+              "~latexmk -pvc"
+              "dmesg"
+              "nnn"
+              "top"
+              "htop"
+              "weechat"
+              "ping"
+              "~watch"
+              "ssh"
+              "mosh-client"
+            ];
+            sep = " ";
+            hasWhiteSpaces = p: (builtins.match ".*[ \n\r\t].*" p) != null;
+            escapeProg = p: if (hasWhiteSpaces p) then ''"${p}"'' else p;
+            resurrectPrograms = lib.concatMapStringsSep sep escapeProg resurrectPrograms';
+          in
+          ''
+            set -g @ressurect-processes '${resurrectPrograms}'
+            set -g @resurrect-strategy-vim 'session'
+          '';
       }
       {
         plugin = continuum;
