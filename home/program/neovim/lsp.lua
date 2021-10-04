@@ -51,7 +51,7 @@ local on_attach = function(client, bufnr)
 end
 
 local servers = {
-    "clangd", "cmake", "ccls", "pyright", "rust_analyzer", "hls", "jsonls",
+    "cmake", "ccls", "pyright", "rust_analyzer", "hls", "jsonls",
     "yamlls", "tsserver", "gopls", "rnix", "terraformls",
     "clojure_lsp"
 }
