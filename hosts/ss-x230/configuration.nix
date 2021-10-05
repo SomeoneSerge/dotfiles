@@ -25,6 +25,8 @@ in
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
+  boot.initrd.kernelModules = [ "8814au" "88XXau" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ rtl8814au rtl88xxau-aircrack ];
 
   networking.hostName = "ss-x230"; # Define your hostname.
   networking.domain = "someonex.net";
