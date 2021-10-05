@@ -38,7 +38,7 @@
   networking.firewall.allowedUDPPorts =
     lib.optionals config.services.hostapd.enable [ 53 67 ];
 
-  services.haveged.enable = config.services.hostapd.enable;
+  services.haveged = lib.mkIf config.services.hostapd.enable { enable = true; };
 
   networking.nat.internalInterfaces =
     lib.optional config.services.hostapd.enable

@@ -4,7 +4,8 @@
 
 { config, pkgs, lib, ... }:
 
-let lite21ipv4 = "5.2.76.123";
+let
+  lite21ipv4 = "5.2.76.123";
 in
 {
   some.i3.enable = true;
@@ -69,12 +70,14 @@ in
   networking.wg-quick.interfaces.wg24601 = {
     address = [ "10.24.60.13" ];
     privateKeyFile = "/var/lib/wireguard/wg-x230.key";
-    peers = [{
-      publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
-      endpoint = "5.2.76.123:51820";
-      allowedIPs = [ "10.24.60.0/24" ];
-      persistentKeepalive = 24;
-    }];
+    peers = [
+      {
+        publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
+        endpoint = "5.2.76.123:51820";
+        allowedIPs = [ "10.24.60.0/24" ];
+        persistentKeepalive = 24;
+      }
+    ];
   };
 
   # Enable the X11 windowing system.
