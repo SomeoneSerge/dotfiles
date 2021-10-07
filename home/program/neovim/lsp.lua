@@ -1,4 +1,24 @@
 local nvim_lsp = require('lspconfig')
+local cmp = require 'cmp'
+
+cmp.setup({
+    snippet = {
+        expand = function(args)
+            vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` user.
+        end
+    },
+    mapping = {
+        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+        ['<C-Space>'] = cmp.mapping.complete(),
+        ['<C-e>'] = cmp.mapping.close(),
+        ['<CR>'] = cmp.mapping.confirm({select = true})
+    },
+    sources = {
+        {name = 'nvim_lsp'}, {name = 'vsnip'}
+        -- {name = 'buffer'}
+    }
+})
 
 local on_attach = function(client, bufnr)
     local function buf_set_keymap(...)
@@ -50,107 +70,52 @@ local on_attach = function(client, bufnr)
     end
 end
 
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp
+                                                                     .protocol
+                                                                     .make_client_capabilities())
+
 local servers = {
-    "cmake", "ccls", "pyright", "rust_analyzer", "hls", "jsonls",
-    "yamlls", "tsserver", "gopls", "rnix", "terraformls",
-    "clojure_lsp"
+    "cmake", "ccls", "pyright", "rust_analyzer", "hls", "jsonls", "yamlls",
+    "tsserver", "gopls", "rnix", "terraformls", "clojure_lsp"
 }
 
-for _, lsp in ipairs(servers) do nvim_lsp[lsp].setup {on_attach = on_attach} end
+for _, lsp in ipairs(servers) do
+    nvim_lsp[lsp].setup {on_attach = on_attach, capabilities = capabilities}
+end
 
-nvim_lsp["sumneko_lua"].setup {cmd = {"sumneko_lua"}, on_attach = on_attach}
-nvim_lsp["pylsp"].setup {cmd = {"pyls"}, on_attach = on_attach}
-nvim_lsp["texlab"].setup {
-    cmd = { "texlab" },
+nvim_lsp["sumneko_lua"].setup {
+    cmd = {"sumneko_lua"},
     on_attach = on_attach,
-    filetypes = { "tex", "bib" },
+    capabilities = capabilities
+}
+nvim_lsp["pylsp"].setup {
+    cmd = {"pyls"},
+    on_attach = on_attach,
+    capabilities = capabilities
+}
+nvim_lsp["texlab"].setup {
+    cmd = {"texlab"},
+    on_attach = on_attach,
+    capabilities = capabilities,
+    filetypes = {"tex", "bib"},
     settings = {
-      texlab = {
-        bibtexFormatter = "texlab",
-        build = {
-          args = { "-pdf", "-interaction=nonstopmode", "-synctex=1", "%f" },
-          executable = "latexmk",
-          forwardSearchAfter = true,
-          onSave = true
-        },
-        chktex = {
-          onEdit = true,
-          onOpenAndSave = true
-        },
-        diagnosticsDelay = 300,
-        formatterLineLength = 80,
-        forwardSearch = {
-            executable = "zathura",
-            args = { "--synctex-forward", "%l:1:%f", "%p" }
-        },
-        latexFormatter = "latexindent",
-        latexindent = {
-          modifyLineBreaks = false
+        texlab = {
+            bibtexFormatter = "texlab",
+            build = {
+                args = {"-pdf", "-interaction=nonstopmode", "-synctex=1", "%f"},
+                executable = "latexmk",
+                forwardSearchAfter = true,
+                onSave = true
+            },
+            chktex = {onEdit = true, onOpenAndSave = true},
+            diagnosticsDelay = 300,
+            formatterLineLength = 80,
+            forwardSearch = {
+                executable = "zathura",
+                args = {"--synctex-forward", "%l:1:%f", "%p"}
+            },
+            latexFormatter = "latexindent",
+            latexindent = {modifyLineBreaks = false}
         }
-      }
     }
 }
-
--- compe
-vim.o.completeopt = "menuone,noselect"
-
-require'compe'.setup {
-    enabled = true,
-    autocomplete = true,
-    debug = false,
-    min_length = 1,
-    preselect = 'enable',
-    throttle_time = 80,
-    source_timeout = 200,
-    incomplete_delay = 400,
-    max_abbr_width = 100,
-    max_kind_width = 100,
-    max_menu_width = 100,
-    documentation = true,
-
-    source = {path = true, nvim_lsp = true}
-}
-
-local t = function(str)
-    return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
-
-local check_back_space = function()
-    local col = vim.fn.col('.') - 1
-    if col == 0 or vim.fn.getline('.'):sub(col, col):match('%s') then
-        return true
-    else
-        return false
-    end
-end
-
--- Use (s-)tab to:
---- move to prev/next item in completion menuone
---- jump to prev/next snippet's placeholder
-_G.tab_complete = function()
-    if vim.fn.pumvisible() == 1 then
-        return t "<C-n>"
-    elseif check_back_space() then
-        return t "<Tab>"
-    else
-        return vim.fn['compe#complete']()
-    end
-end
-
-_G.s_tab_complete = function()
-    if vim.fn.pumvisible() == 1 then
-        return t "<C-p>"
-    else
-        return t "<S-Tab>"
-    end
-end
-
-vim.api.nvim_set_keymap("i", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<Tab>", "v:lua.tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("i", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-vim.api.nvim_set_keymap("s", "<S-Tab>", "v:lua.s_tab_complete()", {expr = true})
-
--- This line is important for auto-import
-vim.api.nvim_set_keymap('i', '<cr>', 'compe#confirm("<cr>")', {expr = true})
-vim.api.nvim_set_keymap('i', '<c-space>', 'compe#complete()', {expr = true})
-

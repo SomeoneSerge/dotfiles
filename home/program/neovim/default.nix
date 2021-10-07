@@ -46,7 +46,33 @@
     # Neovim plugins
     plugins = with pkgs.vimPlugins; [
       nvim-lspconfig
-      nvim-compe
+      (
+        pkgs.vimUtils.buildVimPluginFrom2Nix {
+          pname = "nvim-cmp";
+          version = "2021-10-06";
+          src = pkgs.fetchFromGitHub {
+            owner = "hrsh7th";
+            repo = "nvim-cmp";
+            rev = "a39f72a4634e4bb05371a6674e3e9218cbfc6b20";
+            sha256 = "04ksgg491nmyy7khdid9j45pv65yp7ksa0q7cr7gvqrh69v55daj";
+          };
+          meta.homepage = "https://github.com/hrsh7th/nvim-cmp/";
+        }
+      )
+      (
+        pkgs.vimUtils.buildVimPluginFrom2Nix {
+          pname = "cmp-nvim-lsp";
+          version = "2021-09-30";
+          src = pkgs.fetchFromGitHub {
+            owner = "hrsh7th";
+            repo = "cmp-nvim-lsp";
+            rev = "f93a6cf9761b096ff2c28a4f0defe941a6ffffb5";
+            sha256 = "02x4jp79lll4fm34x7rjkimlx32gfp2jd1kl6zjwszbfg8wziwmx";
+          };
+          meta.homepage = "https://github.com/hrsh7th/cmp-nvim-lsp/";
+        }
+      )
+      vim-vsnip
       nvim-treesitter
       fzf-vim
       gruvbox
@@ -79,7 +105,8 @@
       sumneko-lua-language-server
       luaformatter
       (
-        let sumneko = sumneko-lua-language-server;
+        let
+          sumneko = sumneko-lua-language-server;
         in
         pkgs.writeScriptBin "sumneko_lua" ''
           ${sumneko}/bin/lua-language-server -E ${sumneko}/extras/main.lua $@
