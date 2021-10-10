@@ -248,6 +248,12 @@ in
     configDir = "/home/ss/.config/syncthing";
   };
 
+  home-manager.users.ss = {
+    services.gammastep.enable = true;
+    services.gammastep.dawnTime = "06:00";
+    services.gammastep.duskTime = "22:00";
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
