@@ -301,6 +301,17 @@ in
     wineWowPackages.full
     (winetricks.override { wine = wineWowPackages.full; })
     turbovnc
+
+    (
+      python3.withPackages (
+        ps: with ps; [
+          numpy
+          scipy
+          pandas
+          matplotlib
+        ]
+      )
+    )
   ];
 
   services.jhub = {
