@@ -104,6 +104,8 @@ in
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
+  programs.gnupg.agent.pinentryFlavor = "curses";
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ss = {
     isNormalUser = true;
