@@ -20,6 +20,7 @@ in
 
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
+  hardware.bluetooth.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
