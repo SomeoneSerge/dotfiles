@@ -4,6 +4,8 @@
   inputs = {
     nix.url = "github:NixOS/nix";
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     neovim-nightly = { url = "github:neovim/neovim?dir=contrib"; };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
@@ -36,12 +38,15 @@
     }@inputs:
     let
       system = "x86_64-linux";
+      inherit (nixpkgs.lib) mapAttrsToList;
 
       # take neovim-nightly built with upstream's nixpkgs
       # (thus with upstream's libc)
       neovimOverlay = final: prev:
-        let system = prev.system;
-        in { neovim-nightly = neovim-nightly.packages.${system}.neovim; };
+        let
+          system = prev.system;
+        in
+        { neovim-nightly = neovim-nightly.packages.${system}.neovim; };
 
       overlays = (import ./overlays { inherit system nixGL nix; })
         ++ [ neovimOverlay ];
@@ -52,9 +57,11 @@
 
       nixGL = import inputs.nixGL { pkgs = pkgsUnfree; };
 
-      homeCfgs = (pkgs.callPackage ./home/default.nix {
-        inherit pkgs home-manager system nixGL nix;
-      });
+      homeCfgs = (
+        pkgs.callPackage ./home/default.nix {
+          inherit pkgs home-manager system nixGL nix;
+        }
+      );
       openconnect-module = {
         environment.systemPackages =
           [ openconnect-sso.packages.${system}.openconnect-sso ];
@@ -62,9 +69,16 @@
       registry = {
         dotfiles.flake = inputs.self;
         nixpkgs.flake = inputs.nixpkgs;
+        nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
+        nixpkgs-master.flake = inputs.nixpkgs-master;
         mach-nix.flake = inputs.mach-nix;
       };
-      pin-registry = { nix = { inherit registry; }; };
+      pin-registry = { config, ... }: {
+        nix = {
+          inherit registry;
+          nixPath = mapAttrsToList (name: value: "${name}=${value.flake}") config.nix.registry;
+        };
+      };
       someModules = import ./modules;
     in
     rec {

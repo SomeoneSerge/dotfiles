@@ -12,7 +12,7 @@ in
   options = { some.sane.enable = mkEnableOption "Enable sane defaults"; };
   config = mkIf cfg.enable {
     nix = mkDefAttrs {
-      nixPath = [ "nixpkgs=${pkgs.path}" ];
+      nixPath = mkDefault [ "nixpkgs=${pkgs.path}" ];
       package = pkgs.nixUnstable;
       extraOptions = ''
         experimental-features = nix-command flakes ca-derivations ca-references
