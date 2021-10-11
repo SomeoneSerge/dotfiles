@@ -92,6 +92,10 @@ in
 
   some.i3.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
+  services.xrdp = {
+    enable = true;
+    defaultWindowManager = "xfce";
+  };
 
   services.xserver.exportConfiguration = true;
   services.xserver.deviceSection = ''
@@ -296,6 +300,7 @@ in
 
     wineWowPackages.full
     (winetricks.override { wine = wineWowPackages.full; })
+    turbovnc
   ];
 
   services.jhub = {
