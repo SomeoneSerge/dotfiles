@@ -1,46 +1,44 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
-let mainLocale = "en_US.UTF-8";
+let
+  inherit (lib) mkIf mkOption mkEnableOption types;
+  cfg = config.some.devbox;
 in
 {
-  imports = [ ./common.nix ];
-
-  home.sessionVariables = {
-    FONTCONFIG_FILE = "${pkgs.fontconfig.out}/etc/fonts/fonts.conf";
-    LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-    LC_ALL = mainLocale;
-    LANG = mainLocale;
-    EDITOR = "nvim";
-    PATH = "/bin:${config.home.homeDirectory}/.nix-profile/bin";
+  options.some.devbox = {
+    enable = mkEnableOption "Enable stuff specific to devbox0 (a non-NixOS system, proprietary sw, etc)";
   };
+  config = mkIf cfg.enable {
+    home.sessionVariables = {
+      FONTCONFIG_FILE = "${pkgs.fontconfig.out}/etc/fonts/fonts.conf";
+      LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
+      LC_ALL = config.home.language.base;
+      LANG = config.home.language.base;
+      EDITOR = "nvim";
+      PATH = "/bin:${config.home.homeDirectory}/.nix-profile/bin";
+    };
 
-  xdg.configFile."nixpkgs/config.nix".text = ''
-    {
-      allowUnfree = true;
-    }
-  '';
+    xdg.configFile."nixpkgs/config.nix".text = ''
+      {
+        allowUnfree = true;
+      }
+    '';
 
-  services.gpg-agent = { pinentryFlavor = "tty"; };
+    services.gpg-agent = { pinentryFlavor = "tty"; };
 
-  home.packages = with pkgs; [
-    nixUnstable
-    pkgs.nixGLIntel
-    # pkgs.nixGLNvidia
-    yrd
-    qrencode
-    busybox
-    less
-    aria2
-    # Not installing mosh, because of
-    # https://github.com/NixOS/nixpkgs/issues/90523
-    # mosh
-    htop
-  ];
+    home.packages = with pkgs; [
+      nixUnstable
+      pkgs.nixGLIntel
+      # Not installing mosh, because of
+      # https://github.com/NixOS/nixpkgs/issues/90523
+      # mosh
+    ];
 
-  services.gpg-agent = {
-    enable = true;
-    enableSshSupport = true;
-    enableScDaemon = false;
+    services.gpg-agent = {
+      enable = true;
+      enableSshSupport = true;
+      enableScDaemon = false;
+    };
+
   };
-
 }

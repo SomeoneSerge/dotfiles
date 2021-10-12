@@ -1,8 +1,11 @@
 { config, pkgs, lib, ... }:
 
+let
+  inherit (lib) mkDefault;
+in
 {
   programs.neovim = {
-    enable = true;
+    enable = mkDefault true;
 
     package = pkgs.neovim-nightly;
 

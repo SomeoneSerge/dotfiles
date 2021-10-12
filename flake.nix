@@ -30,6 +30,7 @@
     { self
     , nixpkgs
     , nix
+    , nixGL
     , home-manager
     , nixos-hardware
     , openconnect-sso
@@ -38,7 +39,7 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      inherit (nixpkgs.lib) mapAttrsToList;
+      inherit (nixpkgs.lib) mapAttrsToList genAttrs;
 
       # take neovim-nightly built with upstream's nixpkgs
       # (thus with upstream's libc)
@@ -48,24 +49,12 @@
         in
         { neovim-nightly = neovim-nightly.packages.${system}.neovim; };
 
-      overlays = (import ./overlays { inherit system nixGL nix; })
+      overlays = (import ./overlays { inherit nixGL nix; })
         ++ [ neovimOverlay ];
 
       pkgsArgs = { inherit system overlays; };
       pkgs = import nixpkgs pkgsArgs;
       pkgsUnfree = import nixpkgs (pkgsArgs // { config.allowUnfree = true; });
-
-      nixGL = import inputs.nixGL { pkgs = pkgsUnfree; };
-
-      homeCfgs = (
-        pkgs.callPackage ./home/default.nix {
-          inherit pkgs home-manager system nixGL nix;
-        }
-      );
-      openconnect-module = {
-        environment.systemPackages =
-          [ openconnect-sso.packages.${system}.openconnect-sso ];
-      };
       registry = {
         dotfiles.flake = inputs.self;
         nixpkgs.flake = inputs.nixpkgs;
@@ -73,27 +62,32 @@
         nixpkgs-master.flake = inputs.nixpkgs-master;
         mach-nix.flake = inputs.mach-nix;
       };
-      pin-registry = { config, ... }: {
+      m.pin-registry = { config, ... }: {
         nix = {
           inherit registry;
           nixPath = mapAttrsToList (name: value: "${name}=${value.flake}") config.nix.registry;
         };
       };
-      someModules = import ./modules;
+      m.enable-some = import ./modules;
+      m.enable-hm = users: { config, pkgs, ... }: {
+        imports = [ home-manager.nixosModules.home-manager ];
+        home-manager.useGlobalPkgs = true;
+        home-manager.users = genAttrs users (user: import ./home/default.nix);
+      };
+      m.enable-openconnect = {
+        environment.systemPackages =
+          [ openconnect-sso.packages.${system}.openconnect-sso ];
+      };
     in
     rec {
-      defaultPackage.${system} = pkgs.pylinters;
       packages.${system} = {
-        home-laptop = (homeCfgs.laptop "nk").activationPackage;
-        home-devbox = homeCfgs.devbox.activationPackage;
         nix = nix.packages.${system}.nix;
-        pylinters = pkgs.pylinters;
+        home-devbox = (pkgsUnfree.callPackage ./home/call-hm.nix {
+          inherit home-manager;
+          addModules = [{ some.devbox.enable = true; }];
+        }).activationPackage;
       };
       apps.${system} = {
-        home-laptop = {
-          type = "app";
-          program = "${self.packages.${system}.home-laptop}/activate";
-        };
         home-devbox = {
           type = "app";
           program = "${self.packages.${system}.home-devbox}/activate";
@@ -103,74 +97,58 @@
       nixosConfigurations.ss-x230 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         pkgs = pkgsUnfree;
-        modules = [
-          someModules
-          nixos-hardware.nixosModules.lenovo-thinkpad-x230
-          (home-manager.nixosModules.home-manager)
-          openconnect-module
+        modules = with m; [
+          enable-some
+          enable-openconnect
           pin-registry
+          nixos-hardware.nixosModules.lenovo-thinkpad-x230
           ./hosts/ss-x230/configuration.nix
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.users.ss =
-              (import ./home/laptop.nix { inherit pkgs; });
-          }
+          (enable-hm [ "ss" ])
         ];
       };
 
       nixosConfigurations.lite21 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         inherit pkgs;
-        modules = [
-          someModules
-          (home-manager.nixosModules.home-manager)
+        modules = with m; [
+          enable-some
+          enable-openconnect
+          pin-registry
+          ./hosts/lite21/configuration.nix
+          (enable-hm [ "ss" ])
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.users.ss = {
-              programs.ssh = {
-                enable = true;
-                matchBlocks = {
-                  "*" = { identityFile = "/home/ss/.ssh/ss-lite21"; };
-                };
+            home-manager.users.ss.programs.ssh = {
+              enable = true;
+              matchBlocks = {
+                "*" = { identityFile = "/home/ss/.ssh/ss-lite21"; };
               };
             };
           }
-          ./hosts/lite21/configuration.nix
-          pin-registry
         ];
       };
 
       nixosConfigurations.ss-xps13 = nixpkgs.lib.nixosSystem {
         inherit pkgs system;
-        modules = [
-          someModules
-          (home-manager.nixosModules.home-manager)
-          nixos-hardware.nixosModules.dell-xps-13-9360
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.users.ss =
-              (import ./home/laptop.nix { inherit pkgs; });
-          }
-          openconnect-module
-          ./hosts/ss-xps13/configuration.nix
+        modules = with m; [
+          enable-some
+          enable-openconnect
           pin-registry
+          nixos-hardware.nixosModules.dell-xps-13-9360
+          ./hosts/ss-xps13/configuration.nix
+          (enable-hm [ "ss" ])
         ];
       };
 
       nixosConfigurations.cs-338 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         pkgs = pkgsUnfree;
-        modules = [
-          someModules
-          (home-manager.nixosModules.home-manager)
-          nixos-hardware.nixosModules.common-cpu-amd
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.users.ss = (import ./home/common.nix);
-          }
-          openconnect-module
-          ./hosts/cs-338/configuration.nix
+        modules = with m; [
+          enable-some
+          enable-openconnect
           pin-registry
+          nixos-hardware.nixosModules.common-cpu-amd
+          ./hosts/cs-338/configuration.nix
+          (enable-hm [ "ss" "kozluks1" ])
         ];
       };
 

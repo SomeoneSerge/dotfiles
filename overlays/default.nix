@@ -1,10 +1,9 @@
-{ system, nixGL, nix }:
+{ nixGL, nix }:
 
 let
   addInjectGL =
-    (final: prev: { inherit (nixGL) nixGLNvidia nixGLIntel nixGLDefault; });
-  useModernNix = (final: prev: { nixModern = nix.packages.${system}.nix; });
-  addPythonLinters = (import ./pylinters.nix);
+    (final: prev: { inherit (prev.callPackage nixGL { }) nixGLNvidia nixGLIntel nixGLDefault; });
+  useModernNix = (final: prev: { nixModern = nix.packages.${prev.system}.nix; });
   vpnSliceReadonlyHosts = (final: prev: {
     vpn-slice = prev.vpn-slice.overrideDerivation (oldAttrs:
       with oldAttrs; rec {
@@ -20,7 +19,6 @@ let
   overlays = [
     addInjectGL
     # useNixUnstable  -- this breaks cachix
-    addPythonLinters
     useModernNix
     vpnSliceReadonlyHosts
     (import ./nix-visualize.nix)
