@@ -9,6 +9,7 @@ with builtins;
 
 let
   some = config.some;
+  slurmDir = "/run/slurm";
 in
 {
   imports = [
@@ -69,6 +70,8 @@ in
   networking.interfaces.enp4s0.useDHCP = true;
   networking.networkmanager.enable = false;
 
+  programs.gnupg.agent.pinentryFlavor = "curses";
+
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -89,8 +92,17 @@ in
 
   some.i3.enable = true;
   services.xserver.displayManager.lightdm.enable = true;
+  services.xrdp = {
+    enable = true;
+    defaultWindowManager = "xfce";
+  };
 
   services.xserver.exportConfiguration = true;
+  services.xserver.deviceSection = ''
+  '';
+  services.xserver.screenSection = ''
+    Option "MetaModeOrientation" "DP-2 RightOf DP-1"
+  '';
   services.xserver.xrandrHeads = [
     {
       # dell
@@ -99,6 +111,7 @@ in
         DisplaySize 596.74 335.66
         Option "PreferredMode" "2048x1152_60.0"
         Option "Rotate" "left"
+        Option "MetaModes" "2048x1152 +0+0 {ForceFullCompositionPipeline=On}"
       '';
     }
     {
@@ -108,6 +121,7 @@ in
       monitorConfig = ''
         DisplaySize 708.40 398.50
         Option "PreferredMode" "3840x2160_60.0"
+        Option "MetaModes" "3840x2160 +1152+0 {{ForceFullCompositionPipeline=On}"
       '';
     }
   ];
@@ -227,6 +241,7 @@ in
   programs.mosh.enable = true;
   programs.tmux.enable = true;
   programs.thefuck.enable = true;
+  programs.adb.enable = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -234,7 +249,7 @@ in
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     alacritty
     git
-    nixfmt
+    nixpkgs-fmt
     wget
     nmap
     firefox
@@ -281,6 +296,22 @@ in
     mc
     neovim-remote
     torbrowser
+    nvtop
+
+    wineWowPackages.full
+    (winetricks.override { wine = wineWowPackages.full; })
+    turbovnc
+
+    (
+      python3.withPackages (
+        ps: with ps; [
+          numpy
+          scipy
+          pandas
+          matplotlib
+        ]
+      )
+    )
   ];
 
   services.jhub = {
@@ -330,8 +361,28 @@ in
   services.slurm =
     let
       hostName = config.networking.hostName;
+      nodeName = [
+        "${hostName} CPUs=24 SocketsPerBoard=1 ThreadsPerCore=2 CoresPerSocket=12 RealMemory=128000 Gres=gpu:rtx_3090:4 State=UNKNOWN"
+      ];
+      partitionName = [
+        "B310 Nodes=${hostName} Default=YES MaxTime=INFINITE State=UP"
+      ];
+      gresConf = pkgs.writeTextDir "gres.conf" ''
+        AutoDetect=nvml
+        Name=gpu Type=rtx_3090 File=/dev/nvidia[0-3]
+      '';
+      extraConfig = ''
+        SelectType=select/cons_tres
+        SelectTypeParameters=CR_CPU_Memory
+        GresTypes=gpu
+        SlurmctldPidFile=${slurmDir}/slurmctld.pid
+        SlurmdPidFile=${slurmDir}/slurmd.pid
+        SlurmctldDebug=3
+        # SlurmdUser=slurm
+      '';
     in
     {
+      user = "slurm";
       server.enable = true;
       client.enable = true;
       dbdserver.enable = true;
@@ -341,21 +392,66 @@ in
       clusterName = hostName;
       controlMachine = hostName;
       dbdserver.dbdHost = hostName;
-      package = pkgs.slurm-full;
-      nodeName = [
-        ''
-          ${hostName} CPUs=24 State=UNKNOWN
-        ''
-      ];
-      partitionName = [
-        "B310 Nodes=${hostName} Default=YES MaxTime=INFINITE State=UP"
-      ];
+      dbdserver.storageUser = "slurm";
+      package =
+        let
+          nvidia = config.boot.kernelPackages.nvidia_x11;
+        in
+        (
+          # https://pastebin.com/EjtDZDp7
+          # https://pastebin.com/N17WKRQn
+          pkgs.slurm.overrideAttrs (
+            args: args // {
+              buildInputs = args.buildInputs ++ [
+                pkgs.cudatoolkit
+              ];
+              LDFLAGS = "-L${pkgs.cudatoolkit}/lib/stubs";
+              configureFlags = args.configureFlags ++ [
+                "--with-nvml=${pkgs.cudatoolkit}"
+              ];
+              nativeBuildInputs = [
+                pkgs.addOpenGLRunpath
+              ];
+              postFixup = ''
+                for bin in $out/bin/*; do
+                  patchelf --add-needed "libnvidia-ml.so" "$bin"
+                  addOpenGLRunpath "$bin"
+                done
+              '';
+            }
+          )
+        );
+      procTrackType = "proctrack/cgroup";
+      extraConfigPaths = [ gresConf ];
+      inherit extraConfig nodeName partitionName;
+    };
+  systemd.services.slurmdbd.serviceConfig.User = "slurm";
+  systemd.services.slurmctld.serviceConfig.User = "slurm";
+  # systemd.services.slurmd.serviceConfig.User = "slurm";
+  systemd.services.slurmd.serviceConfig.PIDFile = lib.mkForce "${slurmDir}/slurmd.pid";
+  systemd.services.slurmctld.serviceConfig.PIDFile = lib.mkForce "${slurmDir}/slurmctld.pid";
+  systemd.services.mk-slurm-dir =
+    let
+      deps = [ "slurmd.service" "slurmctld.service" "slurmdbd.service" ];
+      cfg = config.services.slurm;
+    in
+    {
+      enable = true;
+      before = deps;
+      partOf = deps;
+      requiredBy = deps;
+      serviceConfig.Type = "oneshot";
+      script = ''
+        mkdir -p "${cfg.stateSaveLocation}" "${slurmDir}"
+        chown -R ${cfg.user}:slurm ${cfg.stateSaveLocation} ${slurmDir}
+      '';
     };
   services.mysql =
     let
       slurmdbdEnabled = config.services.slurm.dbdserver.enable;
     in
     {
+      enable = true;
       package = pkgs.mariadb;
       bind = "127.0.0.1";
       ensureDatabases = lib.optional slurmdbdEnabled "slurm_acct_db";

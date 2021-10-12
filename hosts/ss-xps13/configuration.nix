@@ -30,6 +30,13 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
   boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.extraModprobeConfig = ''
+    options usb-storage quirks=1d6b:0003:u
+  '';
+  boot.kernelParams = [
+    "pci=nommconf"
+  ];
+  services.fwupd.enable = true;
 
   nix = { trustedUsers = [ "root" "ss" ]; };
 
@@ -125,6 +132,8 @@ in
     aria2
   ];
 
+  programs.adb.enable = true;
+
   programs.chromium = {
     enable = true;
     defaultSearchProviderSearchURL = "https://duckduckgo.com/?q={searchTerms}";
@@ -140,7 +149,6 @@ in
 
   services.packagekit.enable = true;
   services.udev.packages = with pkgs; [ gnome3.gnome-settings-daemon ];
-  services.fwupd.enable = true;
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -229,6 +237,21 @@ in
     enableStools = true;
     clusterName = "cs-338";
     controlMachine = "10.24.60.14";
+  };
+
+  services.syncthing = {
+    enable = true;
+    # FIXME
+    user = "ss";
+    group = "users";
+    dataDir = "/home/ss/.syncthing";
+    configDir = "/home/ss/.config/syncthing";
+  };
+
+  home-manager.users.ss = {
+    services.gammastep.enable = true;
+    services.gammastep.dawnTime = "06:00";
+    services.gammastep.duskTime = "22:00";
   };
 
   # This value determines the NixOS release from which the default

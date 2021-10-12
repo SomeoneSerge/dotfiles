@@ -1,23 +1,14 @@
-{ system, pkgs, home-manager, nixGL, nix }:
+{ config, pkgs, ... }:
 
 {
-  laptop = username:
-    (home-manager.lib.homeManagerConfiguration rec {
-      inherit system pkgs;
-      homeDirectory = "/home/${username}";
-      inherit username;
-      configuration = { pkgs, ... }@confInputs: rec {
-        imports = [ ./laptop.nix ];
-        home = { inherit username homeDirectory; };
-      };
-    });
-  devbox = home-manager.lib.homeManagerConfiguration rec {
-    inherit system pkgs;
-    homeDirectory = "/home/serge";
-    username = "serge";
-    configuration = { pkgs, ... }@confInputs: rec {
-      imports = [ ./common.nix ./devbox.nix ];
-      home = { inherit username homeDirectory; };
-    };
-  };
+  imports = [
+    ./common.nix
+    ./modern-unix.nix
+    ./enable-nix-utils.nix
+    ./configure-git.nix
+    ./configure-shell.nix
+    ./tmux.nix
+    ./neovim/default.nix
+    ./devbox.nix
+  ];
 }

@@ -55,7 +55,11 @@
     fsType = "btrfs";
   };
 
-  swapDevices = [ ];
+  swapDevices = [
+    {
+      device = "/var/swap";
+    }
+  ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   # high-resolution display

@@ -1,11 +1,13 @@
 { config, pkgs, lib, ... }: {
   services.hostapd = {
     enable = true;
+    wpa = false;
     interface = "wlp0s20u1";
     ssid = "Ziferblat";
-    wpaPassphrase = "allyouneedislove";
     hwMode = "g";
     extraConfig = ''
+      wpa=2
+      wpa_psk=c5882f485d9c27c7bd3c265a714edb1ab23766347c950dba0bcebb2c9006b29e
       ieee80211n=1
       wme_enabled=1
       ht_capab=[HT40+][SHORT-GI-40][DSSS_CCK-40]
@@ -38,7 +40,7 @@
   networking.firewall.allowedUDPPorts =
     lib.optionals config.services.hostapd.enable [ 53 67 ];
 
-  services.haveged.enable = config.services.hostapd.enable;
+  services.haveged = lib.mkIf config.services.hostapd.enable { enable = true; };
 
   networking.nat.internalInterfaces =
     lib.optional config.services.hostapd.enable

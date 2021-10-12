@@ -4,7 +4,8 @@
 
 { config, pkgs, lib, ... }:
 
-let lite21ipv4 = "5.2.76.123";
+let
+  lite21ipv4 = "5.2.76.123";
 in
 {
   some.i3.enable = true;
@@ -19,11 +20,14 @@ in
 
   nixpkgs.config.allowUnfree = true;
   hardware.enableAllFirmware = true;
+  hardware.bluetooth.enable = true;
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.supportedFilesystems = [ "btrfs" ];
+  boot.initrd.kernelModules = [ "8814au" "88XXau" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ rtl8814au rtl88xxau-aircrack ];
 
   networking.hostName = "ss-x230"; # Define your hostname.
   networking.domain = "someonex.net";
@@ -69,12 +73,14 @@ in
   networking.wg-quick.interfaces.wg24601 = {
     address = [ "10.24.60.13" ];
     privateKeyFile = "/var/lib/wireguard/wg-x230.key";
-    peers = [{
-      publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
-      endpoint = "5.2.76.123:51820";
-      allowedIPs = [ "10.24.60.0/24" ];
-      persistentKeepalive = 24;
-    }];
+    peers = [
+      {
+        publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
+        endpoint = "5.2.76.123:51820";
+        allowedIPs = [ "10.24.60.0/24" ];
+        persistentKeepalive = 24;
+      }
+    ];
   };
 
   # Enable the X11 windowing system.
@@ -97,6 +103,8 @@ in
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
+
+  programs.gnupg.agent.pinentryFlavor = "curses";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.ss = {
