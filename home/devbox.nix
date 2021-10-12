@@ -9,14 +9,19 @@ in
     enable = mkEnableOption "Enable stuff specific to devbox0 (a non-NixOS system, proprietary sw, etc)";
   };
   config = mkIf cfg.enable {
-    home.sessionVariables = {
-      FONTCONFIG_FILE = "${pkgs.fontconfig.out}/etc/fonts/fonts.conf";
-      LOCALE_ARCHIVE = "${pkgs.glibcLocales}/lib/locale/locale-archive";
-      LC_ALL = config.home.language.base;
-      LANG = config.home.language.base;
-      EDITOR = "nvim";
-      PATH = "/bin:${config.home.homeDirectory}/.nix-profile/bin";
-    };
+    home.sessionVariables =
+      let glibcLocales = pkgs.glibcLocales.override {
+        locales = lib.unique ((lib.attrValues config.home.language) // [ "en_US.UTF-8" "en_GB.UTF-8" "ru_RU.UTF-8" ]);
+      };
+      in
+      {
+        FONTCONFIG_FILE = "${pkgs.fontconfig.out}/etc/fonts/fonts.conf";
+        LOCALE_ARCHIVE = "${glibcLocales}/lib/locale/locale-archive";
+        LC_ALL = config.home.language.base;
+        LANG = config.home.language.base;
+        EDITOR = "nvim";
+        PATH = "/bin:${config.home.homeDirectory}/.nix-profile/bin";
+      };
 
     xdg.configFile."nixpkgs/config.nix".text = ''
       {
@@ -28,7 +33,6 @@ in
 
     home.packages = with pkgs; [
       nixUnstable
-      pkgs.nixGLIntel
       # Not installing mosh, because of
       # https://github.com/NixOS/nixpkgs/issues/90523
       # mosh

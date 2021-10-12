@@ -61,6 +61,7 @@
         nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
         nixpkgs-master.flake = inputs.nixpkgs-master;
         mach-nix.flake = inputs.mach-nix;
+        nixgl.flake = inputs.nixGL;
       };
       m.pin-registry = { config, ... }: {
         nix = {
