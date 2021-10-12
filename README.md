@@ -1,79 +1,38 @@
-# Someone's... dotfiles
+# Some dotfiles
 
-~~A collection of cheap hacks to manage the dotfiles via [nix](https://nixos.org)
-and [home-manager](https://github.com/nix-community/home-manager) on a
-**non-NixOS** system.~~ Currently moving to full-NixOS, repo is a mess
+Almost all hosts are running [NixOS](https://nixos.org)
+and using [home-manager](https://github.com/nix-community/home-manager)
+for refining user's environments.
+In their case I check out this repo at `/etc/nixos`, after which
+`nixos-rebuild` can be used as usual: it will detect the flake.nix, so the
+pinned dependencies will be used, and composed appropriately.
+In case of non-NixOS hosts I'm provisioning only the home environment part.
+I do so by directly calling the home-manager and exposing its activation script as a flake app,
+which can be used e.g. as `nix run .#home-devbox`.
 
-## Set-up
+## Neovim
 
-This repo manages, in a terribly ad hoc manner, the following hosts:
-- "laptop"
-    - Non-NixOS (archlinux)
+Neovim is configured in [./home/neovim/](./home/neovim/default.nix) via the
+home-manager.
 
-    Just home-manager:
-    `nix run .#home-laptop`
+Since recently, I'm using [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
+instead of [coc.nvim](https://github.com/neoclide/coc.nvim), which I'm pretty happy about.
+The nvim-lspconfig requires `nvim-0.5` or higher, which is not yet available in nixpkgs stable,
+so I'm substituting the newer `nvim-0.6` from the upstream directly in the `flake.nix`
+when importing `nixpkgs` (see `neovimOverlay`).
+The rest is making a bunch of language servers visible to the neovim via `extraPackages` and `extraPython3Packages`
+and copy-pasting lsp configuration in lua from appropriate github-readmes.
 
-    - random wayland stuff
-- "devbox"
-    - Non-NixOS (archlinux)
+I'm using [auto-session](https://github.com/rmagatti/auto-session) instead of Obsession
 
-    Just home-manager:
-    `nix run .#home-devbox`
+I couldn't get clangd to work properly, but ccls appears to quite satisfy my needs.
 
-    - `nixpkgs.allowUnfree = true`
-    - headless
-- "ss-x230"
-    - NixOS
+For some reason rnix's formatting behaves differently than nixpkgs-fmt called from the shell.
 
-    `sudo nixos-rebuild switch --flake .#`
+## Pinned registry
 
-## Prerequisites
-
-Flakes-enabled `nix`:
-
-1. [https://nixos.wiki/wiki/Nix_command](https://nixos.wiki/wiki/Nix_command)
-2. Or just
-
-   ```
-   # /etc/nix/nix.conf
-   experimental-features = nix-command flakes
-   ```
-
-   and `nix-env -iA nixUnstable -f '<nixpkgs>'`
-
-
-## Usage
-
-1. Laptop:
-    ```bash
-    nix run .#home-laptop
-    ```
-
-    - No unfree packages
-    - Has gui stuff
-
-2. Devbox:
-    ```bash
-    nix run .#home-devbox
-    ```
-
-    - Unfree packages
-    - No gui
-
----
-
-## Side notes
-
-- Flakes also allow fetching the artifact without explicitly cloning the repo:
-
-  ```bash
-  nix build github:newkozlukov/dotfiles#home-laptop
-  ```
-- The previous only works with public repos, because nix uses github's HTTP
-  API, unaware of SSH keys
-- Python language server configuration for neovim is currently very ad hoc and
-  very limited.  It creates a `python -m` wrapper for each linter (like
-  `black`, `jedi`, etc) that would run by fixed version of python in an
-  isolated environment. This ensures that jedi&c doesn't crash (which it is
-  very prone to), but also means that you'll still get `unable to import torch`
-  messages from the linter.
+I pin the registry and copy its contents into the `NIX_PATH` directly in the
+`flake.nix`, cf. "`pin-registry`". This allows me to conveniently use the
+less-verbose pre-flakes nix tools (like nix-repl and nix-shell) without
+accidentally pulling down a random nixpkgs version (behaviour typical to the
+legacy nix-channels)

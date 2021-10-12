@@ -84,6 +84,7 @@
         nix = nix.packages.${system}.nix;
         home-devbox = (pkgsUnfree.callPackage ./home/call-hm.nix {
           inherit home-manager;
+          username = "serge";
           addModules = [{ some.devbox.enable = true; }];
         }).activationPackage;
       };
