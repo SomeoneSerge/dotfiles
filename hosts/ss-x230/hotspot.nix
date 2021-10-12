@@ -1,11 +1,13 @@
 { config, pkgs, lib, ... }: {
   services.hostapd = {
     enable = true;
+    wpa = false;
     interface = "wlp0s20u1";
     ssid = "Ziferblat";
-    wpaPassphrase = "c5882f485d9c27c7bd3c265a714edb1ab23766347c950dba0bcebb2c9006b29e";
     hwMode = "g";
     extraConfig = ''
+      wpa=2
+      wpa_psk=c5882f485d9c27c7bd3c265a714edb1ab23766347c950dba0bcebb2c9006b29e
       ieee80211n=1
       wme_enabled=1
       ht_capab=[HT40+][SHORT-GI-40][DSSS_CCK-40]
