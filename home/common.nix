@@ -22,12 +22,17 @@ in
 
     home.packages = with pkgs; (
       lib.optionals cfg.enable-busybox [
+        gist
+        gitAndTools.hub
+        gitAndTools.gh
+
         asciinema
         youtubeDL
         mediainfo
         graphicsmagick
         iotop
 
+        delta
         less
         qrencode
 
@@ -52,7 +57,6 @@ in
         nmap
 
 
-        tree
         file
         mediainfo
         mat2
@@ -74,6 +78,7 @@ in
         curl
         wget
       ]
+      ++ lib.optional (!config.programs.broot.enable) [ tree ]
       ++ lib.optionals cfg.enable-gui-busybox [
         libreoffice
 

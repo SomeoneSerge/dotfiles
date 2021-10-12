@@ -3,7 +3,7 @@
     enable = true;
     interface = "wlp0s20u1";
     ssid = "Ziferblat";
-    wpaPassphrase = "allyouneedislove";
+    wpaPassphrase = "c5882f485d9c27c7bd3c265a714edb1ab23766347c950dba0bcebb2c9006b29e";
     hwMode = "g";
     extraConfig = ''
       ieee80211n=1

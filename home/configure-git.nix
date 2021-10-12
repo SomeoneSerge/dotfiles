@@ -1,13 +1,21 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  inherit (lib) mkIf optionalAttrs;
+in
 {
-
-  home.packages = with pkgs; [ gist gitAndTools.hub gitAndTools.gh ];
   programs.git = {
     enable = true;
-    userName = "Someone Serge";
-    userEmail = "sergei.kozlukov@aalto.fi";
+    delta.enable = true;
+    delta.options = {
+      line-numbers = true;
+      side-by-side = true;
+    };
     extraConfig = {
+      pager.log = "delta";
+      pager.reflog = "delta";
+      pager.show = "delta";
+      diff.colorMoved = "default";
       pull.ff = "only";
       alias = {
         st = "status --short --untracked-files=no";
@@ -18,6 +26,8 @@
       color.ui = "auto";
       init.defaultBranch = "master";
     };
+  } // optionalAttrs (config.home.username == "ss") {
+    userName = "Someone Serge";
+    userEmail = "sergei.kozlukov@aalto.fi";
   };
-
 }

@@ -5,7 +5,7 @@ let
   cfg = config.home.modern-unix;
 in
 {
-  options.modern-unix = {
+  options.home.modern-unix = {
     enable = mkOption {
       description = ''
         Enable modern busybox replacements as per
