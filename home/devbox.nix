@@ -44,5 +44,8 @@ in
       enableScDaemon = false;
     };
 
+    programs.git.userName = "Someone S";
+    programs.git.userEmail = "Sergei.Kozlukov@skoltech.ru";
+
   };
 }
