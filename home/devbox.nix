@@ -20,7 +20,7 @@ in
         LC_ALL = config.home.language.base;
         LANG = config.home.language.base;
         EDITOR = "nvim";
-        PATH = "/bin:${config.home.homeDirectory}/.nix-profile/bin";
+        #PATH = "${config.home.homeDirectory}/.nix-profile/bin:/bin";
       };
 
     xdg.configFile."nixpkgs/config.nix".text = ''

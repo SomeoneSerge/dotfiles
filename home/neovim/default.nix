@@ -32,7 +32,7 @@ in
         local opts = {
           log_level = 'info',
           auto_session_enable_last_session = true,
-          auto_session_root_dir = "/home/ss/.local/share/auto-session",
+          auto_session_root_dir = "${config.xdg.dataHome}/auto-session",
           auto_session_enabled = true,
           auto_save_enabled = true,
           auto_restore_enabled = true,
