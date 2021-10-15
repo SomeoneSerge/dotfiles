@@ -265,6 +265,7 @@ in
     vlc
     wireguard
     logseq
+    tdesktop
     ffmpeg-full
     gimp
     vpn-slice
@@ -321,6 +322,7 @@ in
     extraConfig = ''
       c.DummyAuthenticator.password = "allyouneedisnix"
     '';
+    extraPackages = pkgs: with pkgs; [ git wget ];
   };
 
   # Enable the OpenSSH daemon.

@@ -15,6 +15,7 @@ let
 
       ]
       ++ [ pkgs'.conda.condaInstaller config.boot.kernelPackages.nvidia_x11 ]
+      ++ (cfg.extraPackages pkgs')
     );
     runScript = ''
       /bin/jupyterhub --config ${jupyterhubConfig}
@@ -205,6 +206,7 @@ in
           plotly
         ]
       );
+
       description = ''
         Python environment to run jupyterhub
 
@@ -212,6 +214,14 @@ in
         proxy. This will allow packages to be available for the
         extraConfig that you may need. This will not normally need to
         be changed.
+      '';
+    };
+
+    extraPackages = mkOption {
+      type = types.functionTo (types.listOf types.package);
+      default = pkgs: [ ];
+      description = ''
+        Extra packages to add to the FHS environment
       '';
     };
 
