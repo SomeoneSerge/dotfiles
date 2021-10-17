@@ -56,12 +56,12 @@
       pkgs = import nixpkgs pkgsArgs;
       pkgsUnfree = import nixpkgs (pkgsArgs // { config.allowUnfree = true; });
       registry = {
-        dotfiles.flake = inputs.self;
         nixpkgs.flake = inputs.nixpkgs;
+        dotfiles.flake = inputs.self;
+        nixgl.flake = inputs.nixGL;
+        mach-nix.flake = inputs.mach-nix;
         nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
         nixpkgs-master.flake = inputs.nixpkgs-master;
-        mach-nix.flake = inputs.mach-nix;
-        nixgl.flake = inputs.nixGL;
       };
       m.pin-registry = { config, ... }: {
         nix = {
