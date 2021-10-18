@@ -178,7 +178,15 @@ in
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
 
-  services.xserver.dpi = 192;
+  services.xserver.xrandrHeads = [
+    {
+      output = "eDP-1";
+      primary = true;
+      monitorConfig = ''
+        DisplaySize 293.76 165.24
+      '';
+    }
+  ];
   hardware.video.hidpi.enable = true;
   hardware.opengl = {
     enable = true;
