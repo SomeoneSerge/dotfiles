@@ -16,6 +16,7 @@ in
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./cuda-env.nix
+    ./smb.nix
   ];
 
   some.sane.enable = true;
@@ -191,6 +192,7 @@ in
 
   services.printing.enable = true;
 
+  services.gvfs.enable = true;
   services.haveged.enable = true;
 
   # Configure keymap in X11
