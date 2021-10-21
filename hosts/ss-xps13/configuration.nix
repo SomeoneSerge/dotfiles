@@ -266,6 +266,7 @@ in
     services.gammastep.enable = true;
     services.gammastep.dawnTime = "06:00";
     services.gammastep.duskTime = "22:00";
+    some.enable-gui-busybox = true;
   };
 
   # This value determines the NixOS release from which the default
