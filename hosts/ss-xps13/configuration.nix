@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   lite21ipv4 = "5.2.76.123";
@@ -12,7 +12,12 @@ in
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    # ../ss-x230/hotspot.nix
   ];
+
+  networking.nat.enable = true;
+  services.hostapd.interface = lib.mkForce "wlp58s0";
+  networking.nat.externalInterface = "enp0s20f0u2";
 
   some.sane.enable = true;
   some.autosuspend = true;
