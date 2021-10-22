@@ -23,6 +23,7 @@ let
     vpnSliceReadonlyHosts
     (import ./nix-visualize.nix)
     (import ./conda/overlay.nix)
+    (import ./saccade.nix)
   ];
 in
 overlays

@@ -135,6 +135,7 @@ in
     tor-browser-bundle-bin
     chromium
     aria2
+    saccade
   ];
 
   programs.adb.enable = true;
