@@ -136,6 +136,7 @@ in
     chromium
     aria2
     saccade
+    napari
   ];
 
   programs.adb.enable = true;

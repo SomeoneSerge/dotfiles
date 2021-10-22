@@ -88,6 +88,7 @@
           username = "serge";
           addModules = [{ some.devbox.enable = true; }];
         }).activationPackage;
+        napari = pkgs.napari;
       };
       apps.${system} = {
         home-devbox = {

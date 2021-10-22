@@ -24,6 +24,8 @@ let
     (import ./nix-visualize.nix)
     (import ./conda/overlay.nix)
     (import ./saccade.nix)
+    (import ./napari.nix)
+    (import ./pint.nix)
   ];
 in
 overlays

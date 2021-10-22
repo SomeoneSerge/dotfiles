@@ -23,5 +23,5 @@ let
   };
 in
 {
-  saccade = final.libsForQt5.callPackage saccadePkg {};
+  saccade = final.libsForQt5.callPackage saccadePkg { };
 }
