@@ -56,6 +56,7 @@ in
         yrd
         nmap
 
+        parallel
 
         file
         mediainfo
