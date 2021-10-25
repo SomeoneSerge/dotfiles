@@ -315,6 +315,9 @@ in
         ]
       )
     )
+    napari
+    saccade
+    okular
   ];
 
   services.jhub = {
