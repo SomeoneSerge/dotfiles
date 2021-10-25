@@ -137,6 +137,7 @@ in
     aria2
     saccade
     napari
+    okular
   ];
 
   programs.adb.enable = true;
