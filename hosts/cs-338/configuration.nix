@@ -215,6 +215,13 @@ in
   #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   # };
   users.users = {
+    melekhi1 = {
+      isNormalUser = true;
+      openssh.authorizedKeys.keys = [
+        ''ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDBGF3YYkFkC16HV8iIx++ICze+E7pbxcJcZ3quXMn/wfGX6jyrOI5C/H0qPOhbOwXa26sVPqxyTWhhQhX1Xc7TSKg29Ee9hcQdnzXt2DBauZ43QQsu+vhVequnP8to28CTFberBbqOrHoXO2xfgd/OtzFUUvOU2vwxaS0Y7EUxdyygzp4QvKiOR8S5incMrzAgQ+yF+A8Z4kZh9zvjMGFqaVJNtovO401HZ43uwpSM/C3C1I1QE0jK6/dQesWtaz92q2tMQOzIh4ZjSzR/JIBet/Tagsh686hUhZC/+pPkFyjZRlOOfAaQ2YbZcYKtEf86cWlR63omK9ngZLyldNF/0ocOK0gJltjEvF+u63w1UfCLhlW8Xhy6cOGLEDGYALgqkOP7o2YB2J1slzw6emxgnW9AOetWw0NbnGO6MgbMR+rTnFYgH4SIundl+U3obflpQ3drDDGTRONGJgYhSJiOLqKG07PCGrY5P1l75ayYOiLLKVrcqC7au6/gOw5uqN22EHDpHHSrZBPt/hNN1YRCFT485HwiwDCTukp/0tmtUAIFLUM3+O2ejlkHnOHy8s2aCbR7++XtOSWKy81tJC9k3vYZoY6fZeUmRyL4crFu1jAh0uZnUWHCCqkYrCk/yOfa4ZNLuP1CjT/hGnjxJm689FP+1wNMaF2I2rX/gHm0UQ== iaroslav.melekhov@aalto.fi''
+      ];
+      hashedPassword = "$6$abac2409qhad$iiUlhxGOufkzMYAfZFhdY2vSTS3RGvbp/4VhbiAjcLQ0Rf1/dk0HTbhyPcYt0GfDEWyGlqhPmtgjgjDA92Nv9.";
+    };
     kozluks1 = {
       isNormalUser = true;
       extraGroups = [ "wheel" "video" ];
