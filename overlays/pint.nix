@@ -16,12 +16,12 @@ let
     , uncertainties
     }: buildPythonPackage rec {
       pname = "pint";
-      version = "0.17";
+      version = "0.18";
 
       src = fetchPypi {
         inherit version;
         pname = "Pint";
-        sha256 = "sha256-9NDKpxMjnmhHp8bu/iQnNYVmRR/lZJfVM/IftZCj8xM=";
+        sha256 = "jEvOiEwmkFH+t6vGnb/RhAPAx2SryD2hMuinIi+LqAE=";
       };
 
       doCheck = false;
