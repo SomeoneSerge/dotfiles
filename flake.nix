@@ -24,6 +24,12 @@
       url = "github:SomeoneSerge/openconnect-sso/flake.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-update = {
+      type = "github";
+      owner = "ryantm";
+      repo = "nixpkgs-update";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -35,6 +41,7 @@
     , nixos-hardware
     , openconnect-sso
     , neovim-nightly
+    , nixpkgs-update
     , ...
     }@inputs:
     let
@@ -139,6 +146,7 @@
           nixos-hardware.nixosModules.dell-xps-13-9360
           ./hosts/ss-xps13/configuration.nix
           (enable-hm [ "ss" ])
+          { environment.systemPackages = [ nixpkgs-update.packages.${system}.nixpkgs-update ]; }
         ];
       };
 
