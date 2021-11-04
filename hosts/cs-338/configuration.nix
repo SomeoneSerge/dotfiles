@@ -47,6 +47,8 @@ in
   virtualisation.docker.enableNvidia = true;
   systemd.enableUnifiedCgroupHierarchy = false; # otherwise nvidia-docker fails
 
+  virtualisation.libvirtd.enable = true;
+
   networking.domain = "aalto.fi";
   networking.hostName = "cs-338"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -235,7 +237,7 @@ in
     };
     ss = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "video" "docker" ];
+      extraGroups = [ "wheel" "video" "docker" ] ++ lib.optional config.virtualisation.libvirtd.enable "libvirtd";
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZCVSaUEokr9f55mKVWf4HzHsVIIY1CO089LuTJuHqS kozluks1@login3.triton.aalto.fi"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
@@ -325,7 +327,9 @@ in
     napari
     saccade
     okular
-  ];
+  ]
+  ++ lib.optional config.virtualisation.libvirtd.enable pkgs.virt-manager
+  ;
 
   services.jhub = {
     enable = true;
