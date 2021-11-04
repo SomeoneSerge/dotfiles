@@ -327,6 +327,7 @@ in
     napari
     saccade
     okular
+    xclip
   ]
   ++ lib.optional config.virtualisation.libvirtd.enable pkgs.virt-manager
   ;
