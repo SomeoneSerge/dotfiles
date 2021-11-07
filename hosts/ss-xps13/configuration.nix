@@ -270,6 +270,10 @@ in
     services.gammastep.dawnTime = "06:00";
     services.gammastep.duskTime = "22:00";
     some.enable-gui-busybox = true;
+    programs.git.signing = {
+      key = "3C335BD71DE8A69DDE0871DBA39079F4AE78D20D";
+      signByDefault = true;
+    };
   };
 
   # This value determines the NixOS release from which the default

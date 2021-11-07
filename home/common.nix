@@ -83,6 +83,8 @@ in
       ++ lib.optionals cfg.enable-gui-busybox [
         libreoffice
 
+        audacity
+
         colmap
         meshlab
 
