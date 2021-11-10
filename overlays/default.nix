@@ -26,6 +26,8 @@ let
     (import ./saccade.nix)
     (import ./napari.nix)
     (import ./pint.nix)
+    # FIX: building logseq on nixos-21.05 fails with "electron_11 is EOL"
+    (final: prev: { logseq = prev.logseq.override { electron = final.electron_12; }; })
   ];
 in
 overlays
