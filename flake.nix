@@ -46,7 +46,7 @@
     }@inputs:
     let
       system = "x86_64-linux";
-      inherit (nixpkgs.lib) mapAttrsToList genAttrs;
+      inherit (nixpkgs.lib) mapAttrsToList genAttrs nixosSystem;
 
       # take neovim-nightly built with upstream's nixpkgs
       # (thus with upstream's libc)
@@ -58,10 +58,8 @@
 
       overlays = (import ./overlays { inherit nixGL nix; })
         ++ [ neovimOverlay ];
-
-      pkgsArgs = { inherit system overlays; };
-      pkgs = import nixpkgs pkgsArgs;
-      pkgsUnfree = import nixpkgs (pkgsArgs // { config.allowUnfree = true; });
+      pkgs = import nixpkgs { inherit system; };
+      pkgsExt = import nixpkgs { inherit system overlays; };
       registry = {
         nixpkgs.flake = inputs.nixpkgs;
         dotfiles.flake = inputs.self;
@@ -76,6 +74,8 @@
           nixPath = mapAttrsToList (name: value: "${name}=${value.flake}") config.nix.registry;
         };
       };
+      m.allowUnfree = { nixpkgs.config.allowUnfree = true; };
+      m.useOverlays = { nixpkgs.overlays = overlays; };
       m.enable-some = import ./modules;
       m.enable-hm = users: { config, pkgs, ... }: {
         imports = [ home-manager.nixosModules.home-manager ];
@@ -104,10 +104,11 @@
         };
       };
 
-      nixosConfigurations.ss-x230 = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.ss-x230 = nixosSystem {
         system = "x86_64-linux";
-        pkgs = pkgsUnfree;
         modules = with m; [
+          allowUnfree
+          useOverlays
           enable-some
           enable-openconnect
           pin-registry
@@ -117,10 +118,10 @@
         ];
       };
 
-      nixosConfigurations.lite21 = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.lite21 = nixosSystem {
         system = "x86_64-linux";
-        inherit pkgs;
         modules = with m; [
+          useOverlays
           enable-some
           enable-openconnect
           pin-registry
@@ -137,9 +138,10 @@
         ];
       };
 
-      nixosConfigurations.ss-xps13 = nixpkgs.lib.nixosSystem {
-        inherit pkgs system;
+      nixosConfigurations.ss-xps13 = nixosSystem {
+        inherit system;
         modules = with m; [
+          useOverlays
           enable-some
           enable-openconnect
           pin-registry
@@ -150,10 +152,11 @@
         ];
       };
 
-      nixosConfigurations.cs-338 = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.cs-338 = nixosSystem {
         system = "x86_64-linux";
-        pkgs = pkgsUnfree;
         modules = with m; [
+          allowUnfree
+          useOverlays
           enable-some
           enable-openconnect
           pin-registry
@@ -163,10 +166,10 @@
         ];
       };
 
-      nixosConfigurations.x230-installer = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.x230-installer = nixosSystem {
         system = "x86_64-linux";
-        inherit pkgs;
-        modules = [
+        modules = with m; [
+          useOverlays
           "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix"
           {
             environment.systemPackages =
