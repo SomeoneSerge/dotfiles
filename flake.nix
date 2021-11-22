@@ -90,12 +90,31 @@
     rec {
       packages.${system} = {
         nix = nix.packages.${system}.nix;
-        home-devbox = (pkgsUnfree.callPackage ./home/call-hm.nix {
+        home-devbox = (pkgs.callPackage ./home/call-hm.nix {
           inherit home-manager;
           username = "serge";
-          addModules = [{ some.devbox.enable = true; }];
+          addModules = with m; [
+            { some.devbox.enable = true; }
+            useOverlays
+            allowUnfree
+          ];
         }).activationPackage;
-        napari = pkgs.napari;
+        napari = pkgsExt.napari;
+        pkgs = pkgsExt.stdenv.mkDerivation {
+          name = "pkgs-passthru";
+          src = throw "Don't build, use pkgs from passthru";
+          passthru = pkgsExt;
+        };
+        pkgsUnfree = pkgsExt.stdenv.mkDerivation {
+          name = "pkgs-passthru-unfree";
+          src = throw "Don't build, use pkgs from passthru";
+          passthru = import inputs.nixpkgs { inherit system overlays; config.allowUnfree = true; };
+        };
+        pkgsUnfreeUnstable = pkgsExt.stdenv.mkDerivation {
+          name = "pkgs-passthru-unfree";
+          src = throw "Don't build, use pkgs from passthru";
+          passthru = import inputs.nixpkgs-unstable { inherit system overlays; config.allowUnfree = true; };
+        };
       };
       apps.${system} = {
         home-devbox = {
