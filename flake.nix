@@ -3,7 +3,7 @@
 
   inputs = {
     nix.url = "github:NixOS/nix";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-21.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     neovim-nightly = { url = "github:neovim/neovim?dir=contrib"; };
