@@ -19,7 +19,7 @@ in
     ./smb.nix
   ];
 
-  nixpkgs.overlays = [ (final: prev: { cudatoolkit = final.cudatoolkit_11; }) ];
+  # nixpkgs.overlays = [ (final: prev: { cudatoolkit = final.cudatoolkit_11; }) ];
 
   some.sane.enable = true;
   some.mesh.enable = true;
