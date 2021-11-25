@@ -299,7 +299,7 @@ in
           glib
           # maybe add this? doesn't appear to be required
           # config.boot.kernelPackages.nvidia_x11
-          # cudatoolkit_11_2
+          cudatoolkit_11
         ];
       }
     )
