@@ -6,6 +6,7 @@ in
 {
   programs.git = {
     enable = true;
+    lfs.enable = true;
     delta.enable = true;
     delta.options = {
       line-numbers = true;

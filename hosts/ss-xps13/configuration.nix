@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 let
   lite21ipv4 = "5.2.76.123";
@@ -12,7 +12,12 @@ in
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
+    # ../ss-x230/hotspot.nix
   ];
+
+  networking.nat.enable = true;
+  services.hostapd.interface = lib.mkForce "wlp58s0";
+  networking.nat.externalInterface = "enp0s20f0u2";
 
   some.sane.enable = true;
   some.autosuspend = true;
@@ -130,6 +135,9 @@ in
     tor-browser-bundle-bin
     chromium
     aria2
+    saccade
+    napari
+    okular
   ];
 
   programs.adb.enable = true;
@@ -178,7 +186,16 @@ in
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
 
-  services.xserver.dpi = 192;
+  fonts.fontconfig.dpi = 192;
+  services.xserver.xrandrHeads = [
+    {
+      output = "eDP-1";
+      primary = true;
+      monitorConfig = ''
+        DisplaySize 293.76 165.24
+      '';
+    }
+  ];
   hardware.video.hidpi.enable = true;
   hardware.opengl = {
     enable = true;
@@ -252,6 +269,11 @@ in
     services.gammastep.enable = true;
     services.gammastep.dawnTime = "06:00";
     services.gammastep.duskTime = "22:00";
+    some.enable-gui-busybox = true;
+    programs.git.signing = {
+      key = "3C335BD71DE8A69DDE0871DBA39079F4AE78D20D";
+      signByDefault = true;
+    };
   };
 
   # This value determines the NixOS release from which the default

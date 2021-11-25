@@ -3,7 +3,7 @@
 
   inputs = {
     nix.url = "github:NixOS/nix";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-21.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     neovim-nightly = { url = "github:neovim/neovim?dir=contrib"; };
@@ -24,6 +24,12 @@
       url = "github:SomeoneSerge/openconnect-sso/flake.nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixpkgs-update = {
+      type = "github";
+      owner = "ryantm";
+      repo = "nixpkgs-update";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -35,11 +41,12 @@
     , nixos-hardware
     , openconnect-sso
     , neovim-nightly
+    , nixpkgs-update
     , ...
     }@inputs:
     let
       system = "x86_64-linux";
-      inherit (nixpkgs.lib) mapAttrsToList genAttrs;
+      inherit (nixpkgs.lib) mapAttrsToList genAttrs nixosSystem;
 
       # take neovim-nightly built with upstream's nixpkgs
       # (thus with upstream's libc)
@@ -51,17 +58,15 @@
 
       overlays = (import ./overlays { inherit nixGL nix; })
         ++ [ neovimOverlay ];
-
-      pkgsArgs = { inherit system overlays; };
-      pkgs = import nixpkgs pkgsArgs;
-      pkgsUnfree = import nixpkgs (pkgsArgs // { config.allowUnfree = true; });
+      pkgs = import nixpkgs { inherit system; };
+      pkgsExt = import nixpkgs { inherit system overlays; };
       registry = {
-        dotfiles.flake = inputs.self;
         nixpkgs.flake = inputs.nixpkgs;
+        dotfiles.flake = inputs.self;
+        nixgl.flake = inputs.nixGL;
+        mach-nix.flake = inputs.mach-nix;
         nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
         nixpkgs-master.flake = inputs.nixpkgs-master;
-        mach-nix.flake = inputs.mach-nix;
-        nixgl.flake = inputs.nixGL;
       };
       m.pin-registry = { config, ... }: {
         nix = {
@@ -69,6 +74,8 @@
           nixPath = mapAttrsToList (name: value: "${name}=${value.flake}") config.nix.registry;
         };
       };
+      m.allowUnfree = { nixpkgs.config.allowUnfree = true; };
+      m.useOverlays = { nixpkgs.overlays = overlays; };
       m.enable-some = import ./modules;
       m.enable-hm = users: { config, pkgs, ... }: {
         imports = [ home-manager.nixosModules.home-manager ];
@@ -83,11 +90,31 @@
     rec {
       packages.${system} = {
         nix = nix.packages.${system}.nix;
-        home-devbox = (pkgsUnfree.callPackage ./home/call-hm.nix {
+        home-devbox = (pkgs.callPackage ./home/call-hm.nix {
           inherit home-manager;
           username = "serge";
-          addModules = [{ some.devbox.enable = true; }];
+          addModules = with m; [
+            { some.devbox.enable = true; }
+            useOverlays
+            allowUnfree
+          ];
         }).activationPackage;
+        napari = pkgsExt.napari;
+        pkgs = pkgsExt.stdenv.mkDerivation {
+          name = "pkgs-passthru";
+          src = throw "Don't build, use pkgs from passthru";
+          passthru = pkgsExt;
+        };
+        pkgsUnfree = pkgsExt.stdenv.mkDerivation {
+          name = "pkgs-passthru-unfree";
+          src = throw "Don't build, use pkgs from passthru";
+          passthru = import inputs.nixpkgs { inherit system overlays; config.allowUnfree = true; };
+        };
+        pkgsUnfreeUnstable = pkgsExt.stdenv.mkDerivation {
+          name = "pkgs-passthru-unfree";
+          src = throw "Don't build, use pkgs from passthru";
+          passthru = import inputs.nixpkgs-unstable { inherit system overlays; config.allowUnfree = true; };
+        };
       };
       apps.${system} = {
         home-devbox = {
@@ -96,10 +123,11 @@
         };
       };
 
-      nixosConfigurations.ss-x230 = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.ss-x230 = nixosSystem {
         system = "x86_64-linux";
-        pkgs = pkgsUnfree;
         modules = with m; [
+          allowUnfree
+          useOverlays
           enable-some
           enable-openconnect
           pin-registry
@@ -109,10 +137,10 @@
         ];
       };
 
-      nixosConfigurations.lite21 = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.lite21 = nixosSystem {
         system = "x86_64-linux";
-        inherit pkgs;
         modules = with m; [
+          useOverlays
           enable-some
           enable-openconnect
           pin-registry
@@ -129,22 +157,25 @@
         ];
       };
 
-      nixosConfigurations.ss-xps13 = nixpkgs.lib.nixosSystem {
-        inherit pkgs system;
+      nixosConfigurations.ss-xps13 = nixosSystem {
+        inherit system;
         modules = with m; [
+          useOverlays
           enable-some
           enable-openconnect
           pin-registry
           nixos-hardware.nixosModules.dell-xps-13-9360
           ./hosts/ss-xps13/configuration.nix
           (enable-hm [ "ss" ])
+          { environment.systemPackages = [ nixpkgs-update.packages.${system}.nixpkgs-update ]; }
         ];
       };
 
-      nixosConfigurations.cs-338 = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.cs-338 = nixosSystem {
         system = "x86_64-linux";
-        pkgs = pkgsUnfree;
         modules = with m; [
+          allowUnfree
+          useOverlays
           enable-some
           enable-openconnect
           pin-registry
@@ -154,10 +185,10 @@
         ];
       };
 
-      nixosConfigurations.x230-installer = nixpkgs.lib.nixosSystem {
+      nixosConfigurations.x230-installer = nixosSystem {
         system = "x86_64-linux";
-        inherit pkgs;
-        modules = [
+        modules = with m; [
+          useOverlays
           "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix"
           {
             environment.systemPackages =

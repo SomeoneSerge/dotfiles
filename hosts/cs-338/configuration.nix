@@ -16,7 +16,10 @@ in
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./cuda-env.nix
+    ./smb.nix
   ];
+
+  # nixpkgs.overlays = [ (final: prev: { cudatoolkit = final.cudatoolkit_11; }) ];
 
   some.sane.enable = true;
   some.mesh.enable = true;
@@ -45,6 +48,8 @@ in
   virtualisation.docker.enable = true;
   virtualisation.docker.enableNvidia = true;
   systemd.enableUnifiedCgroupHierarchy = false; # otherwise nvidia-docker fails
+
+  virtualisation.libvirtd.enable = true;
 
   networking.domain = "aalto.fi";
   networking.hostName = "cs-338"; # Define your hostname.
@@ -191,6 +196,7 @@ in
 
   services.printing.enable = true;
 
+  services.gvfs.enable = true;
   services.haveged.enable = true;
 
   # Configure keymap in X11
@@ -213,6 +219,13 @@ in
   #   extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
   # };
   users.users = {
+    melekhi1 = {
+      isNormalUser = true;
+      openssh.authorizedKeys.keys = [
+        ''ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDBGF3YYkFkC16HV8iIx++ICze+E7pbxcJcZ3quXMn/wfGX6jyrOI5C/H0qPOhbOwXa26sVPqxyTWhhQhX1Xc7TSKg29Ee9hcQdnzXt2DBauZ43QQsu+vhVequnP8to28CTFberBbqOrHoXO2xfgd/OtzFUUvOU2vwxaS0Y7EUxdyygzp4QvKiOR8S5incMrzAgQ+yF+A8Z4kZh9zvjMGFqaVJNtovO401HZ43uwpSM/C3C1I1QE0jK6/dQesWtaz92q2tMQOzIh4ZjSzR/JIBet/Tagsh686hUhZC/+pPkFyjZRlOOfAaQ2YbZcYKtEf86cWlR63omK9ngZLyldNF/0ocOK0gJltjEvF+u63w1UfCLhlW8Xhy6cOGLEDGYALgqkOP7o2YB2J1slzw6emxgnW9AOetWw0NbnGO6MgbMR+rTnFYgH4SIundl+U3obflpQ3drDDGTRONGJgYhSJiOLqKG07PCGrY5P1l75ayYOiLLKVrcqC7au6/gOw5uqN22EHDpHHSrZBPt/hNN1YRCFT485HwiwDCTukp/0tmtUAIFLUM3+O2ejlkHnOHy8s2aCbR7++XtOSWKy81tJC9k3vYZoY6fZeUmRyL4crFu1jAh0uZnUWHCCqkYrCk/yOfa4ZNLuP1CjT/hGnjxJm689FP+1wNMaF2I2rX/gHm0UQ== iaroslav.melekhov@aalto.fi''
+      ];
+      hashedPassword = "$6$abac2409qhad$iiUlhxGOufkzMYAfZFhdY2vSTS3RGvbp/4VhbiAjcLQ0Rf1/dk0HTbhyPcYt0GfDEWyGlqhPmtgjgjDA92Nv9.";
+    };
     kozluks1 = {
       isNormalUser = true;
       extraGroups = [ "wheel" "video" ];
@@ -226,7 +239,7 @@ in
     };
     ss = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "video" "docker" ];
+      extraGroups = [ "wheel" "video" "docker" ] ++ lib.optional config.virtualisation.libvirtd.enable "libvirtd";
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZCVSaUEokr9f55mKVWf4HzHsVIIY1CO089LuTJuHqS kozluks1@login3.triton.aalto.fi"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
@@ -265,6 +278,7 @@ in
     vlc
     wireguard
     logseq
+    tdesktop
     ffmpeg-full
     gimp
     vpn-slice
@@ -285,7 +299,7 @@ in
           glib
           # maybe add this? doesn't appear to be required
           # config.boot.kernelPackages.nvidia_x11
-          # cudatoolkit_11_2
+          cudatoolkit_11
         ];
       }
     )
@@ -312,7 +326,13 @@ in
         ]
       )
     )
-  ];
+    napari
+    saccade
+    okular
+    xclip
+  ]
+  ++ lib.optional config.virtualisation.libvirtd.enable pkgs.virt-manager
+  ;
 
   services.jhub = {
     enable = true;
@@ -321,12 +341,14 @@ in
     extraConfig = ''
       c.DummyAuthenticator.password = "allyouneedisnix"
     '';
+    extraPackages = pkgs: with pkgs; [ git wget ];
   };
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   networking.firewall.enable = true;
   networking.firewall.trustedInterfaces = [ "wg24601" ];
+  networking.firewall.allowedTCPPorts = [ 5201 ];
 
   networking.wg-quick.interfaces.wg24601 = {
     address = [ "10.24.60.14" ];

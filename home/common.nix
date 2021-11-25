@@ -56,6 +56,7 @@ in
         yrd
         nmap
 
+        parallel
 
         file
         mediainfo
@@ -81,6 +82,8 @@ in
       ++ lib.optional (!config.programs.broot.enable) [ tree ]
       ++ lib.optionals cfg.enable-gui-busybox [
         libreoffice
+
+        audacity
 
         colmap
         meshlab

@@ -46,17 +46,30 @@
 , # Whether to use miniforge, mambaforge, or anaconda
   condaManager ? "miniforge"
 , # Whether to use pypy3 or python3 (cython)
-  condaPython ? "python3"
+  condaPython ? "pypy3"
+, semver ? "4.10.3-7"
 }:
 
 let
   condaSh = "${installationPath}/etc/profile.d/conda.sh";
-  notFound = (builtins.abort "Unsupported configuration");
-  filterInstallers = installer:
-    (installer.system == stdenv.targetPlatform.system)
-    && (installer.conda == condaManager)
-    && (installer.python == condaPython);
-  installer' = lib.findFirst filterInstallers installers;
+  filterInstallers' = installer:
+    let
+      criteria = {
+        system = { q = installer.system; v = stdenv.targetPlatform.system; };
+        condaFlavour = { q = installer.conda; v = condaManager; };
+        pythonFlavour = { q = installer.python; v = condaPython; };
+        semver = { q = installer.version; v = semver; };
+      };
+      criteriaVals = lib.mapAttrs (k: c: c.q == c.v) criteria;
+      match = lib.all (x: x) (lib.attrValues criteriaVals);
+      failed = lib.filterAttrs (name: c: c.q != c.v) criteria;
+      reason = "Discarding ${installer.url}, because the following criteria have failed: " + lib.concatStringsSep ", " (lib.mapAttrsToList (name: c: "${name}[${c.q} != ${c.v}]") failed);
+    in
+    { inherit match reason; };
+  filterInstallers = installer: (filterInstallers' installer).match;
+  reasons = lib.concatMapStringsSep "\n" (i: (filterInstallers' i).reason) installers;
+  notFound = (builtins.abort "Unsupported configuration for conda:\n${reasons}");
+  installer' = lib.findFirst filterInstallers notFound installers;
   installer = lib.findSingle filterInstallers notFound (lib.warn "Multiple versions of conda match the query" installer') installers;
 
   src = fetchurl { inherit (installer) url sha256; };
@@ -116,44 +129,58 @@ let
   };
 
   installers = [
-    {
-      url = "https://github.com/conda-forge/miniforge/releases/download/4.10.3-4/Miniforge3-Linux-x86_64.sh";
-      sha256 = "1gkh1b1zqjnvmmchcsq632jy199b5i6v6dxy8y60nval8dnnwqhk";
-      system = "x86_64-linux";
-      conda = "miniforge";
-      python = "python3";
-    }
-    {
-      url = "https://github.com/conda-forge/miniforge/releases/download/4.10.3-4/Miniforge-pypy3-4.10.3-4-Linux-x86_64.sh";
-      sha256 = "0a02h9imjw9357x15m38s5skzyqi9sj92gfpj3kn497jiy8ylsf6";
+    rec {
+      url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Mambaforge-pypy3-${version}-Linux-x86_64.sh";
+      sha256 = "sgeVnwT+A8+zXB5x+NbvzOqzKYxuAFcAgejQTVgGaHk=";
+      version = "4.10.3-7";
       system = "x86_64-linux";
       conda = "miniforge";
       python = "pypy3";
     }
-    {
-      url = "https://github.com/conda-forge/miniforge/releases/download/4.10.3-4/Miniforge3-Linux-aarch64.sh";
+    rec {
+      url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Miniforge3-Linux-x86_64.sh";
+      sha256 = "1gkh1b1zqjnvmmchcsq632jy199b5i6v6dxy8y60nval8dnnwqhk";
+      version = "4.10.3-4";
+      system = "x86_64-linux";
+      conda = "miniforge";
+      python = "python3";
+    }
+    rec {
+      url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Miniforge-pypy3-${version}-Linux-x86_64.sh";
+      sha256 = "0a02h9imjw9357x15m38s5skzyqi9sj92gfpj3kn497jiy8ylsf6";
+      version = "4.10.3-4";
+      system = "x86_64-linux";
+      conda = "miniforge";
+      python = "pypy3";
+    }
+    rec {
+      url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Miniforge3-Linux-aarch64.sh";
       sha256 = "1llj0c78pc5w5v1grzq98qankm8ig0v7xsf4vh2zqphlv2g20dqj";
+      version = "4.10.3-4";
       system = "aarch64-linux";
       conda = "miniforge";
       python = "python3";
     }
-    {
-      url = "https://github.com/conda-forge/miniforge/releases/download/4.10.3-4/Miniforge3-Darwin-x86_64.sh";
+    rec {
+      url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Miniforge3-Darwin-x86_64.sh";
       sha256 = "0xrdi7yixhhr7hmmcih36sdxppf9yj5sflpl5f31gnd3qcz5kgi1";
+      version = "4.10.3-4";
       system = "x86_64-darwin";
       conda = "miniforge";
       python = "python3";
     }
-    {
-      url = "https://github.com/conda-forge/miniforge/releases/download/4.10.3-4/Miniforge3-Darwin-arm64.sh";
+    rec {
+      url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Miniforge3-Darwin-arm64.sh";
       sha256 = "1zmfrkwmgns6zcqmqlkla1zzfzp2sxll43gkl3b95k7r5wbs4y80";
+      version = "4.10.3-4";
       system = "aarch64-darwin";
       conda = "miniforge";
       python = "python3";
     }
-    {
-      url = "https://repo.anaconda.com/miniconda/Miniconda3-py39_4.10.3-MacOSX-x86_64.sh";
+    rec {
+      url = "https://repo.anaconda.com/miniconda/Miniconda3-py39_${version}-MacOSX-x86_64.sh";
       sha256 = "026mgj9bnbfqri0w2vakhcs85r7nylswci1ih39cgqj33xrfjvbq";
+      version = "4.10.3";
       system = "x86_64-linux";
       conda = "anaconda";
       python = "python3";
