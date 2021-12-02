@@ -16,6 +16,7 @@ in
       pager.log = "delta";
       pager.reflog = "delta";
       pager.show = "delta";
+      pager.blame = "delta";
       diff.colorMoved = "default";
       pull.ff = "only";
       alias = {
