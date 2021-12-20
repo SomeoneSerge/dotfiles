@@ -313,7 +313,6 @@ in
     nvtop
 
     wineWowPackages.full
-    (winetricks.override { wine = wineWowPackages.full; })
     turbovnc
 
     (
