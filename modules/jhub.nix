@@ -286,6 +286,7 @@ in
             description = "Jupyterhub user";
             extraGroups = [ "shadow" ];
             shell = pkgs.bashInteractive;
+            group = "jhub";
           };
         };
         systemd.services.jhub = {
