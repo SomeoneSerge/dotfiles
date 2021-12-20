@@ -190,9 +190,11 @@ in
     {
       output = "eDP-1";
       primary = true;
-      monitorConfig = ''
-        DisplaySize 293.76 165.24
-      '';
+      monitorConfig =
+        let coef = 1.55; in
+        ''
+          DisplaySize ${toString (293.76 * coef)} ${toString (165.24 * coef)}
+        '';
     }
   ];
   hardware.video.hidpi.enable = true;
