@@ -7,8 +7,6 @@ in
   programs.neovim = {
     enable = mkDefault true;
 
-    package = pkgs.neovim-nightly;
-
     extraConfig = ''
       :imap jk <Esc>
       :set number
@@ -96,7 +94,8 @@ in
       haskell-language-server
       rust-analyzer
       pyright
-      python3Packages.python-language-server
+      # pyls broken from python39 which is the new python3 since nixos-21.11
+      # python3Packages.python-language-server
       black
       rnix-lsp
       nixpkgs-fmt
@@ -118,9 +117,9 @@ in
     ];
     extraPython3Packages = ps:
       with ps; [
-        pyls-black
-        pyls-isort
-        pyls-mypy
+        # pyls-black
+        # pyls-isort
+        # pyls-mypy
         pylint
         black
         flake8

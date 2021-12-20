@@ -179,9 +179,9 @@ in
 
         See https://jupyterhub.readthedocs.io/en/stable/getting-started/config-basics.html
       '';
-      example = literalExample ''
-        c.SystemdSpawner.mem_limit = '8G'
-        c.SystemdSpawner.cpu_limit = 2.0
+      example = literalExpression ''
+          c.SystemdSpawner.mem_limit = '8G'
+          c.SystemdSpawner.cpu_limit = 2.0
       '';
     };
 

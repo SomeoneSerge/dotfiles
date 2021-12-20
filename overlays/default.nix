@@ -27,7 +27,6 @@ let
     (import ./napari.nix)
     (import ./pint.nix)
     (final: prev: {
-      logseq = prev.logseq.override { electron = final.electron_12; };
       tor-browser-bundle-bin = prev.tor-browser-bundle-bin.override {
         pulseaudioSupport = true;
         mediaSupport = true;

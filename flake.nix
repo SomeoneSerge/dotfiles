@@ -3,10 +3,10 @@
 
   inputs = {
     nix.url = "github:NixOS/nix";
-    nixpkgs.url = "github:NixOS/nixpkgs/release-21.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-    neovim-nightly = { url = "github:neovim/neovim?dir=contrib"; };
+    neovim-nightly = { url = "github:neovim/neovim?dir=contrib"; inputs.nixpkgs.follows = "nixpkgs"; };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -21,8 +21,8 @@
       flake = false;
     };
     openconnect-sso = {
-      url = "github:SomeoneSerge/openconnect-sso/flake.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:vlaci/openconnect-sso";
+      flake = false;
     };
     nixpkgs-update = {
       type = "github";
@@ -50,14 +50,14 @@
 
       # take neovim-nightly built with upstream's nixpkgs
       # (thus with upstream's libc)
-      neovimOverlay = final: prev:
-        let
-          system = prev.system;
-        in
-        { neovim-nightly = neovim-nightly.packages.${system}.neovim; };
 
       overlays = (import ./overlays { inherit nixGL nix; })
-        ++ [ neovimOverlay ];
+        ++ [
+        neovim-nightly.overlay
+        # python-language-server breaks with python39
+        # (final: prev: { neovim = prev.neovim.override { python3 = final.python38; python3Packages = final.python38Packages; }; })
+        (import "${openconnect-sso}/overlay.nix")
+      ];
       pkgs = import nixpkgs { inherit system; };
       pkgsExt = import nixpkgs { inherit system overlays; };
       registry = {
@@ -82,9 +82,9 @@
         home-manager.useGlobalPkgs = true;
         home-manager.users = genAttrs users (user: import ./home/default.nix);
       };
-      m.enable-openconnect = {
+      m.enable-openconnect = { pkgs, ... }: {
         environment.systemPackages =
-          [ openconnect-sso.packages.${system}.openconnect-sso ];
+          [ pkgs.openconnect-sso ];
       };
     in
     rec {
@@ -99,7 +99,7 @@
             allowUnfree
           ];
         }).activationPackage;
-        napari = pkgsExt.napari;
+        inherit (pkgsExt) napari neovim;
         pkgs = pkgsExt.stdenv.mkDerivation {
           name = "pkgs-passthru";
           src = throw "Don't build, use pkgs from passthru";
@@ -167,7 +167,7 @@
           nixos-hardware.nixosModules.dell-xps-13-9360
           ./hosts/ss-xps13/configuration.nix
           (enable-hm [ "ss" ])
-          { environment.systemPackages = [ nixpkgs-update.packages.${system}.nixpkgs-update ]; }
+          # { environment.systemPackages = [ nixpkgs-update.packages.${system}.nixpkgs-update ]; }
         ];
       };
 

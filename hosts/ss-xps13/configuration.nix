@@ -186,7 +186,6 @@ in
     vaapiIntel = pkgs.vaapiIntel.override { enableHybridCodec = true; };
   };
 
-  fonts.fontconfig.dpi = 192;
   services.xserver.xrandrHeads = [
     {
       output = "eDP-1";
