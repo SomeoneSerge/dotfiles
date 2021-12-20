@@ -88,11 +88,11 @@ nvim_lsp["sumneko_lua"].setup {
     on_attach = on_attach,
     capabilities = capabilities
 }
-nvim_lsp["pylsp"].setup {
-    cmd = {"pyls"},
-    on_attach = on_attach,
-    capabilities = capabilities
-}
+-- nvim_lsp["pylsp"].setup {
+--     cmd = {"pyls"},
+--     on_attach = on_attach,
+--     capabilities = capabilities
+-- }
 nvim_lsp["texlab"].setup {
     cmd = {"texlab"},
     on_attach = on_attach,
