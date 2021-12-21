@@ -289,6 +289,7 @@ in
             group = "jhub";
           };
         };
+        users.groups.jhub = {};
         systemd.services.jhub = {
           description = "Jupyterhub development server";
 
