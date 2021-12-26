@@ -126,7 +126,7 @@ in
       monitorConfig = ''
         DisplaySize 708.40 398.50
         Option "PreferredMode" "3840x2160_60.0"
-        Option "MetaModes" "3840x2160 +1152+0 {{ForceFullCompositionPipeline=On}"
+        Option "MetaModes" "3840x2160 +1152+0 {ForceFullCompositionPipeline=On}"
       '';
     }
   ];
