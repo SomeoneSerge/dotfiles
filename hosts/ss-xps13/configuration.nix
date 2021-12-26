@@ -33,7 +33,6 @@ in
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.supportedFilesystems = [ "btrfs" ];
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.extraModprobeConfig = ''
     options usb-storage quirks=1d6b:0003:u
@@ -151,6 +150,7 @@ in
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.xserver.exportConfiguration = true;
   services.xserver.displayManager.lightdm.enable = true;
 
   programs.light.enable = true;
@@ -180,6 +180,7 @@ in
     openssh.authorizedKeys.keys = [
       # "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
     ];
+    initialHashedPassword = "$6$e70RI8RzcycH8HuG$DUTG9Gaaa9Be0DDYzSYThuBpx7JCoP9N4Uio2N3VfIAb3NK464pJqqQXWrMWosTU3UUJv0I/mT5NNOXCA.KRP.";
   };
 
   nixpkgs.config.packageOverrides = pkgs: {
@@ -218,21 +219,6 @@ in
   services.tor.enable = true;
   services.tor.client.enable = true;
 
-  # services.beesd = {
-  #   filesystems = {
-  #     nixcrypt = {
-  #       spec = "/dev/mapper/nixcrypt";
-  #       hashTableSizeMB = 4096;
-  #       extraOptions = [ "--thread-count" "1" ];
-  #     };
-  #   };
-  # };
-
-  services.btrfs.autoScrub = {
-    enable = true;
-    fileSystems = [ "/" ];
-  };
-
   networking.wg-quick.interfaces.wg24601 = {
     address = [ "10.24.60.11" ];
     privateKeyFile = "/var/lib/wireguard/wg-${config.networking.hostName}";
@@ -247,16 +233,6 @@ in
     ];
   };
 
-  users.users.munge = {
-    home = "/etc/munge";
-    createHome = true;
-  };
-  services.slurm = {
-    enableStools = true;
-    clusterName = "cs-338";
-    controlMachine = "10.24.60.14";
-  };
-
   services.syncthing = {
     enable = true;
     # FIXME
@@ -269,7 +245,7 @@ in
   home-manager.users.ss = {
     services.gammastep.enable = true;
     services.gammastep.dawnTime = "06:00";
-    services.gammastep.duskTime = "22:00";
+    services.gammastep.duskTime = "18:00";
     some.enable-gui-busybox = true;
     programs.git.signing = {
       key = "3C335BD71DE8A69DDE0871DBA39079F4AE78D20D";
@@ -277,11 +253,7 @@ in
     };
   };
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "20.09"; # Did you read the comment?
+  # I'm bootstrapping almost all of the system state from scratch (except for home)
+  # so I'm going to try and bump the stateVersion from 20.09 to 21.11
+  system.stateVersion = "21.11";
 }
