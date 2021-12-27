@@ -146,6 +146,11 @@ in
       }
     ];
 
+  home-manager.users.ss.programs.git.signing = {
+    key = "E4C27B0B66DB86502905D8BD7B0E3B1390D61DA4";
+    signByDefault = true;
+  };
+
   home-manager.users.ss.programs.mpv = {
     enable = true;
     defaultProfiles = [ "gpu-hq" ];
@@ -276,7 +281,6 @@ in
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     alacritty
-    git
     nixpkgs-fmt
     wget
     nmap
