@@ -85,6 +85,9 @@ in
     ];
 
     extraPackages = with pkgs; [
+      elmPackages.elm-language-server
+      elmPackages.elm-format
+      elmPackages.elm # ...appears to be the easiest /facepalm
       texlab
       tree-sitter
       clang-tools
@@ -103,6 +106,7 @@ in
       nodePackages.typescript
       nodePackages.typescript-language-server
       nodePackages.bash-language-server
+      nodePackages.vscode-langservers-extracted
       gopls
       sumneko-lua-language-server
       luaformatter

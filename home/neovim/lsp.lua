@@ -75,8 +75,8 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp
                                                                      .make_client_capabilities())
 
 local servers = {
-    "cmake", "ccls", "pyright", "rust_analyzer", "hls", "jsonls", "yamlls",
-    "tsserver", "gopls", "rnix", "terraformls", "clojure_lsp"
+    "cmake", "ccls", "pyright", "rust_analyzer", "hls", "elmls", "yamlls",
+    "tsserver", "gopls", "rnix", "terraformls", "clojure_lsp", "jsonls", "html"
 }
 
 for _, lsp in ipairs(servers) do
