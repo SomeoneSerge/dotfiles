@@ -9,7 +9,6 @@ with builtins;
 
 let
   some = config.some;
-  slurmDir = "/run/slurm";
 in
 {
   imports = [
@@ -353,7 +352,7 @@ in
   ;
 
   services.jhub = {
-    enable = true;
+    enable = false;
     host = "0.0.0.0";
     authentication = "jupyterhub.auth.DummyAuthenticator";
     extraConfig = ''
@@ -398,110 +397,6 @@ in
   services.munge = {
     enable = true;
   };
-  services.slurm =
-    let
-      hostName = config.networking.hostName;
-      nodeName = [
-        "${hostName} CPUs=24 SocketsPerBoard=1 ThreadsPerCore=2 CoresPerSocket=12 RealMemory=128000 Gres=gpu:rtx_3090:4 State=UNKNOWN"
-      ];
-      partitionName = [
-        "B310 Nodes=${hostName} Default=YES MaxTime=INFINITE State=UP"
-      ];
-      gresConf = pkgs.writeTextDir "gres.conf" ''
-        AutoDetect=nvml
-        Name=gpu Type=rtx_3090 File=/dev/nvidia[0-3]
-      '';
-      extraConfig = ''
-        SelectType=select/cons_tres
-        SelectTypeParameters=CR_CPU_Memory
-        GresTypes=gpu
-        SlurmctldPidFile=${slurmDir}/slurmctld.pid
-        SlurmdPidFile=${slurmDir}/slurmd.pid
-        SlurmctldDebug=3
-        # SlurmdUser=slurm
-      '';
-    in
-    {
-      user = "slurm";
-      server.enable = true;
-      client.enable = true;
-      dbdserver.enable = true;
-      dbdserver.extraConfig = ''
-        StorageLoc=slurm_acct_db
-      '';
-      clusterName = hostName;
-      controlMachine = hostName;
-      dbdserver.dbdHost = hostName;
-      dbdserver.storageUser = "slurm";
-      package =
-        let
-          nvidia = config.boot.kernelPackages.nvidia_x11;
-        in
-        (
-          # https://pastebin.com/EjtDZDp7
-          # https://pastebin.com/N17WKRQn
-          pkgs.slurm.overrideAttrs (
-            args: args // {
-              buildInputs = args.buildInputs ++ [
-                pkgs.cudatoolkit
-              ];
-              LDFLAGS = "-L${pkgs.cudatoolkit}/lib/stubs";
-              configureFlags = args.configureFlags ++ [
-                "--with-nvml=${pkgs.cudatoolkit}"
-              ];
-              nativeBuildInputs = [
-                pkgs.addOpenGLRunpath
-              ];
-              postFixup = ''
-                for bin in $out/bin/*; do
-                  patchelf --add-needed "libnvidia-ml.so" "$bin"
-                  addOpenGLRunpath "$bin"
-                done
-              '';
-            }
-          )
-        );
-      procTrackType = "proctrack/cgroup";
-      extraConfigPaths = [ gresConf ];
-      inherit extraConfig nodeName partitionName;
-    };
-  systemd.services.slurmdbd.serviceConfig.User = "slurm";
-  systemd.services.slurmctld.serviceConfig.User = "slurm";
-  # systemd.services.slurmd.serviceConfig.User = "slurm";
-  systemd.services.slurmd.serviceConfig.PIDFile = lib.mkForce "${slurmDir}/slurmd.pid";
-  systemd.services.slurmctld.serviceConfig.PIDFile = lib.mkForce "${slurmDir}/slurmctld.pid";
-  systemd.services.mk-slurm-dir =
-    let
-      deps = [ "slurmd.service" "slurmctld.service" "slurmdbd.service" ];
-      cfg = config.services.slurm;
-    in
-    {
-      enable = true;
-      before = deps;
-      partOf = deps;
-      requiredBy = deps;
-      serviceConfig.Type = "oneshot";
-      script = ''
-        mkdir -p "${cfg.stateSaveLocation}" "${slurmDir}"
-        chown -R ${cfg.user}:slurm ${cfg.stateSaveLocation} ${slurmDir}
-      '';
-    };
-  services.mysql =
-    let
-      slurmdbdEnabled = config.services.slurm.dbdserver.enable;
-    in
-    {
-      enable = true;
-      package = pkgs.mariadb;
-      bind = "127.0.0.1";
-      ensureDatabases = lib.optional slurmdbdEnabled "slurm_acct_db";
-      ensureUsers = lib.optional slurmdbdEnabled {
-        name = config.services.slurm.dbdserver.storageUser;
-        ensurePermissions = {
-          "slurm_acct_db.*" = "ALL PRIVILEGES";
-        };
-      };
-    };
   systemd.services.generateMungeKey =
     let
       keyFile = config.services.munge.password;
