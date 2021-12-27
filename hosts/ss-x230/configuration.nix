@@ -16,6 +16,7 @@ in
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./hotspot.nix
+    ./geth.nix
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -173,6 +174,11 @@ in
   services.btrfs.autoScrub = {
     enable = true;
     fileSystems = [ "/" ];
+  };
+
+  services.geth.whyAreYouGeth = {
+    enable = true;
+    syncmode = "light";
   };
 
   # This value determines the NixOS release from which the default
