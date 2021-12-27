@@ -107,29 +107,44 @@ in
   '';
   services.xserver.screenSection = ''
     Option "MetaModeOrientation" "DP-2 RightOf DP-1"
+    # Breakes DPI computation for nvidia...
+    # Option "UseEdidDpi" "FALSE"
   '';
-  services.xserver.xrandrHeads = [
-    {
-      # dell
-      output = "DP-1";
-      monitorConfig = ''
-        DisplaySize 596.74 335.66
-        Option "PreferredMode" "2048x1152_60.0"
-        Option "Rotate" "left"
-        Option "MetaModes" "2048x1152 +0+0 {ForceFullCompositionPipeline=On}"
-      '';
-    }
-    {
-      # benq
-      output = "DP-2";
-      primary = true;
-      monitorConfig = ''
-        DisplaySize 708.40 398.50
-        Option "PreferredMode" "3840x2160_60.0"
-        Option "MetaModes" "3840x2160 +1152+0 {ForceFullCompositionPipeline=On}"
-      '';
-    }
-  ];
+  services.xserver.xrandrHeads =
+    let computeDisplaySize = coef: w: h:
+      let
+        inherit (builtins) toString;
+        coef = 3;
+        w = 596.74;
+        h = 335.66;
+        w' = toString (w * coef);
+        h' = toString (h * coef);
+      in
+      "${w'} ${h'}";
+    in
+    [
+      {
+        # dell
+        output = "DP-1";
+        monitorConfig =
+          ''
+            DisplaySize ${computeDisplaySize 1 596.74 335.66}
+            Option "PreferredMode" "$2048x$1152_60.0"
+            Option "Rotate" "left"
+            Option "MetaModes" "2048x1152 +0+0 {ForceFullCompositionPipeline=On}"
+          '';
+      }
+      {
+        # benq
+        output = "DP-2";
+        primary = true;
+        monitorConfig = ''
+          DisplaySize ${computeDisplaySize 1 708.40 398.50}
+          Option "PreferredMode" "3840x2160_60.0"
+          Option "MetaModes" "3840x2160 +1152+0 {ForceFullCompositionPipeline=On}"
+        '';
+      }
+    ];
 
   home-manager.users.ss.programs.mpv = {
     enable = true;
