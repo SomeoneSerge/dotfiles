@@ -180,8 +180,8 @@ in
         See https://jupyterhub.readthedocs.io/en/stable/getting-started/config-basics.html
       '';
       example = literalExpression ''
-          c.SystemdSpawner.mem_limit = '8G'
-          c.SystemdSpawner.cpu_limit = 2.0
+        c.SystemdSpawner.mem_limit = '8G'
+        c.SystemdSpawner.cpu_limit = 2.0
       '';
     };
 
@@ -289,7 +289,7 @@ in
             group = "jhub";
           };
         };
-        users.groups.jhub = {};
+        users.groups.jhub = { };
         systemd.services.jhub = {
           description = "Jupyterhub development server";
 
