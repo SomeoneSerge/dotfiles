@@ -11,16 +11,16 @@ in
 {
   options = { some.sane.enable = mkEnableOption "Enable sane defaults"; };
   config = mkIf cfg.enable {
-    nix = mkDefAttrs {
+    nix = {
       nixPath = mkDefault [ "nixpkgs=${pkgs.path}" ];
-      package = pkgs.nixUnstable;
+      package = mkDefault pkgs.nixUnstable;
       extraOptions = ''
         experimental-features = nix-command flakes ca-derivations
         keep-outputs = true
         keep-derivations = true
       '';
-      gc.automatic = true;
-      gc.options = "--delete-older-than 7d";
+      gc.automatic = mkDefault true;
+      gc.options = mkDefault "--delete-older-than 7d";
     };
     i18n.defaultLocale = mkDefault "en_US.UTF-8";
     i18n.extraLocaleSettings = {
