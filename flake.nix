@@ -30,6 +30,12 @@
       repo = "nixpkgs-update";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    flake-registry = {
+      type = "github";
+      owner = "NixOS";
+      repo = "flake-registry";
+      flake = false;
+    };
   };
 
   outputs =
@@ -42,6 +48,7 @@
     , openconnect-sso
     , neovim-nightly
     , nixpkgs-update
+    , flake-registry
     , ...
     }@inputs:
     let
@@ -72,6 +79,9 @@
         nix = {
           inherit registry;
           nixPath = mapAttrsToList (name: value: "${name}=${value.flake}") config.nix.registry;
+          extraOptions = ''
+            flake-registry = file://${flake-registry}/flake-registry.json
+          '';
         };
       };
       m.allowUnfree = { nixpkgs.config.allowUnfree = true; };

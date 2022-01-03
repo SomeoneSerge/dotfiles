@@ -16,6 +16,22 @@
         "type": "github"
       }
     },
+    "flake-registry": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1639147349,
+        "narHash": "sha256-icyPUCoXcFeASSOdP2zQGGKtWHyt1ZqLDl41OiMQbJ4=",
+        "owner": "NixOS",
+        "repo": "flake-registry",
+        "rev": "142683660d8efac51d97b534a8bdedb5a9af1719",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "flake-registry",
+        "type": "github"
+      }
+    },
     "flake-utils": {
       "locked": {
         "lastModified": 1601282935,
@@ -409,6 +425,7 @@
     },
     "root": {
       "inputs": {
+        "flake-registry": "flake-registry",
         "home-manager": "home-manager",
         "mach-nix": "mach-nix",
         "neovim-nightly": "neovim-nightly",
