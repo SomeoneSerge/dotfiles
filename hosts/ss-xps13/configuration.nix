@@ -246,6 +246,7 @@ in
     services.gammastep.enable = true;
     services.gammastep.dawnTime = "06:00";
     services.gammastep.duskTime = "18:00";
+    services.gammastep.temperature.night = 2000;
     some.enable-gui-busybox = true;
     programs.git.signing = {
       key = "3C335BD71DE8A69DDE0871DBA39079F4AE78D20D";
