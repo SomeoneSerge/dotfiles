@@ -246,17 +246,6 @@ in
       ];
       hashedPassword = "$6$abac2409qhad$iiUlhxGOufkzMYAfZFhdY2vSTS3RGvbp/4VhbiAjcLQ0Rf1/dk0HTbhyPcYt0GfDEWyGlqhPmtgjgjDA92Nv9.";
     };
-    kozluks1 = {
-      isNormalUser = true;
-      extraGroups = [ "wheel" "video" ];
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZCVSaUEokr9f55mKVWf4HzHsVIIY1CO089LuTJuHqS kozluks1@login3.triton.aalto.fi"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOBpLSTazXGDwpor/rUv3jKzvgQw3xaAc9ujseMr3KzA ss@ss-x230"
-      ];
-      hashedPassword =
-        "$6$QCzeutqVN3tQTT$1IUxUOhy.AuoT3qQO3fMXkGmVFoHRHn7rlso00.XO6RbY.ByBW8Xzzp92pUEzdWIQkckh3LG1yQU1v6jcwGip.";
-    };
     ss = {
       isNormalUser = true;
       extraGroups = [ "wheel" "video" "docker" ] ++ lib.optional config.virtualisation.libvirtd.enable "libvirtd";

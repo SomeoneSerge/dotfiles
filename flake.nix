@@ -191,7 +191,7 @@
           pin-registry
           nixos-hardware.nixosModules.common-cpu-amd
           ./hosts/cs-338/configuration.nix
-          (enable-hm [ "ss" "kozluks1" ])
+          (enable-hm [ "ss" ])
         ];
       };
 
