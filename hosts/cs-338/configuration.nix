@@ -352,16 +352,6 @@ in
   ++ lib.optional config.virtualisation.libvirtd.enable pkgs.virt-manager
   ;
 
-  services.jhub = {
-    enable = false;
-    host = "0.0.0.0";
-    authentication = "jupyterhub.auth.DummyAuthenticator";
-    extraConfig = ''
-      c.DummyAuthenticator.password = "allyouneedisnix"
-    '';
-    extraPackages = pkgs: with pkgs; [ git wget ];
-  };
-
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
   networking.firewall.enable = true;
@@ -419,6 +409,13 @@ in
     createHome = true;
     home = "/etc/munge";
   };
+
+
+  systemd.slices.jhub.sliceConfig.CPUQuota = "50%";
+  services.jhub.enable = true;
+  services.jhub.user = "root";
+  services.jhub.pam.allowedUsers = [ "ss" ];
+  services.jhub.extraPackages = pkgs: with pkgs; [ git wget ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

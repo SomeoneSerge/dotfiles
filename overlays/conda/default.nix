@@ -193,7 +193,7 @@ buildFHSUserEnv {
   inherit profile targetPkgs;
   multiPkgs = extraPkgsMulti;
 
-  passthru = { condaInstaller = installerCmd; profile = profile; };
+  passthru = { condaInstaller = installerCmd; inherit profile installationPath; };
 
   meta = {
     description = "Conda is a package manager for Python";
