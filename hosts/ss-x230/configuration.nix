@@ -28,6 +28,9 @@ in
   boot.supportedFilesystems = [ "btrfs" ];
   boot.initrd.kernelModules = [ "8814au" "88XXau" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ rtl8814au rtl88xxau-aircrack ];
+  boot.kernelParams = [
+    "intel_pstate=active"
+  ];
 
   networking.hostName = "ss-x230"; # Define your hostname.
   networking.domain = "someonex.net";

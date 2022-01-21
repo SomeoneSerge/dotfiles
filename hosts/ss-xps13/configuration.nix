@@ -39,6 +39,9 @@ in
   '';
   boot.kernelParams = [
     "pci=nommconf"
+
+    # Because someone thought passive is always "on par or better"
+    "intel_pstate=active"
   ];
   services.fwupd.enable = true;
 
