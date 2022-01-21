@@ -75,13 +75,28 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp
                                                                      .make_client_capabilities())
 
 local servers = {
-    "cmake", "ccls", "pyright", "rust_analyzer", "hls", "elmls", "yamlls",
+    "cmake", "pyright", "rust_analyzer", "hls", "elmls", "yamlls",
     "tsserver", "gopls", "rnix", "terraformls", "clojure_lsp", "jsonls", "html"
 }
 
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {on_attach = on_attach, capabilities = capabilities}
 end
+
+nvim_lsp["ccls"].setup {
+    on_attach = on_attach;
+    capabilities = capabilities;
+    filetypes = { "c", "cpp", "objc", "objcpp", "cuda" };
+    init_options = {
+        compilationDatabaseDirectory = "build";
+        index = {
+            threads = 0;
+        };
+        clang = {
+            excludeArgs = { "-frounding-math"} ;
+        };
+    }
+}
 
 nvim_lsp["sumneko_lua"].setup {
     cmd = {"sumneko_lua"},
