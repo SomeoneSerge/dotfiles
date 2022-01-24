@@ -54,7 +54,7 @@ in
       package = mkDefault cfg.package;
       extraPackages = with pkgs; [ dmenu i3status-rust i3lock-fancy ];
     };
-    environment.systemPackages = with pkgs; [ polkit_gnome ];
+    environment.systemPackages = with pkgs; [ polkit_gnome git-doc.out ];
     security.polkit.enable = true;
     home-manager.users.${some.mainUser} =
       let
