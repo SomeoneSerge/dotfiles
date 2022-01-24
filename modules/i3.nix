@@ -91,7 +91,7 @@ in
                 }
               ];
               dynamic_title = true;
-              font.size = mkDefault 8.0;
+              font.size = mkDefault 9.0;
             };
           };
           services.flameshot.enable = true;
