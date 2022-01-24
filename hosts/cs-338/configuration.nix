@@ -113,7 +113,7 @@ in
     let computeDisplaySize = coef: w: h:
       let
         inherit (builtins) toString;
-        coef = 3;
+        coef = 4;
         w = 596.74;
         h = 335.66;
         w' = toString (w * coef);
