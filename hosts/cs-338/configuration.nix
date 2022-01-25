@@ -16,6 +16,7 @@ in
     ./hardware-configuration.nix
     ./cuda-env.nix
     ./smb.nix
+    ./nginx.nix
   ];
 
   # nixpkgs.overlays = [ (final: prev: { cudatoolkit = final.cudatoolkit_11; }) ];

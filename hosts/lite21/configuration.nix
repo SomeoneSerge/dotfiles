@@ -79,6 +79,7 @@ in
   networking.hosts = {
     "${ipv4}" = [ "someonex.net" "ns1.someonex.net" "mail.someonex.net" "matrix.someonex.net" "www.someonex.net" "someones.tf" "lite21" ];
     "${hosts.devbox.wireguard.address}" = [ "devbox.ferres.ml" ];
+    "${hosts.cs-338.wireguard.address}" = [ "jhub.cs-338.someonex.net" ];
     "fc7f:217a:060b:504b:8538:506a:e573:6615" = [ "lite21.k" ];
     "203:14db:1510:5009:f390:b491:a31c:68b3" = [ "lite21.ygg" ];
     "200:3877:9519:4b01:2cb1:42a5:2eda:b71c" = [ "devbox.ygg" ];
