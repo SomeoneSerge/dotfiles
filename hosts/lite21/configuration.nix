@@ -76,23 +76,26 @@ in
   networking.hostName = "lite21";
   networking.domain = "someonex.net";
 
-  networking.hosts = {
-    "${ipv4}" = [ "someonex.net" "ns1.someonex.net" "mail.someonex.net" "matrix.someonex.net" "www.someonex.net" "someones.tf" "lite21" ];
-    "${hosts.devbox.wireguard.address}" = [ "devbox.ferres.ml" ];
-    "${hosts.cs-338.wireguard.address}" = [ "jhub.cs-338.someonex.net" ];
-    "fc7f:217a:060b:504b:8538:506a:e573:6615" = [ "lite21.k" ];
-    "203:14db:1510:5009:f390:b491:a31c:68b3" = [ "lite21.ygg" ];
-    "200:3877:9519:4b01:2cb1:42a5:2eda:b71c" = [ "devbox.ygg" ];
-    "fc76:d36c:8f3b:bbaa:1ad6:2039:7b99:7ca6" = [ "devbox.k" ];
-    "200:cfad:3173:822e:39b:6965:e250:2053" = [ "ss-x230.ygg" ];
-    "fc1e:8533:2b39:a16a:24d1:87a5:2c6b:7f35" = [ "ss-x230.k" ];
-    "fc16:d86c:486f:dc9e:b916:f727:7122:cfe7" = [ "cs-338.k" ];
-    "200:b157:d9e8:bf43:344b:13eb:10dc:8658" = [ "cs-338.ygg" ];
-  } // (lib.mapAttrs'
-    (hostName: cfg:
-      lib.nameValuePair (cfg.wireguard.address)
-        [ "${hostName}.wg.${config.networking.domain}" ])
-    hosts);
+  networking.hosts = lib.mkMerge [
+    {
+      "${ipv4}" = [ "someonex.net" "ns1.someonex.net" "mail.someonex.net" "matrix.someonex.net" "www.someonex.net" "someones.tf" "lite21" ];
+      "${hosts.devbox.wireguard.address}" = [ "devbox.ferres.ml" ];
+      "${hosts.cs-338.wireguard.address}" = [ "jhub.cs-338.someonex.net" "cs-338.someonex.net" ];
+      "fc7f:217a:060b:504b:8538:506a:e573:6615" = [ "lite21.k" ];
+      "203:14db:1510:5009:f390:b491:a31c:68b3" = [ "lite21.ygg" ];
+      "200:3877:9519:4b01:2cb1:42a5:2eda:b71c" = [ "devbox.ygg" ];
+      "fc76:d36c:8f3b:bbaa:1ad6:2039:7b99:7ca6" = [ "devbox.k" ];
+      "200:cfad:3173:822e:39b:6965:e250:2053" = [ "ss-x230.ygg" ];
+      "fc1e:8533:2b39:a16a:24d1:87a5:2c6b:7f35" = [ "ss-x230.k" ];
+      "fc16:d86c:486f:dc9e:b916:f727:7122:cfe7" = [ "cs-338.k" ];
+      "200:b157:d9e8:bf43:344b:13eb:10dc:8658" = [ "cs-338.ygg" ];
+    }
+    (lib.mapAttrs'
+      (hostName: cfg:
+        lib.nameValuePair (cfg.wireguard.address)
+          [ "${hostName}.wg.${config.networking.domain}" ])
+      hosts)
+  ];
 
   networking.wireguard.interfaces.wg24601 = {
     ips = [ "10.24.60.1/24" ];
@@ -285,6 +288,9 @@ in
         enableACME = true;
         serverAliases = [ "www.someones.tf" ];
         locations."/" = { root = "/var/www/someones.tf"; };
+      };
+      "cs-338.someonex.net" = {
+        locations."/.well-known".proxyPass = "http://cs-338.wg.someonex.net/.well-known";
       };
     };
   };
