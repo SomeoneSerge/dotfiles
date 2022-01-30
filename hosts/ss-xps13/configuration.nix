@@ -140,6 +140,7 @@ in
     saccade
     napari
     okular
+    xclip
   ];
 
   programs.adb.enable = true;
