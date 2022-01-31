@@ -39,7 +39,11 @@ let
     runScript = ''
       /bin/jupyterhub --config ${jhubConfig}
     '';
-    inherit (pkgs.conda) profile;
+    profile = ''
+      ${pkgs.conda.profile}
+
+      ${cfg.profileExtra}
+    '';
   };
   workDir = "/var/lib/${cfg.stateDirectory}";
   systemdExecStart = "${fhs}/bin/${fhs.name}";
@@ -151,6 +155,13 @@ let
     example = literalExpression ''
       c.SystemdSpawner.mem_limit = '8G'
       c.SystemdSpawner.cpu_limit = 2.0
+    '';
+  };
+  options.services.jhub.profileExtra = mkOption {
+    type = types.lines;
+    default = "";
+    description = ''
+      Commands to appens to FHS env's .profile
     '';
   };
   options.services.jhub.pythonPackages = mkOption {

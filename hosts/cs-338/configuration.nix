@@ -406,6 +406,26 @@ in
   services.jhub.user = "root";
   services.jhub.pam.allowedUsers = [ "ss" ];
   services.jhub.extraPackages = pkgs: with pkgs; [ git wget ];
+  services.jhub.profileExtra = ''
+    export XLA_FLAGS=--xla_gpu_force_compilation_parallelism=1
+  '';
+  services.jhub.pythonPackages = ps: with ps; [
+    jax
+    (jaxlib.override { cudaSupport = true; })
+
+    jupyterlab-pygments
+    jupyterlab-widgets
+
+    numpy
+
+    matplotlib
+    networkx
+    pygraphviz
+    joblib
+    scikit-learn
+    cufflinks
+    plotly
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
