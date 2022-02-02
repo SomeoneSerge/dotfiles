@@ -427,6 +427,7 @@ in
     scikit-learn
     cufflinks
     plotly
+    tqdm
   ];
 
   # This value determines the NixOS release from which the default
