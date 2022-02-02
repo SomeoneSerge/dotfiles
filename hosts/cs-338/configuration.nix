@@ -408,9 +408,6 @@ in
   services.jhub.user = "root";
   services.jhub.pam.allowedUsers = [ "ss" ];
   services.jhub.extraPackages = pkgs: with pkgs; [ git wget ];
-  services.jhub.profileExtra = ''
-    export XLA_FLAGS=--xla_gpu_force_compilation_parallelism=1
-  '';
   services.jhub.pythonPackages = ps: with ps; [
     jax
     (jaxlib.override { cudaSupport = true; })
