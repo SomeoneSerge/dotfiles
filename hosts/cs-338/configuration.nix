@@ -19,7 +19,7 @@ in
     ./nginx.nix
   ];
 
-  # nixpkgs.overlays = [ (final: prev: { cudatoolkit = final.cudatoolkit_11; }) ];
+  nixpkgs.overlays = [ (final: prev: { cudatoolkit = final.cudatoolkit_11_4; }) ];
 
   some.sane.enable = true;
   some.mesh.enable = true;
@@ -306,10 +306,9 @@ in
           libselinux
           libGL
           glib
-          # maybe add this? doesn't appear to be required
-          # config.boot.kernelPackages.nvidia_x11
-          cudatoolkit_11
-        ];
+          config.hardware.opengl.package
+        ]
+        ++ config.hardware.opengl.extraPackages;
       }
     )
     # nixGLNvidia
@@ -400,6 +399,9 @@ in
     home = "/etc/munge";
   };
 
+  hardware.opengl.extraPackages = [
+    pkgs.cudatoolkit
+  ];
 
   systemd.slices.jhub.sliceConfig.CPUQuota = "50%";
   services.jhub.enable = true;
