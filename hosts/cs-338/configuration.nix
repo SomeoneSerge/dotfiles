@@ -19,7 +19,17 @@ in
     ./nginx.nix
   ];
 
-  nixpkgs.overlays = [ (final: prev: { cudatoolkit = final.cudatoolkit_11_4; }) ];
+  nixpkgs.overlays = [
+    (final: prev: {
+      cudatoolkit_11 = prev.cudatoolkit_11_3;
+      cudatoolkit = prev.cudatoolkit_11_3;
+      cudnn = prev.cudnn_cudatoolkit_11_3;
+      cutensor = prev.cutensor_cudatoolkit_11_3;
+      opensubdiv = prev.opensubdiv.overrideAttrs (a: {
+        buildInputs = a.buildInputs ++ [ final.opencl-headers final.ocl-icd ];
+      });
+    })
+  ];
 
   some.sane.enable = true;
   some.mesh.enable = true;
@@ -34,6 +44,7 @@ in
   };
 
   nixpkgs.config.allowUnfree = true;
+
   hardware.enableAllFirmware = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.nvidia.modesetting.enable = true;
@@ -337,6 +348,8 @@ in
     saccade
     okular
     xclip
+    gnome.meld
+    anki
   ]
   ++ lib.optional config.virtualisation.libvirtd.enable pkgs.virt-manager
   ;
@@ -401,16 +414,25 @@ in
 
   hardware.opengl.extraPackages = [
     pkgs.cudatoolkit
+    pkgs.cudatoolkit.lib
+    config.boot.kernelPackages.nvidia_x11
   ];
 
   systemd.slices.jhub.sliceConfig.CPUQuota = "50%";
   services.jhub.enable = true;
   services.jhub.user = "root";
   services.jhub.pam.allowedUsers = [ "ss" ];
-  services.jhub.extraPackages = pkgs: with pkgs; [ git wget ];
+  services.jhub.extraPackages = pkgs: with pkgs; [
+    git
+    wget
+    which
+    glibc.bin
+    busybox
+  ];
   services.jhub.pythonPackages = ps: with ps; [
     jax
     (jaxlib.override { cudaSupport = true; })
+    (pytorch.override { cudaSupport = true; cudaArchList = [ "8.6+PTX" ]; })
 
     jupyterlab-pygments
     jupyterlab-widgets
@@ -425,6 +447,7 @@ in
     cufflinks
     plotly
     tqdm
+    pip
   ];
 
   # This value determines the NixOS release from which the default

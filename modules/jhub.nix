@@ -35,6 +35,7 @@ let
       ]
       ++ config.hardware.opengl.extraPackages
       ++ cfg.extraPackages pkgs'
+
     );
     runScript = ''
       /bin/jupyterhub --config ${jhubConfig}
@@ -272,6 +273,7 @@ in
           StateDirectory = cfg.stateDirectory;
           WorkingDirectory = workDir;
           Slice = "jhub.slice";
+          PrivateDevice = false;
         };
       };
     }
