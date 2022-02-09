@@ -31,6 +31,7 @@ let
         pulseaudioSupport = true;
         mediaSupport = true;
       };
+      gpytorch = prev.python3Packages.callPackage ./gpytorch.nix { };
     })
   ];
 in

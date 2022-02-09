@@ -9,6 +9,43 @@ with builtins;
 
 let
   some = config.some;
+  pyOverrides = python-final: python-prev: {
+    pytorch = python-prev.pytorch.override {
+      blas = pkgs.mklBlas;
+      cudaSupport = true;
+      cudaArchList = [ "8.6+PTX" ];
+    };
+    jaxlib = python-prev.jaxlib.override { cudaSupport = true; };
+    gpytorch = lib.callPackageWith python-final pkgs.gpytorch.override { };
+  };
+  psUsual = ps: with ps; [
+    ps.gpytorch
+
+    jax
+    jaxlib
+    pytorch
+    numpy
+    scikit-learn
+    networkx
+    scipy
+    pandas
+
+    pygraphviz
+    joblib
+    pip
+
+    matplotlib
+    seaborn
+    cufflinks
+    plotly
+    tqdm
+    jupyterlab-pygments
+    jupyterlab-widgets
+  ];
+  py = pkgs.python3.override {
+    packageOverrides = pyOverrides;
+    self = py;
+  };
 in
 {
   imports = [
@@ -28,6 +65,15 @@ in
       opensubdiv = prev.opensubdiv.overrideAttrs (a: {
         buildInputs = a.buildInputs ++ [ final.opencl-headers final.ocl-icd ];
       });
+
+      # necessary just for fft in pytorch
+      # but still setting it globally
+      mklBlas = prev.blas.override {
+        blasProvider = final.mkl;
+      };
+      mklLapack = prev.lapack.override {
+        lapackProvider = final.mkl;
+      };
     })
   ];
 
@@ -334,16 +380,7 @@ in
     wineWowPackages.full
     turbovnc
 
-    (
-      python3.withPackages (
-        ps: with ps; [
-          numpy
-          scipy
-          pandas
-          matplotlib
-        ]
-      )
-    )
+    (py.withPackages psUsual)
     napari
     saccade
     okular
@@ -429,26 +466,8 @@ in
     glibc.bin
     busybox
   ];
-  services.jhub.pythonPackages = ps: with ps; [
-    jax
-    (jaxlib.override { cudaSupport = true; })
-    (pytorch.override { cudaSupport = true; cudaArchList = [ "8.6+PTX" ]; })
-
-    jupyterlab-pygments
-    jupyterlab-widgets
-
-    numpy
-
-    matplotlib
-    networkx
-    pygraphviz
-    joblib
-    scikit-learn
-    cufflinks
-    plotly
-    tqdm
-    pip
-  ];
+  services.jhub.python = py;
+  services.jhub.pythonPackages = ps: (psUsual ps) ++ [ ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
