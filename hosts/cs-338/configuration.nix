@@ -16,6 +16,12 @@ let
       cudaArchList = [ "8.6+PTX" ];
     };
     jaxlib = python-prev.jaxlib.override { cudaSupport = true; };
+    tensorflow = python-prev.tensorflow.override {
+      cudatoolkit = pkgs.cudatoolkit;
+      cudnn = pkgs.cudnn;
+      cudaSupport = true;
+      cudaCapabilities = [ "compute_86" ];
+    };
     gpytorch = lib.callPackageWith python-final pkgs.gpytorch.override { };
   };
   psUsual = ps: with ps; [
@@ -25,6 +31,7 @@ let
     jaxlib
     pytorch
     torchvision
+    tensorflow
     numpy
     scikit-learn
     networkx
