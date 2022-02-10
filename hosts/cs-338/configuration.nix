@@ -24,6 +24,7 @@ let
     jax
     jaxlib
     pytorch
+    torchvision
     numpy
     scikit-learn
     networkx
