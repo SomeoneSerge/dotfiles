@@ -64,6 +64,7 @@
         # python-language-server breaks with python39
         # (final: prev: { neovim = prev.neovim.override { python3 = final.python38; python3Packages = final.python38Packages; }; })
         (import "${openconnect-sso}/overlay.nix")
+        (final: prev: { nixpkgs-update = nixpkgs-update.packages.${system}.nixpkgs-update; })
       ];
       pkgs = import nixpkgs { inherit system; };
       pkgsExt = import nixpkgs { inherit system overlays; };

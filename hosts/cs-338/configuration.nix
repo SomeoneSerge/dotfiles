@@ -336,7 +336,6 @@ in
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     alacritty
-    nixpkgs-fmt
     wget
     nmap
     firefox
@@ -395,6 +394,9 @@ in
     xclip
     gnome.meld
     anki
+
+    nixpkgs-fmt
+    nixpkgs-update
   ]
   ++ lib.optional config.virtualisation.libvirtd.enable pkgs.virt-manager
   ;
