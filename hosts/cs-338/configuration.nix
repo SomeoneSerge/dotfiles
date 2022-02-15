@@ -61,11 +61,13 @@ let
     gpytorch = lib.callPackageWith python-final pkgs.gpytorch.override { };
     gpflux = lib.callPackageWith python-final pkgs.gpflux.override { };
     gpflow = lib.callPackageWith python-final pkgs.gpflow.override { };
+    trieste = lib.callPackageWith python-final pkgs.trieste.override { };
   };
   psUsual = ps: with ps; [
     ps.gpytorch
     ps.gpflow
     ps.gpflux
+    ps.trieste
 
     jax
     jaxlib

@@ -28,7 +28,7 @@ let
     (import ./saccade.nix)
     (import ./napari.nix)
     (import ./pint.nix)
-    (final: prev: {
+    (final: prev: rec {
       tor-browser-bundle-bin = prev.tor-browser-bundle-bin.override {
         pulseaudioSupport = true;
         mediaSupport = true;
@@ -36,11 +36,12 @@ let
       gpytorch = prev.python3Packages.callPackage ./gpytorch.nix { };
       gpflux = prev.python3Packages.callPackage ./gpflux.nix { };
       dm-tree = prev.python3Packages.callPackage ./dm-tree { };
-      tfp15 = prev.python3Packages.callPackage ./tfp.nix { inherit (final) dm-tree; };
+      tfp15 = prev.python3Packages.callPackage ./tfp.nix { inherit dm-tree; };
       keras = lib.callPackageWith (prev // prev.python3Packages)
         "${inputs.nixpkgs-unstable}/pkgs/development/python-modules/keras/"
         { };
-      gpflow = prev.python3Packages.callPackage ./gpflow.nix { inherit (final) keras; };
+      gpflow = prev.python3Packages.callPackage ./gpflow.nix { inherit keras; };
+      trieste = prev.python3Packages.callPackage ./trieste.nix { tensorflow-probability = tfp15; };
     })
   ];
 in
