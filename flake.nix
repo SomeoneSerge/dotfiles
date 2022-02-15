@@ -58,7 +58,7 @@
       # take neovim-nightly built with upstream's nixpkgs
       # (thus with upstream's libc)
 
-      overlays = (import ./overlays { inherit nixGL nix; })
+      overlays = (import ./overlays inputs)
         ++ [
         neovim-nightly.overlay
         # python-language-server breaks with python39
@@ -75,6 +75,10 @@
         mach-nix.flake = inputs.mach-nix;
         nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
         nixpkgs-master.flake = inputs.nixpkgs-master;
+      };
+      m.exposeFlakes = {
+        config.passthru.otherFlakes.nixpkgs-unstable = inputs.nixpkgs-unstable;
+        config.passthru.otherFlakes.nixpkgs-master = inputs.nixpkgs-master;
       };
       m.pin-registry = { config, ... }: {
         nix = {
@@ -190,6 +194,7 @@
           enable-some
           enable-openconnect
           pin-registry
+          exposeFlakes
           nixos-hardware.nixosModules.common-cpu-amd
           ./hosts/cs-338/configuration.nix
           (enable-hm [ "ss" ])

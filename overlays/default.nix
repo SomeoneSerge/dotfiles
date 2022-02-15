@@ -1,6 +1,8 @@
-{ nixGL, nix }:
+{ nixpkgs, nixGL, nix, ... }@inputs:
 
 let
+  inherit (nixpkgs) lib;
+
   addInjectGL =
     (final: prev: { inherit (prev.callPackage nixGL { }) nixGLNvidia nixGLIntel nixGLDefault; });
   useModernNix = (final: prev: { nixModern = nix.packages.${prev.system}.nix; });
@@ -32,6 +34,13 @@ let
         mediaSupport = true;
       };
       gpytorch = prev.python3Packages.callPackage ./gpytorch.nix { };
+      gpflux = prev.python3Packages.callPackage ./gpflux.nix { };
+      dm-tree = prev.python3Packages.callPackage ./dm-tree { };
+      tfp15 = prev.python3Packages.callPackage ./tfp.nix { inherit (final) dm-tree; };
+      keras = lib.callPackageWith (prev // prev.python3Packages)
+        "${inputs.nixpkgs-unstable}/pkgs/development/python-modules/keras/"
+        { };
+      gpflow = prev.python3Packages.callPackage ./gpflow.nix { inherit (final) keras; };
     })
   ];
 in
