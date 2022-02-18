@@ -102,7 +102,7 @@ in
       gruvbox
       tabular
       # FIXME:
-      # fugitive
+      fugitive
       vim-nix
       auto-session
     ];
