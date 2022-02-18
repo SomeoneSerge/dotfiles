@@ -27,17 +27,19 @@ buildPythonPackage rec {
     rev = "v${version}";
     sha256 = "sha256-YOZ1S25VED6RVsylPv8Gh8iWoj0OIyPhn+KIK560HiU=";
   };
-  propagatedBuildInputs = [
-    keras
+  buildInputs = [
     tensorflow
     tensorflow-probability
+    jupytext
+  ];
+  propagatedBuildInputs = [
+    keras
     numpy
     scipy
     deprecated
     typing-extensions
     tabulate
     multipledispatch
-    jupytext
   ];
   nativeBuildInputs = [
     setuptools

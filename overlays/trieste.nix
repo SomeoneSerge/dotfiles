@@ -21,9 +21,11 @@ buildPythonPackage rec {
     sed -i 's/gpflow==2.2.\\*/gpflow>=2.2/' setup.py
     sed -i '/tensorflow>=2.4/d' setup.py
   '';
-  propagatedBuildInputs = [
+  buildInputs = [
     tensorflow
     tensorflow-probability
+  ];
+  propagatedBuildInputs = [
     gpflux
     gpflow
     greenlet

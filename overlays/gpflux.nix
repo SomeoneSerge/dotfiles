@@ -9,6 +9,7 @@
 , gpflow
 , pytest
 , nbconvert
+, jupytext
 }:
 buildPythonPackage rec {
   pname = "GPflux";
@@ -16,13 +17,16 @@ buildPythonPackage rec {
   src = fetchFromGitHub {
     owner = "secondmind-labs";
     repo = pname;
-    rev = "v${version}";
-    sha256 = "sha256-ZmqI9dm8IBCmsEqRKVyZdhfxz/mxH5ZDJEfSMidl4yM=";
+    rev = "744943768bc5ab79027adad9f04bd61a7b2d42a8";
+    sha256 = "sha256-rrlx/D9S5ZjFUh8ltQYZv688GAkgFwq2lkPHi2b87+o=";
   };
-  propagatedBuildInputs = [
-    gpflow
+  buildInputs = [
     tensorflow
     tensorflow-probability
+    jupytext
+  ];
+  propagatedBuildInputs = [
+    gpflow
     deprecated
     numpy
     scipy
@@ -32,7 +36,7 @@ buildPythonPackage rec {
     nbconvert
   ];
   postPatch = ''
-    sed -i '/tensorflow-probability/d' setup.py
+    # sed -i 's/tensorflow>/${builtins.replaceStrings ["-"] ["_"] tensorflow.pname}>/' setup.py
     sed -i '/tensorflow>/d' setup.py
   '';
 }

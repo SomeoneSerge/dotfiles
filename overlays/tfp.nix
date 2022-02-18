@@ -24,7 +24,7 @@
 }:
 
 let
-  version = "0.15.0";
+  version = "0.13.0";
   pname = "tensorflow_probability";
 
   # first build all binaries and generate setup.py using bazel
@@ -35,11 +35,8 @@ let
       owner = "tensorflow";
       repo = "probability";
       rev = "v${version}";
-      sha256 = "sha256-sQ7b9y2CPb7VbA/+Nofq5OB/c+s4mGvlRkCDpHJ9rpQ=";
+      sha256 = "sha256-o+l0kHLIk1BVYDNRww15cW1+FxYBDMBZ8fm4UtJsBMk=";
     };
-
-    patches = [
-    ];
 
     nativeBuildInputs = [
       # needed to create the output wheel in installPhase
@@ -81,9 +78,11 @@ buildPythonPackage {
 
   src = bazel-wheel;
 
-  propagatedBuildInputs = [
+  buildInputs = [
     jax
     tensorflow
+  ];
+  propagatedBuildInputs = [
     six
     numpy
     decorator

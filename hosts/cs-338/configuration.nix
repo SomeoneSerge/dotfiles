@@ -9,16 +9,6 @@ with builtins;
 
 let
   some = config.some;
-  bazelFromUnstable = lib.callPackageWith (pkgs // pkgs.darwin.apple_sdk.frameworks)
-    "${config.passthru.otherFlakes.nixpkgs-unstable}/pkgs/development/tools/build-managers/bazel/bazel_3/"
-    {
-      inherit (pkgs.darwin) cctools;
-      bazel_self = bazelFromUnstable;
-      buildJdk = pkgs.jdk11_headless;
-      buildJdkName = "java11";
-      runJdk = pkgs.jdk11_headless;
-      stdenv = if pkgs.stdenv.cc.isClang then pkgs.llvmPackages.stdenv else pkgs.stdenv;
-    };
 
   pyOverrides = python-final: python-prev: rec {
     pytorch = python-prev.pytorch.override {
@@ -27,37 +17,32 @@ let
       cudaArchList = [ "8.6+PTX" ];
     };
     jaxlib = python-prev.jaxlib.override { cudaSupport = true; };
-    keras = lib.callPackageWith (pkgs // python-prev)
-      "${config.passthru.otherFlakes.nixpkgs-unstable}/pkgs/development/python-modules/keras/"
-      { };
+    tensorflow-probability = # lib.callPackageWith (pkgs // python-final)
+      pkgs.tfp15.override {
+        inherit tensorflow;
+      };
     tensorflow = lib.callPackageWith (pkgs // pkgs.darwin.apple_sdk.frameworks // python-prev)
       "${config.passthru.otherFlakes.nixpkgs-unstable}/pkgs/development/python-modules/tensorflow/"
       {
+        cudaSupport = true;
+        cudaCapabilities = [ "compute_86" ];
+
         inherit (pkgs.darwin) cctools;
-        bazel_3 = bazelFromUnstable;
+        bazel_3 = pkgs.bazelFromUnstable;
         protobuf-python = python-prev.protobuf;
         protobuf-core = pkgs.protobuf;
         flatbuffers-python = python-prev.flatbuffers;
         flatbuffers-core = pkgs.flatbuffers;
         lmdb-core = pkgs.lmdb;
 
-        inherit keras;
-        inherit tensorflow-estimator;
-        patchelfUnstable = pkgs.callPackage
-          "${config.passthru.otherFlakes.nixpkgs-unstable}/pkgs/development/tools/misc/patchelf/unstable.nix"
-          { }; # patchelf for big files...
+        patchelfUnstable = pkgs.patchelfFromUnstable;
+
+        inherit (pkgs) keras;
+        inherit (pkgs) tensorflow-estimator;
 
         cudatoolkit = pkgs.cudatoolkit;
         cudnn = pkgs.cudnn;
-        cudaSupport = true;
-        cudaCapabilities = [ "compute_86" ];
       };
-    tensorflow-estimator = lib.callPackageWith (pkgs // pkgs.darwin.apple_sdk.frameworks // python-prev)
-      "${config.passthru.otherFlakes.nixpkgs-unstable}/pkgs/development/python-modules/tensorflow-estimator/"
-      { };
-    tensorflow-probability = lib.callPackageWith (pkgs // python-prev) pkgs.tfp15.override {
-      inherit tensorflow;
-    };
     gpytorch = lib.callPackageWith python-final pkgs.gpytorch.override { };
     gpflux = lib.callPackageWith python-final pkgs.gpflux.override { };
     gpflow = lib.callPackageWith python-final pkgs.gpflow.override { };
@@ -74,6 +59,7 @@ let
     pytorch
     torchvision
     tensorflow
+    tensorflow-probability
     numpy
     scikit-learn
     networkx
