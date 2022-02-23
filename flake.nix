@@ -36,6 +36,12 @@
       repo = "flake-registry";
       flake = false;
     };
+    alejandra = {
+      type = "github";
+      owner = "kamadorueda";
+      repo = "alejandra";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

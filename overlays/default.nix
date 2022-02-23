@@ -33,6 +33,7 @@ let
         pulseaudioSupport = true;
         mediaSupport = true;
       };
+      alejandra = inputs.alejandra.defaultPackage.${prev.system};
       gpytorch = prev.python3Packages.callPackage ./gpytorch.nix { };
       gpflux = prev.python3Packages.callPackage ./gpflux.nix { };
       dm-tree = prev.python3Packages.callPackage ./dm-tree { };

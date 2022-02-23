@@ -1,5 +1,26 @@
 {
   "nodes": {
+    "alejandra": {
+      "inputs": {
+        "flakeCompat": "flakeCompat",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1645245934,
+        "narHash": "sha256-mzQ+obdJ+bY1BwH8nm2SMkj7qrECKc/CNr0VVBzWBT0=",
+        "owner": "kamadorueda",
+        "repo": "alejandra",
+        "rev": "4eab73ad7848066dcda98cca5b1e325b82970577",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kamadorueda",
+        "repo": "alejandra",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -74,6 +95,22 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flakeCompat": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1641205782,
+        "narHash": "sha256-4jY7RCWUoZ9cKD8co0/4tFARpWB+57+r1bLLvXNJliY=",
+        "owner": "edolstra",
+        "repo": "flake-compat",
+        "rev": "b7547d3eed6f32d06102ead8991ec52ab0a4f1a7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "repo": "flake-compat",
         "type": "github"
       }
     },
@@ -441,6 +478,7 @@
     },
     "root": {
       "inputs": {
+        "alejandra": "alejandra",
         "flake-registry": "flake-registry",
         "home-manager": "home-manager",
         "mach-nix": "mach-nix",

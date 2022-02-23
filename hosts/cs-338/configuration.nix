@@ -423,6 +423,7 @@ in
     gnome.meld
     anki
 
+    alejandra
     nixpkgs-fmt
     nixpkgs-update
   ]
