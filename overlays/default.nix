@@ -33,6 +33,7 @@ let
         pulseaudioSupport = true;
         mediaSupport = true;
       };
+      logseq = prev.logseq.override { electron_13 = prev.electron_16; };
       alejandra = inputs.alejandra.defaultPackage.${prev.system};
       gpytorch = prev.python3Packages.callPackage ./gpytorch.nix { };
       gpflux = prev.python3Packages.callPackage ./gpflux.nix { };
