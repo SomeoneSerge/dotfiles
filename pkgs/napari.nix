@@ -1,6 +1,4 @@
-final: prev:
-
-let
+{
   napariPkg =
     { mkDerivationWith
     , buildPythonPackage
@@ -237,18 +235,4 @@ let
       SETUPTOOLS_SCM_PRETEND_VERSION = version;
       doCheck = false;
     };
-in
-let
-  pyPkgs = final.python3Packages;
-in
-{
-  napari-console = pyPkgs.callPackage napariConsolePkg { };
-  napari-svg = pyPkgs.callPackage napariSvgPkg { };
-  cachey = pyPkgs.callPackage cacheyPkg { };
-  psygnal = pyPkgs.callPackage psygnalPkg { };
-  docstring-parser = pyPkgs.callPackage docstringParserPkg { };
-  magicgui = pyPkgs.callPackage magicguiPkg { };
-  superqt = pyPkgs.callPackage superqtPkg { };
-  napari-plugin-engine = pyPkgs.callPackage napariPluginPkg { };
-  napari = final.lib.callPackageWith (final // pyPkgs // final.libsForQt5) napariPkg { inherit (final) pint; };
 }

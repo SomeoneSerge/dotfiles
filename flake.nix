@@ -6,7 +6,10 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-    neovim-nightly = { url = "github:neovim/neovim?dir=contrib"; inputs.nixpkgs.follows = "nixpkgs"; };
+    neovim-nightly = {
+      url = "github:neovim/neovim?dir=contrib";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     nixos-hardware = {
       url = "github:NixOS/nixos-hardware/master";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -56,7 +59,7 @@
     , nixpkgs-update
     , flake-registry
     , ...
-    }@inputs:
+    } @ inputs:
     let
       system = "x86_64-linux";
       inherit (nixpkgs.lib) mapAttrsToList genAttrs nixosSystem;
@@ -64,14 +67,7 @@
       # take neovim-nightly built with upstream's nixpkgs
       # (thus with upstream's libc)
 
-      overlays = (import ./overlays inputs)
-        ++ [
-        neovim-nightly.overlay
-        # python-language-server breaks with python39
-        # (final: prev: { neovim = prev.neovim.override { python3 = final.python38; python3Packages = final.python38Packages; }; })
-        (import "${openconnect-sso}/overlay.nix")
-        (final: prev: { nixpkgs-update = nixpkgs-update.packages.${system}.nixpkgs-update; })
-      ];
+      overlays = (import ./overlays.nix inputs);
       pkgs = import nixpkgs { inherit system; };
       pkgsExt = import nixpkgs { inherit system overlays; };
       registry = {
@@ -98,28 +94,31 @@
       m.allowUnfree = { nixpkgs.config.allowUnfree = true; };
       m.useOverlays = { nixpkgs.overlays = overlays; };
       m.enable-some = import ./modules;
-      m.enable-hm = users: { config, pkgs, ... }: {
+      m.enable-hm = users: { config
+                           , pkgs
+                           , ...
+                           }: {
         imports = [ home-manager.nixosModules.home-manager ];
         home-manager.useGlobalPkgs = true;
         home-manager.users = genAttrs users (user: import ./home/default.nix);
       };
       m.enable-openconnect = { pkgs, ... }: {
-        environment.systemPackages =
-          [ pkgs.openconnect-sso ];
+        environment.systemPackages = [ pkgs.openconnect-sso ];
       };
     in
     rec {
       packages.${system} = {
         nix = nix.packages.${system}.nix;
-        home-devbox = (pkgs.callPackage ./home/call-hm.nix {
-          inherit home-manager;
-          username = "serge";
-          addModules = with m; [
-            { some.devbox.enable = true; }
-            useOverlays
-            allowUnfree
-          ];
-        }).activationPackage;
+        home-devbox =
+          (pkgs.callPackage ./home/call-hm.nix {
+            inherit home-manager;
+            username = "serge";
+            addModules = with m; [
+              { some.devbox.enable = true; }
+              useOverlays
+              allowUnfree
+            ];
+          }).activationPackage;
         inherit (pkgsExt) napari neovim;
         pkgs = pkgsExt.stdenv.mkDerivation {
           name = "pkgs-passthru";
@@ -129,12 +128,18 @@
         pkgsUnfree = pkgsExt.stdenv.mkDerivation {
           name = "pkgs-passthru-unfree";
           src = throw "Don't build, use pkgs from passthru";
-          passthru = import inputs.nixpkgs { inherit system overlays; config.allowUnfree = true; };
+          passthru = import inputs.nixpkgs {
+            inherit system overlays;
+            config.allowUnfree = true;
+          };
         };
         pkgsUnfreeUnstable = pkgsExt.stdenv.mkDerivation {
           name = "pkgs-passthru-unfree";
           src = throw "Don't build, use pkgs from passthru";
-          passthru = import inputs.nixpkgs-unstable { inherit system overlays; config.allowUnfree = true; };
+          passthru = import inputs.nixpkgs-unstable {
+            inherit system overlays;
+            config.allowUnfree = true;
+          };
         };
       };
       apps.${system} = {
@@ -213,8 +218,7 @@
           useOverlays
           "${nixpkgs}/nixos/modules/installer/cd-dvd/iso-image.nix"
           {
-            environment.systemPackages =
-              [ nixosConfigurations.ss-x230.config.system.build.toplevel ];
+            environment.systemPackages = [ nixosConfigurations.ss-x230.config.system.build.toplevel ];
           }
         ];
       };
