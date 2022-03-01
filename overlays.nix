@@ -69,7 +69,7 @@ in
         pulseaudioSupport = true;
         mediaSupport = true;
       };
-      logseq = prev.logseq.override { electron_13 = prev.electron_16; };
+      logseq = inputs.nixpkgs-unstable.legacyPackages.${prev.system}.logseq;
       gpytorch = prev.python3Packages.callPackage ./pkgs/gpytorch.nix { };
       gpflux = prev.python3Packages.callPackage ./pkgs/gpflux.nix { };
       dm-tree = prev.python3Packages.callPackage ./pkgs/dm-tree { };
