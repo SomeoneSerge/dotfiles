@@ -432,6 +432,7 @@ in
     xclip
     gnome.meld
     anki
+    peek
 
     alejandra
     nixpkgs-fmt
