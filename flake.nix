@@ -45,6 +45,8 @@
       repo = "alejandra";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hercules-ci-agent.url = github:hercules-ci/hercules-ci-agent/experimental-0.9;
+    hercules-ci-agent.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
@@ -58,6 +60,7 @@
     , neovim-nightly
     , nixpkgs-update
     , flake-registry
+    , hercules-ci-agent
     , ...
     } @ inputs:
     let
@@ -213,6 +216,7 @@
           nixos-hardware.nixosModules.common-cpu-amd
           ./hosts/cs-338/configuration.nix
           (enable-hm [ "ss" ])
+          inputs.hercules-ci-agent.nixosModules.agent-service
         ];
       };
 
