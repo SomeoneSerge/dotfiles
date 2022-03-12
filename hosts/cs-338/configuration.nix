@@ -65,6 +65,7 @@ let
     networkx
     scipy
     pandas
+    opencv4
 
     pygraphviz
     joblib
@@ -435,6 +436,8 @@ in
     alejandra
     nixpkgs-fmt
     nixpkgs-update
+
+    colmapWithCuda
   ]
   ++ lib.optional config.virtualisation.libvirtd.enable pkgs.virt-manager
   ;
