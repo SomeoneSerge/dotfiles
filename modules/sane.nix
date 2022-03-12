@@ -48,6 +48,7 @@ in
     sound.enable = mkDefault xOn;
     hardware.pulseaudio.enable = mkDefault xOn;
     xdg.portal.enable = mkDefault xOn;
+    xdg.portal.extraPortals = mkDefault [ pkgs.xdg-desktop-portal-gtk ];
     services.xserver.libinput.enable = mkDefault xOn;
     services.xserver.libinput.touchpad.tapping = mkDefault true;
     services.xserver.libinput.touchpad.naturalScrolling = mkDefault true;
