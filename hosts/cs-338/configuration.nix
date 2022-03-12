@@ -98,9 +98,17 @@ in
       cudatoolkit = prev.cudatoolkit_11_3;
       cudnn = prev.cudnn_cudatoolkit_11_3;
       cutensor = prev.cutensor_cudatoolkit_11_3;
-      opensubdiv = prev.opensubdiv.overrideAttrs (a: {
-        buildInputs = a.buildInputs ++ [ final.opencl-headers final.ocl-icd ];
-      });
+      opensubdiv =
+        let
+          opensubdiv = prev.opensubdiv;
+          # opensubdiv cuda support is broken
+          opensubdiv' = opensubdiv.override { cudaSupport = false; };
+          opensubdiv'' = opensubdiv'.overrideAttrs (a: {
+            buildInputs = a.buildInputs ++ [ final.opencl-headers final.ocl-icd ];
+          });
+        in
+        opensubdiv'';
+      blender = prev.blender.override { cudaSupport = false; };
 
       # necessary just for fft in pytorch
       # but still setting it globally
@@ -110,6 +118,7 @@ in
       mklLapack = prev.lapack.override {
         lapackProvider = final.mkl;
       };
+      myPython = py;
     })
   ];
 

@@ -200,6 +200,11 @@
         system = "x86_64-linux";
         modules = with m; [
           allowUnfree
+          {
+            nixpkgs.config.cudaSupport = true;
+            nixpkgs.config.cudaArchList = [ "8.6+PTX" ];
+            nixpkgs.config.cudaCapabilities = [ "compute_86" ];
+          }
           useOverlays
           enable-some
           enable-openconnect
