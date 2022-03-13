@@ -20,7 +20,6 @@ in
   networking.nat.externalInterface = "enp0s20f0u2";
 
   some.sane.enable = true;
-  some.autosuspend = true;
   some.i3.enable = true;
   some.i3.batteryIndicator = true;
   some.mesh.enable = true;
