@@ -22,6 +22,9 @@ in
 
     home.packages = with pkgs; (
       lib.optionals cfg.enable-busybox [
+        # better tmux
+        zellij
+
         gist
         gitAndTools.hub
         gitAndTools.gh
