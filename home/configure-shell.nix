@@ -46,20 +46,11 @@ in
       '';
     };
 
-    programs.powerline-go = {
-      enable = true;
-      newline = false;
-      modules = [ "host" "nix-shell" "cwd" "git" "exit" ];
-      # pathAliases = { "\\~/project/foo" = "prj-foo"; };
-      settings = {
-        cwd-max-depth = 2;
-        git-mode = "simple";
-        #   ignore-repos = [ "/home/me/project1" "/home/me/project2" ];
-      };
-      extraUpdatePS1 = ''
-        PS1_SET_TITLE='\[\e]0;\u@\h:\w\a\]'
-        PS1="$PS1_SET_TITLE""$PS1"
-      '';
+    programs.starship.enable = true;
+    programs.starship.settings = {
+      add_newline = false;
+      command_timeout = 50;
+      aws.disabled = true;
     };
 
     programs.fzf = { enable = true; };
