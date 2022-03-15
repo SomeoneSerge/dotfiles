@@ -140,6 +140,7 @@ in
     napari
     okular
     xclip
+    signal-desktop
   ];
 
   programs.adb.enable = true;
