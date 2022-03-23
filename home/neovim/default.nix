@@ -110,6 +110,7 @@ in
     extraPackages = with pkgs; [
       elmPackages.elm-language-server
       elmPackages.elm-format
+      elmPackages.elm-test # Workaround for https://github.com/elm-tooling/elm-language-server/issues/685
       elmPackages.elm # ...appears to be the easiest /facepalm
       texlab
       tree-sitter
