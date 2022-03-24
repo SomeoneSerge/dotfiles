@@ -120,6 +120,7 @@ in
       ccls
       haskell-language-server
       rust-analyzer
+      clojure-lsp
 
       efm-langserver
 
