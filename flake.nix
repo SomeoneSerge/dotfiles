@@ -45,7 +45,7 @@
       repo = "alejandra";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    hercules-ci-agent.url = github:hercules-ci/hercules-ci-agent/experimental-0.9;
+    hercules-ci-agent.url = github:hercules-ci/hercules-ci-agent/hercules-ci-agent-0.9.1;
     hercules-ci-agent.inputs.nixpkgs.follows = "nixpkgs";
   };
 
