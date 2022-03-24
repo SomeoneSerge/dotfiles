@@ -110,6 +110,7 @@ nvim_lsp["efm"].setup {
     capabilities = capabilities,
     filetypes = {
         "python",
+        "lua",
     },
     init_options = {
         documentFormatting = true,
@@ -123,6 +124,12 @@ nvim_lsp["efm"].setup {
                 },
                 {
                     formatCommand = "isort --quiet -",
+                    formatStdin = true,
+                },
+            },
+            lua = {
+                {
+                    formatCommand = "lua-format -i",
                     formatStdin = true,
                 },
             },
