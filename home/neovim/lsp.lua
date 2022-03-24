@@ -64,15 +64,13 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<leader>rl',
                    '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
 
+    buf_set_keymap("n", "<leader>F", "<cmd>lua vim.lsp.buf.formatting()<CR>",
+                   opts)
+
     -- Set some keybinds conditional on server capabilities
     if client.resolved_capabilities.document_range_formatting then
-        buf_set_keymap("n", "<leader>F",
+        buf_set_keymap("v", "<leader>F",
                        "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-    else
-        -- OLD: if client.resolved_capabilities.document_formatting then
-        -- NEW: bind \F unconditionally
-        buf_set_keymap("n", "<leader>F",
-                       "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
     end
 end
 
