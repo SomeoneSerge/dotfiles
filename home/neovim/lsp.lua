@@ -80,12 +80,26 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp
 
 local servers = {
     "cmake", "pyright", "rust_analyzer", "hls", "elmls", "yamlls", "tsserver",
-    "gopls", "rnix", "clojure_lsp", "jsonls", "html"
+    "gopls", "rnix", "clojure_lsp", "jsonls"
 }
 
 for _, lsp in ipairs(servers) do
     nvim_lsp[lsp].setup {on_attach = on_attach, capabilities = capabilities}
 end
+
+nvim_lsp["html"].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    filetypes = {"html"},
+    init_options = {
+        configurationSection = {"html", "css", "javascript"},
+        embeddedLanguages = {css = true, javascript = true},
+        provideFormatter = true
+    },
+
+    -- crashes without css.lint.validProperties
+    settings = {css = {lint = {validProperties = {}}}}
+}
 
 nvim_lsp["ccls"].setup {
     on_attach = on_attach,
