@@ -21,6 +21,7 @@ in
       historyLimit = 100000;
       resizeAmount = 5;
       escapeTime = 0;
+      terminal = "screen-256color";
 
       plugins = with pkgs.tmuxPlugins; [
         # sensible
@@ -77,6 +78,10 @@ in
         # set -g @plugin 'seebi/tmux-colors-solarized'
 
         set -g focus-events on
+
+        # From nvim's :checkhealth
+        # FIXME: may not always be alacritty
+        set-option -sa terminal-overrides ',alacritty:RGB'
 
         # More vi-like behaviour
         # Borrowed from https://github.com/srid/nix-config/blob/master/nix/tmux.nix
