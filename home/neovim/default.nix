@@ -6,6 +6,7 @@ in
 {
   programs.neovim = {
     enable = mkDefault true;
+    package = pkgs.neovim;
 
     extraConfig = ''
       :imap jk <Esc>
