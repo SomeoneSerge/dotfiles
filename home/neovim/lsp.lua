@@ -50,9 +50,13 @@ local on_attach = function(client, bufnr)
     buf_set_keymap('n', '<leader>rh', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
     buf_set_keymap('n', '<leader>rs',
                    '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-    buf_set_keymap('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
-    buf_set_keymap('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
-    buf_set_keymap('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opts)
+    buf_set_keymap('n', '<space>wa',
+                   '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opts)
+    buf_set_keymap('n', '<space>wr',
+                   '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opts)
+    buf_set_keymap('n', '<space>wl',
+                   '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>',
+                   opts)
     buf_set_keymap('n', '<leader>rk',
                    '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
     buf_set_keymap('n', '<leader>rj',
@@ -65,8 +69,8 @@ local on_attach = function(client, bufnr)
         buf_set_keymap("n", "<leader>F",
                        "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
     else
-    -- OLD: if client.resolved_capabilities.document_formatting then
-    -- NEW: bind \F unconditionally
+        -- OLD: if client.resolved_capabilities.document_formatting then
+        -- NEW: bind \F unconditionally
         buf_set_keymap("n", "<leader>F",
                        "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
     end
@@ -76,10 +80,9 @@ local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp
                                                                      .protocol
                                                                      .make_client_capabilities())
 
-
 local servers = {
-    "cmake", "pyright", "rust_analyzer", "hls", "elmls", "yamlls",
-    "tsserver", "gopls", "rnix", "clojure_lsp", "jsonls", "html"
+    "cmake", "pyright", "rust_analyzer", "hls", "elmls", "yamlls", "tsserver",
+    "gopls", "rnix", "clojure_lsp", "jsonls", "html"
 }
 
 for _, lsp in ipairs(servers) do
@@ -87,17 +90,13 @@ for _, lsp in ipairs(servers) do
 end
 
 nvim_lsp["ccls"].setup {
-    on_attach = on_attach;
-    capabilities = capabilities;
-    filetypes = { "c", "cpp", "objc", "objcpp", "cuda" };
+    on_attach = on_attach,
+    capabilities = capabilities,
+    filetypes = {"c", "cpp", "objc", "objcpp", "cuda"},
     init_options = {
-        compilationDatabaseDirectory = "build";
-        index = {
-            threads = 0;
-        };
-        clang = {
-            excludeArgs = { "-frounding-math"} ;
-        };
+        compilationDatabaseDirectory = "build",
+        index = {threads = 0},
+        clang = {excludeArgs = {"-frounding-math"}}
     }
 }
 
@@ -109,31 +108,15 @@ nvim_lsp["sumneko_lua"].setup {
 nvim_lsp["efm"].setup {
     on_attach = on_attach,
     capabilities = capabilities,
-    filetypes = {
-        "python",
-        "lua",
-    },
-    init_options = {
-        documentFormatting = true,
-    },
+    filetypes = {"python", "lua"},
+    init_options = {documentFormatting = true},
     settings = {
         languages = {
             python = {
-                {
-                    formatCommand = "black --quiet -",
-                    formatStdin = true,
-                },
-                {
-                    formatCommand = "isort --quiet -",
-                    formatStdin = true,
-                },
+                {formatCommand = "black --quiet -", formatStdin = true},
+                {formatCommand = "isort --quiet -", formatStdin = true}
             },
-            lua = {
-                {
-                    formatCommand = "lua-format -i",
-                    formatStdin = true,
-                },
-            },
+            lua = {{formatCommand = "lua-format -i", formatStdin = true}}
         }
     }
 }
