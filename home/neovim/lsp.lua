@@ -105,11 +105,30 @@ nvim_lsp["sumneko_lua"].setup {
     on_attach = on_attach,
     capabilities = capabilities
 }
--- nvim_lsp["pylsp"].setup {
---     cmd = {"pyls"},
---     on_attach = on_attach,
---     capabilities = capabilities
--- }
+nvim_lsp["efm"].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    filetypes = {
+        "python",
+    },
+    init_options = {
+        documentFormatting = true,
+    },
+    settings = {
+        languages = {
+            python = {
+                {
+                    formatCommand = "black --quiet -",
+                    formatStdin = true,
+                },
+                {
+                    formatCommand = "isort --quiet -",
+                    formatStdin = true,
+                },
+            },
+        }
+    }
+}
 nvim_lsp["texlab"].setup {
     cmd = {"texlab"},
     on_attach = on_attach,
