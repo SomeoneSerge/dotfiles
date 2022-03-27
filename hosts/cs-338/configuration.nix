@@ -91,6 +91,7 @@ in
     ./cuda-env.nix
     ./smb.nix
     ./nginx.nix
+    ./hercules-nixpkgs-unfree.nix
   ];
 
   nixpkgs.overlays = [
@@ -521,8 +522,8 @@ in
   services.jhub.python = py;
   services.jhub.pythonPackages = ps: (psUsual ps) ++ [ ];
 
-  services.hercules-ci-agent.enable = true;
-  services.hercules-ci-agent.settings.concurrentTasks = 8;
+  services.hercules-ci-agent.enable = false;
+  services.hercules-ci-agent.settings.concurrentTasks = 16;
 
 
   # This value determines the NixOS release from which the default

@@ -201,6 +201,9 @@
 
       nixosConfigurations.cs-338 = nixosSystem {
         system = "x86_64-linux";
+        extraArgs = {
+          inherit inputs;
+        };
         modules = with m; [
           allowUnfree
           {
