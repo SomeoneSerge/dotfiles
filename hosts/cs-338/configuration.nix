@@ -93,6 +93,13 @@ in
     ./nginx.nix
   ];
 
+  nix.binaryCachePublicKeys = [
+    "cuda-maintainers.cachix.org-1:0dq3bujKpuEPMCX6U4WylrUDZ9JyUG0VpVZa7CNfq5E="
+  ];
+  nix.binaryCaches = [
+    "https://cuda-maintainers.cachix.org"
+  ];
+
   nixpkgs.overlays = [
     (final: prev: {
       cudatoolkit_11 = prev.cudatoolkit_11_3;
