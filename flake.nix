@@ -219,7 +219,7 @@
           nixos-hardware.nixosModules.common-cpu-amd
           ./hosts/cs-338/configuration.nix
           (enable-hm [ "ss" ])
-          inputs.hercules-ci-agent.nixosModules.agent-service
+          inputs.hercules-ci-agent.nixosModules.multi-agent-service
         ];
       };
 
