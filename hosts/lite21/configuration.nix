@@ -159,7 +159,7 @@ in
     htop
     iperf
     dnsutils
-    ag
+    silver-searcher
     ripgrep
     weechat'
     wget
@@ -259,7 +259,7 @@ in
     };
   };
 
-  security.acme.email = "smnXXs@protonmail.com";
+  security.acme.defaults.email = "smnXXs@protonmail.com";
   security.acme.acceptTerms = true;
 
   services.nginx = {

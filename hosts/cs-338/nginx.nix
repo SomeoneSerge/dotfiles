@@ -8,7 +8,7 @@ in
 
   networking.hosts."127.0.0.1" = [ jhubDomain fqdn ];
 
-  security.acme.email = "sergei.kozlukov@aalto.fi";
+  security.acme.defaults.email = "sergei.kozlukov@aalto.fi";
   security.acme.acceptTerms = true;
   security.acme.certs."${fqdn}".extraDomainNames = [
     jhubDomain

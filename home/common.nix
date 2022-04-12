@@ -30,7 +30,7 @@ in
         gitAndTools.gh
 
         asciinema
-        youtubeDL
+        youtube-dl
         mediainfo
         graphicsmagick
         iotop
@@ -68,7 +68,7 @@ in
         gptfdisk
 
         fd
-        ag
+        silver-searcher
         ripgrep
         fzf
 
@@ -91,7 +91,7 @@ in
         colmap
         meshlab
 
-        wireguard
+        wireguard-tools
       ]
     );
     programs.zathura.enable = mkDefault cfg.enable-gui-busybox;

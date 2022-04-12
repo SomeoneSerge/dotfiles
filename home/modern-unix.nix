@@ -20,7 +20,7 @@ in
       du-dust
       duf
       fd
-      ag
+      silver-searcher
       ripgrep
       choose
       gping

@@ -125,7 +125,7 @@ in
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     polkit_gnome
-    ag
+    silver-searcher
     ripgrep
     fd
     pass-wayland

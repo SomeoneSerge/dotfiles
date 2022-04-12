@@ -78,7 +78,7 @@ in
 
   environment.systemPackages = with pkgs; [
     logseq
-    ag
+    silver-searcher
     ripgrep
     fd
     file

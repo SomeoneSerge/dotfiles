@@ -1,107 +1,124 @@
 {
   description = "Someone's dotfiles";
 
-  inputs = {
-    nix.url = "github:NixOS/nix";
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nixpkgs-master.url = "github:NixOS/nixpkgs/master";
-    neovim-nightly = {
-      url = "github:neovim/neovim?dir=contrib";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    nixos-hardware = {
-      url = "github:NixOS/nixos-hardware/master";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    home-manager = {
-      url = "github:nix-community/home-manager/release-21.11";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    mach-nix.url = "github:DavHau/mach-nix";
-    nixGL = {
-      url = "github:guibou/nixGL";
-      flake = false;
-    };
-    openconnect-sso = {
-      url = "github:vlaci/openconnect-sso";
-      flake = false;
-    };
-    nixpkgs-update = {
-      type = "github";
-      owner = "ryantm";
-      repo = "nixpkgs-update";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    flake-registry = {
-      type = "github";
-      owner = "NixOS";
-      repo = "flake-registry";
-      flake = false;
-    };
-    alejandra = {
-      type = "github";
-      owner = "kamadorueda";
-      repo = "alejandra";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    hercules-ci-agent.url = github:hercules-ci/hercules-ci-agent/hercules-ci-agent-0.9.1;
-    hercules-ci-agent.inputs.nixpkgs.follows = "nixpkgs";
-  };
+  inputs =
+    {
+      # Heads-up for 22.05: following unstable now
+      nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
+      nixpkgs-unstable.url = github:NixOS/nixpkgs/nixos-unstable;
+      nixpkgs-master.url = github:NixOS/nixpkgs/master;
 
+      nixpkgs-unfree = {
+        url = github:SomeoneSerge/nixpkgs-unfree;
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      home-manager = {
+        url = github:nix-community/home-manager/master;
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      nixos-hardware = {
+        url = github:NixOS/nixos-hardware/master;
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      nixpkgs-review = {
+        url = github:Mic92/nixpkgs-review/2.7.0;
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      nixpkgs-update = {
+        url = github:ryantm/nixpkgs-update/0.3.0;
+        inputs.nixpkgs.follows = "nixpkgs";
+        inputs.nixpkgs-review.follows = "nixpkgs-review";
+      };
+
+      flake-registry = {
+        url = github:NixOS/flake-registry;
+        flake = false;
+      };
+
+      alejandra = {
+        url = github:kamadorueda/alejandra;
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      hercules-ci-agent = {
+        url = github:hercules-ci/hercules-ci-agent/hercules-ci-agent-0.9.1;
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+
+      neovim-nightly = {
+        url = github:neovim/neovim?dir=contrib;
+        inputs.nixpkgs.follows = "nixpkgs";
+      };
+      mach-nix.url = github:DavHau/mach-nix;
+      nixGL = {
+        url = github:guibou/nixGL;
+        flake = false;
+      };
+      openconnect-sso = {
+        url = github:vlaci/openconnect-sso;
+        flake = false;
+      };
+    };
   outputs =
     { self
     , nixpkgs
-    , nix
-    , nixGL
-    , home-manager
-    , nixos-hardware
-    , openconnect-sso
-    , neovim-nightly
-    , nixpkgs-update
-    , flake-registry
-    , hercules-ci-agent
+    , nixpkgs-unfree
     , ...
     } @ inputs:
     let
       system = "x86_64-linux";
       inherit (nixpkgs.lib) mapAttrsToList genAttrs nixosSystem;
 
-      # take neovim-nightly built with upstream's nixpkgs
-      # (thus with upstream's libc)
+      overlays = import ./overlays.nix inputs;
 
-      overlays = (import ./overlays.nix inputs);
-      pkgs = import nixpkgs { inherit system; };
-      pkgsExt = import nixpkgs { inherit system overlays; };
-      registry = {
-        nixpkgs.flake = inputs.nixpkgs;
-        dotfiles.flake = inputs.self;
-        nixgl.flake = inputs.nixGL;
-        mach-nix.flake = inputs.mach-nix;
-        nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
-        nixpkgs-master.flake = inputs.nixpkgs-master;
+      registries = {
+        default = {
+          nixpkgs.flake = inputs.nixpkgs;
+          dotfiles.flake = inputs.self;
+          nixgl.flake = inputs.nixGL;
+          mach-nix.flake = inputs.mach-nix;
+          nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
+          nixpkgs-master.flake = inputs.nixpkgs-master;
+        };
+        unfree = {
+          nixpkgs.flake = inputs.nixpkgs-unfree;
+          dotfiles.flake = inputs.self;
+          nixgl.flake = inputs.nixGL;
+          mach-nix.flake = inputs.mach-nix;
+          nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
+          nixpkgs-master.flake = inputs.nixpkgs-master;
+        };
       };
-      m.exposeFlakes = {
-        config.passthru.otherFlakes.nixpkgs-unstable = inputs.nixpkgs-unstable;
-        config.passthru.otherFlakes.nixpkgs-master = inputs.nixpkgs-master;
-      };
-      m.pin-registry = { config, ... }: {
+
+      nixPathFromRegistry = mapAttrsToList (name: value: "${name}=${value.flake}");
+
+      m.pinNixPath = { config, lib, ... }: {
         nix = {
-          inherit registry;
-          nixPath = mapAttrsToList (name: value: "${name}=${value.flake}") config.nix.registry;
+          registry = lib.mkDefault registries.default;
+          nixPath = nixPathFromRegistry config.nix.registry;
           extraOptions = ''
-            flake-registry = file://${flake-registry}/flake-registry.json
+            flake-registry = file://${inputs.flake-registry}/flake-registry.json
           '';
         };
       };
       m.allowUnfree = { nixpkgs.config.allowUnfree = true; };
+      m.cudaSupport = {
+        nixpkgs.config = {
+          allowUnfree = true;
+          cudaSupport = true;
+        };
+      };
       m.useOverlays = { nixpkgs.overlays = overlays; };
-      m.enable-some = import ./modules;
-      m.enable-hm = users: { config
-                           , pkgs
-                           , ...
-                           }: {
-        imports = [ home-manager.nixosModules.home-manager ];
+      m.enableSomeModules = import ./modules;
+      m.enableHM = users: { config
+                          , pkgs
+                          , ...
+                          }: {
+        imports = [ inputs.home-manager.nixosModules.home-manager ];
         home-manager.useGlobalPkgs = true;
         home-manager.users = genAttrs users (user: import ./home/default.nix);
       };
@@ -110,41 +127,30 @@
       };
     in
     rec {
-      packages.${system} = {
-        nix = nix.packages.${system}.nix;
-        home-devbox =
-          (pkgs.callPackage ./home/call-hm.nix {
-            inherit home-manager;
-            username = "serge";
-            addModules = with m; [
-              { some.devbox.enable = true; }
-              useOverlays
-              allowUnfree
-            ];
-          }).activationPackage;
-        inherit (pkgsExt) napari neovim;
-        pkgs = pkgsExt.stdenv.mkDerivation {
-          name = "pkgs-passthru";
-          src = throw "Don't build, use pkgs from passthru";
-          passthru = pkgsExt;
+
+      packages.${system} =
+        let
+          pkgs = import nixpkgs { inherit system; };
+          pkgsWithOverlays = import nixpkgs { inherit system overlays; };
+        in
+        {
+          inherit (pkgsWithOverlays) neovim;
+          inherit (pkgsWithOverlays.python3Packages) napari;
+
+          home-devbox =
+            (pkgs.callPackage ./home/call-hm.nix {
+              inherit (inputs) home-manager;
+              username = "serge";
+              addModules = with m; [
+                { some.devbox.enable = true; }
+                useOverlays
+                allowUnfree
+                cudaSupport
+                { home.sessionVariables.NIX_PATH = nixPathFromRegistry registries.unfree; }
+              ];
+            }).activationPackage;
         };
-        pkgsUnfree = pkgsExt.stdenv.mkDerivation {
-          name = "pkgs-passthru-unfree";
-          src = throw "Don't build, use pkgs from passthru";
-          passthru = import inputs.nixpkgs {
-            inherit system overlays;
-            config.allowUnfree = true;
-          };
-        };
-        pkgsUnfreeUnstable = pkgsExt.stdenv.mkDerivation {
-          name = "pkgs-passthru-unfree";
-          src = throw "Don't build, use pkgs from passthru";
-          passthru = import inputs.nixpkgs-unstable {
-            inherit system overlays;
-            config.allowUnfree = true;
-          };
-        };
-      };
+
       apps.${system} = {
         home-devbox = {
           type = "app";
@@ -157,12 +163,12 @@
         modules = with m; [
           allowUnfree
           useOverlays
-          enable-some
+          enableSomeModules
           enable-openconnect
-          pin-registry
-          nixos-hardware.nixosModules.lenovo-thinkpad-x230
+          pinNixPath
+          inputs.nixos-hardware.nixosModules.lenovo-thinkpad-x230
           ./hosts/ss-x230/configuration.nix
-          (enable-hm [ "ss" ])
+          (enableHM [ "ss" ])
         ];
       };
 
@@ -170,11 +176,10 @@
         system = "x86_64-linux";
         modules = with m; [
           useOverlays
-          enable-some
-          enable-openconnect
-          pin-registry
+          enableSomeModules
+          pinNixPath
           ./hosts/lite21/configuration.nix
-          (enable-hm [ "ss" ])
+          (enableHM [ "ss" ])
           {
             home-manager.users.ss.programs.ssh = {
               enable = true;
@@ -190,35 +195,28 @@
         inherit system;
         modules = with m; [
           useOverlays
-          enable-some
+          enableSomeModules
           enable-openconnect
-          pin-registry
-          nixos-hardware.nixosModules.dell-xps-13-9360
+          pinNixPath
+          inputs.nixos-hardware.nixosModules.dell-xps-13-9360
           ./hosts/ss-xps13/configuration.nix
-          (enable-hm [ "ss" ])
+          (enableHM [ "ss" ])
         ];
       };
 
       nixosConfigurations.cs-338 = nixosSystem {
         system = "x86_64-linux";
-        extraArgs = {
-          inherit inputs;
-        };
         modules = with m; [
+          { config._module.args = { inherit inputs; }; }
           allowUnfree
-          {
-            nixpkgs.config.cudaSupport = true;
-            nixpkgs.config.cudaArchList = [ "8.6+PTX" ];
-            nixpkgs.config.cudaCapabilities = [ "compute_86" ];
-          }
+          cudaSupport
           useOverlays
-          enable-some
+          enableSomeModules
           enable-openconnect
-          pin-registry
-          exposeFlakes
-          nixos-hardware.nixosModules.common-cpu-amd
+          pinNixPath
+          inputs.nixos-hardware.nixosModules.common-cpu-amd
           ./hosts/cs-338/configuration.nix
-          (enable-hm [ "ss" ])
+          (enableHM [ "ss" ])
           inputs.hercules-ci-agent.nixosModules.multi-agent-service
         ];
       };

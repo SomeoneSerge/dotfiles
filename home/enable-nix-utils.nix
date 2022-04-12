@@ -19,7 +19,7 @@ in
       cachix
       nixpkgs-fmt
       nixpkgs-review
-      nix-visualize
+      python3Packages.nix-visualize
       nix-index
       nix-tree
       patchelf

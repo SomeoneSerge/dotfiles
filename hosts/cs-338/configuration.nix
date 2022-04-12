@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ lib, config, pkgs, ... }:
+{ lib, config, pkgs, inputs, ... }:
 
 with lib;
 with builtins;
@@ -11,55 +11,23 @@ let
   some = config.some;
 
   pyOverrides = python-final: python-prev: rec {
-    pytorch = python-prev.pytorch.override {
-      blas = pkgs.mklBlas;
-      cudaSupport = true;
-      cudaArchList = [ "8.6+PTX" ];
-    };
-    jaxlib = python-prev.jaxlib.override { cudaSupport = true; };
-    tensorflow-probability = # lib.callPackageWith (pkgs // python-final)
-      pkgs.tfp15.override {
-        inherit tensorflow;
-      };
-    tensorflow = lib.callPackageWith (pkgs // pkgs.darwin.apple_sdk.frameworks // python-prev)
-      "${config.passthru.otherFlakes.nixpkgs-unstable}/pkgs/development/python-modules/tensorflow/"
-      {
-        cudaSupport = true;
-        cudaCapabilities = [ "compute_86" ];
-
-        inherit (pkgs.darwin) cctools;
-        bazel_3 = pkgs.bazelFromUnstable;
-        protobuf-python = python-prev.protobuf;
-        protobuf-core = pkgs.protobuf;
-        flatbuffers-python = python-prev.flatbuffers;
-        flatbuffers-core = pkgs.flatbuffers;
-        lmdb-core = pkgs.lmdb;
-
-        patchelfUnstable = pkgs.patchelfFromUnstable;
-
-        inherit (pkgs) keras;
-        inherit (pkgs) tensorflow-estimator;
-
-        cudatoolkit = pkgs.cudatoolkit;
-        cudnn = pkgs.cudnn;
-      };
-    gpytorch = lib.callPackageWith python-final pkgs.gpytorch.override { };
-    gpflux = lib.callPackageWith python-final pkgs.gpflux.override { };
-    gpflow = lib.callPackageWith python-final pkgs.gpflow.override { };
-    trieste = lib.callPackageWith python-final pkgs.trieste.override { };
+    tensorflow-probability = python-final.tfp15;
   };
-  psUsual = ps: with ps; [
-    ps.gpytorch
-    ps.gpflow
-    ps.gpflux
-    ps.trieste
 
-    jax
-    jaxlib
+  psUsual = ps: with ps; [
+    # LATER...
+    # gpytorch
+    # gpflow
+    # gpflux
+    # trieste
+
+    # BROKEN for now
+    # jax
+    # jaxlib
     pytorch
     torchvision
     tensorflow
-    tensorflow-probability
+    # tensorflow-probability
     numpy
     scikit-learn
     networkx
@@ -79,10 +47,6 @@ let
     jupyterlab-pygments
     jupyterlab-widgets
   ];
-  py = pkgs.python3.override {
-    packageOverrides = pyOverrides;
-    self = py;
-  };
 in
 {
   imports = [
@@ -102,31 +66,16 @@ in
 
   nixpkgs.overlays = [
     (final: prev: {
-      cudatoolkit_11 = prev.cudatoolkit_11_3;
-      cudatoolkit = prev.cudatoolkit_11_3;
-      cudnn = prev.cudnn_cudatoolkit_11_3;
-      cutensor = prev.cutensor_cudatoolkit_11_3;
-      opensubdiv =
-        let
-          opensubdiv = prev.opensubdiv;
-          # opensubdiv cuda support is broken
-          opensubdiv' = opensubdiv.override { cudaSupport = false; };
-          opensubdiv'' = opensubdiv'.overrideAttrs (a: {
-            buildInputs = a.buildInputs ++ [ final.opencl-headers final.ocl-icd ];
-          });
-        in
-        opensubdiv'';
-      blender = prev.blender.override { cudaSupport = false; };
+      pythonPackagesOverlays = (prev.pythonPackagesOverlays or [ ]) ++ [ pyOverrides ];
 
       # necessary just for fft in pytorch
       # but still setting it globally
-      mklBlas = prev.blas.override {
+      blas = prev.blas.override {
         blasProvider = final.mkl;
       };
-      mklLapack = prev.lapack.override {
+      lapack = prev.lapack.override {
         lapackProvider = final.mkl;
       };
-      myPython = py;
     })
   ];
 
@@ -384,7 +333,7 @@ in
     wget
     nmap
     firefox
-    ag
+    silver-searcher
     ripgrep
     fd
     pavucontrol
@@ -394,7 +343,7 @@ in
     qrencode
     imv
     vlc
-    wireguard
+    wireguard-tools
     logseq
     tdesktop
     ffmpeg-full
@@ -426,24 +375,26 @@ in
     nnn
     mc
     neovim-remote
-    torbrowser
+    tor-browser-bundle-bin
     nvtop
 
     wineWowPackages.full
     turbovnc
 
-    (py.withPackages psUsual)
-    napari
+    (python3.withPackages psUsual)
+    # FIXME: broken
+    # napari
     saccade
     okular
     xclip
-    gnome.meld
+    meld
     anki
     peek
 
     alejandra
     nixpkgs-fmt
-    nixpkgs-update
+    # broken on unstable, 2022-04-10
+    # nixpkgs-update
 
     colmapWithCuda
   ]
@@ -525,14 +476,14 @@ in
     glibc.bin
     busybox
   ];
-  services.jhub.python = py;
+  services.jhub.python = pkgs.python3;
   services.jhub.pythonPackages = ps: (psUsual ps) ++ [ ];
 
   # services.hercules-ci-agents.some = {
   #   settings.concurrentTasks = 8;
   # };
   services.hercules-ci-agents.nixpkgs-unfree = {
-    settings.concurrentTasks = 16;
+    settings.concurrentTasks = 8;
   };
 
 
