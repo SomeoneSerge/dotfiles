@@ -35,6 +35,8 @@ let
     pandas
     opencv4
 
+    transforms3d
+
     pygraphviz
     joblib
     pip
