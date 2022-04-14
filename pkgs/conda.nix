@@ -47,7 +47,7 @@
   condaManager ? "miniforge"
 , # Whether to use pypy3 or python3 (cython)
   condaPython ? "pypy3"
-, semver ? "4.10.3-7"
+, semver ? "4.12.0-0"
 }:
 
 let
@@ -72,7 +72,7 @@ let
   installer' = lib.findFirst filterInstallers notFound installers;
   installer = lib.findSingle filterInstallers notFound (lib.warn "Multiple versions of conda match the query" installer') installers;
 
-  src = fetchurl { inherit (installer) url sha256; };
+  src = fetchurl { inherit (installer) url hash; };
 
   installerCmd = runCommand "conda-install" { buildInputs = [ makeWrapper ]; }
     ''
@@ -109,11 +109,11 @@ let
   installerType.options = with lib; {
     url = mkOption {
       type = types.str;
-      example = "https://github.com/conda-forge/miniforge/releases/download/4.10.3-4/Miniforge-pypy3-4.10.3-4-Linux-x86_64.sh";
+      example = "https://github.com/conda-forge/miniforge/releases/download/4.12.0-0/Miniforge-pypy3-4.12.0-0-Linux-x86_64.sh";
     };
-    sha256 = mkOption {
+    hash = mkOption {
       type = types.str;
-      example = "0a02h9imjw9357x15m38s5skzyqi9sj92gfpj3kn497jiy8ylsf6";
+      example = "sha256-0a02h9imjw9357x15m38s5skzyqi9sj92gfpj3kn497jiy8ylsf6";
     };
     system = mkOption {
       type = types.str;
@@ -131,56 +131,48 @@ let
   installers = [
     rec {
       url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Mambaforge-pypy3-${version}-Linux-x86_64.sh";
-      sha256 = "sgeVnwT+A8+zXB5x+NbvzOqzKYxuAFcAgejQTVgGaHk=";
-      version = "4.10.3-7";
+      hash = "sha256-ngUlO1wJ7URZXutv9LtUBZoPH+kO8CUJFkWymamijC8=";
+      version = "4.12.0-0";
       system = "x86_64-linux";
       conda = "miniforge";
       python = "pypy3";
     }
     rec {
       url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Miniforge3-Linux-x86_64.sh";
-      sha256 = "1gkh1b1zqjnvmmchcsq632jy199b5i6v6dxy8y60nval8dnnwqhk";
-      version = "4.10.3-4";
+      hash = "";
+      version = "4.12.0-0";
       system = "x86_64-linux";
       conda = "miniforge";
       python = "python3";
     }
     rec {
-      url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Miniforge-pypy3-${version}-Linux-x86_64.sh";
-      sha256 = "0a02h9imjw9357x15m38s5skzyqi9sj92gfpj3kn497jiy8ylsf6";
-      version = "4.10.3-4";
-      system = "x86_64-linux";
-      conda = "miniforge";
-      python = "pypy3";
-    }
-    rec {
       url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Miniforge3-Linux-aarch64.sh";
-      sha256 = "1llj0c78pc5w5v1grzq98qankm8ig0v7xsf4vh2zqphlv2g20dqj";
-      version = "4.10.3-4";
+      hash = "";
+      version = "4.12.0-0";
       system = "aarch64-linux";
       conda = "miniforge";
       python = "python3";
     }
     rec {
       url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Miniforge3-Darwin-x86_64.sh";
-      sha256 = "0xrdi7yixhhr7hmmcih36sdxppf9yj5sflpl5f31gnd3qcz5kgi1";
-      version = "4.10.3-4";
+      hash = "";
+      version = "4.12.0-0";
       system = "x86_64-darwin";
       conda = "miniforge";
       python = "python3";
     }
     rec {
       url = "https://github.com/conda-forge/miniforge/releases/download/${version}/Miniforge3-Darwin-arm64.sh";
-      sha256 = "1zmfrkwmgns6zcqmqlkla1zzfzp2sxll43gkl3b95k7r5wbs4y80";
-      version = "4.10.3-4";
+      hash = "";
+      version = "4.12.0-0";
       system = "aarch64-darwin";
       conda = "miniforge";
       python = "python3";
     }
     rec {
       url = "https://repo.anaconda.com/miniconda/Miniconda3-py39_${version}-MacOSX-x86_64.sh";
-      sha256 = "026mgj9bnbfqri0w2vakhcs85r7nylswci1ih39cgqj33xrfjvbq";
-      version = "4.10.3";
+      hash = "";
+      version = "4.12.0";
       system = "x86_64-linux";
       conda = "anaconda";
       python = "python3";
@@ -193,7 +185,10 @@ buildFHSUserEnv {
   inherit profile targetPkgs;
   multiPkgs = extraPkgsMulti;
 
-  passthru = { condaInstaller = installerCmd; inherit profile installationPath; };
+  passthru = {
+    inherit profile installationPath;
+    condaInstaller = installerCmd;
+  };
 
   meta = {
     description = "Conda is a package manager for Python";

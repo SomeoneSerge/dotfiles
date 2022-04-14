@@ -48,6 +48,8 @@ let
     tqdm
     jupyterlab-pygments
     jupyterlab-widgets
+
+    ipython
   ];
 in
 {
@@ -477,6 +479,7 @@ in
     which
     glibc.bin
     busybox
+    zlib
   ];
   services.jhub.python = pkgs.python3;
   services.jhub.pythonPackages = ps: (psUsual ps) ++ [ ];
