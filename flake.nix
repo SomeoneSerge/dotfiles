@@ -213,6 +213,7 @@
           useOverlays
           enableSomeModules
           enable-openconnect
+          { nix.registry = registries.unfree; }
           pinNixPath
           inputs.nixos-hardware.nixosModules.common-cpu-amd
           ./hosts/cs-338/configuration.nix
