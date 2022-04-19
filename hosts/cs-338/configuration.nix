@@ -382,7 +382,7 @@ in
     tor-browser-bundle-bin
     nvtop
 
-    wineWowPackages.full
+    # wineWowPackages.full
     turbovnc
 
     (python3.withPackages psUsual)
