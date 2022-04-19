@@ -71,7 +71,7 @@
     } @ inputs:
     let
       system = "x86_64-linux";
-      inherit (nixpkgs.lib) mapAttrsToList genAttrs nixosSystem;
+      inherit (nixpkgs.lib) mapAttrsToList genAttrs;
 
       overlays = import ./overlays.nix inputs;
 
@@ -158,7 +158,7 @@
         };
       };
 
-      nixosConfigurations.ss-x230 = nixosSystem {
+      nixosConfigurations.ss-x230 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = with m; [
           allowUnfree
@@ -172,7 +172,7 @@
         ];
       };
 
-      nixosConfigurations.lite21 = nixosSystem {
+      nixosConfigurations.lite21 = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = with m; [
           useOverlays
@@ -191,7 +191,7 @@
         ];
       };
 
-      nixosConfigurations.ss-xps13 = nixosSystem {
+      nixosConfigurations.ss-xps13 = nixpkgs.lib.nixosSystem {
         inherit system;
         modules = with m; [
           useOverlays
@@ -204,7 +204,7 @@
         ];
       };
 
-      nixosConfigurations.cs-338 = nixosSystem {
+      nixosConfigurations.cs-338 = nixpkgs-unfree.lib.nixosSystem {
         system = "x86_64-linux";
         modules = with m; [
           { config._module.args = { inherit inputs; }; }
@@ -222,7 +222,7 @@
         ];
       };
 
-      nixosConfigurations.x230-installer = nixosSystem {
+      nixosConfigurations.x230-installer = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = with m; [
           useOverlays
