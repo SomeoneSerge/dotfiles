@@ -4,8 +4,8 @@
   inputs =
     {
       # Heads-up for 22.05: following unstable now
-      nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
-      nixpkgs-unstable.url = github:NixOS/nixpkgs/nixos-unstable;
+      nixpkgs.url = github:NixOS/nixpkgs/nixpkgs-unstable;
+      nixos-unstable.url = github:NixOS/nixpkgs/nixos-unstable;
       nixpkgs-master.url = github:NixOS/nixpkgs/master;
 
       nixpkgs-unfree = {
@@ -81,7 +81,7 @@
           dotfiles.flake = inputs.self;
           nixgl.flake = inputs.nixGL;
           mach-nix.flake = inputs.mach-nix;
-          nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
+          nixos-unstable.flake = inputs.nixos-unstable;
           nixpkgs-master.flake = inputs.nixpkgs-master;
         };
         unfree = {
@@ -89,7 +89,7 @@
           dotfiles.flake = inputs.self;
           nixgl.flake = inputs.nixGL;
           mach-nix.flake = inputs.mach-nix;
-          nixpkgs-unstable.flake = inputs.nixpkgs-unstable;
+          nixos-unstable.flake = inputs.nixos-unstable;
           nixpkgs-master.flake = inputs.nixpkgs-master;
         };
       };

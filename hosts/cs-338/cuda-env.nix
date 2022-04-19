@@ -100,7 +100,7 @@ in
         mkEnableOption "Enable cuda-shell (no fhs). Appears to be broken";
       cudaPackage = mkOption {
         type = types.package;
-        default = pkgs.cudatoolkit_11_2;
+        default = pkgs.cudaPackages.cudatoolkit;
       };
       nvidiaPackage = mkOption {
         type = types.package;
