@@ -276,6 +276,16 @@ in
       };
     };
   };
+  home-manager.users.ss.programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      triton = {
+        user = "kozluks1";
+        hostname = "triton.aalto.fi";
+        # identityFile = "${config.home.homeDirectory}/.ssh/id_ed25519";
+      };
+    };
+  };
 
   services.printing.enable = true;
 
