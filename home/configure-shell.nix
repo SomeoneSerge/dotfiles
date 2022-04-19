@@ -56,6 +56,8 @@ in
 
     programs.bash = {
       enable = true;
+      historySize = 10 * 1000 * 1000;
+      historyControl = [ "ignoredups" "ignorespace" ];
       bashrcExtra = ''
         . ${pkgs.bash-completion}/share/bash-completion/bash_completion
         PROMPT_COMMAND="history -a; history -r"
