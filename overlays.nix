@@ -18,12 +18,6 @@ in
 
       saccade = final.libsForQt5.callPackage ./pkgs/saccade.nix { };
 
-      singularity = prev.singularity.overrideAttrs (a: {
-        nativeBuildInputs = a.nativeBuildInputs ++ [
-          final.cudaPackages.autoAddOpenGLRunpathHook
-        ];
-      });
-
       vpn-slice = prev.vpn-slice.overrideDerivation (oldAttrs:
         with oldAttrs; rec {
           version = "0.15";

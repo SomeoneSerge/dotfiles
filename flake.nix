@@ -4,7 +4,7 @@
   inputs =
     {
       # Heads-up for 22.05: following unstable now
-      nixpkgs.url = github:NixOS/nixpkgs/nixpkgs-unstable;
+      nixpkgs.url = github:SomeoneSerge/nixpkgs/less-unstable;
       nixos-unstable.url = github:NixOS/nixpkgs/nixos-unstable;
       nixpkgs-master.url = github:NixOS/nixpkgs/master;
 

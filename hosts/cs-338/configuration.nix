@@ -59,6 +59,7 @@ in
     ./cuda-env.nix
     ./smb.nix
     ./nginx.nix
+    ./singularity.nix
   ];
 
   nix.binaryCachePublicKeys = [
@@ -447,7 +448,6 @@ in
   services.flatpak.enable = true;
   home-manager.users.ss = { services.random-background.enableXinerama = true; };
 
-  programs.singularity.enable = true;
   services.munge = {
     enable = true;
   };
