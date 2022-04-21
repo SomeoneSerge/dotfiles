@@ -10,7 +10,7 @@ let
 
     TMP=$(mktemp)
     ldconfig -C "$TMP" /run/opengl-driver/lib
-    ldconfig -C "$TMP" -p
+    ldconfig -C "$TMP" $@
   '';
 
   inherit (pkg) projectName;
