@@ -69,6 +69,8 @@ in
     "https://cuda-maintainers.cachix.org"
   ];
 
+  nix.package = pkgs.nix; # 2.7 instead of nixUnstable which is 2.8
+
   nixpkgs.overlays = [
     (final: prev: {
       pythonPackagesOverlays = (prev.pythonPackagesOverlays or [ ]) ++ [ pyOverrides ];
