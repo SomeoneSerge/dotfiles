@@ -111,9 +111,16 @@ in
   boot.loader.grub.configurationLimit = 16;
   boot.blacklistedKernelModules = [ "nouveau" ];
 
-  virtualisation.docker.enable = true;
+  # Conflicts with podman:
+  # virtualisation.docker.enable = true;
   virtualisation.docker.enableNvidia = true;
   systemd.enableUnifiedCgroupHierarchy = false; # otherwise nvidia-docker fails
+
+  virtualisation.podman.enable = true;
+  virtualisation.podman.dockerCompat = true;
+  virtualisation.podman.dockerSocket.enable = true;
+  virtualisation.podman.defaultNetwork.dnsname.enable = true;
+  virtualisation.podman.enableNvidia = true;
 
   virtualisation.libvirtd.enable = true;
 
@@ -325,7 +332,7 @@ in
     };
     ss = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "video" "docker" ] ++ lib.optional config.virtualisation.libvirtd.enable "libvirtd";
+      extraGroups = [ "wheel" "video" "docker" "podman" ] ++ lib.optional config.virtualisation.libvirtd.enable "libvirtd";
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZCVSaUEokr9f55mKVWf4HzHsVIIY1CO089LuTJuHqS kozluks1@login3.triton.aalto.fi"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
@@ -414,6 +421,9 @@ in
     # nixpkgs-update
 
     colmapWithCuda
+
+    docker-compose
+    podman-compose
   ]
   ++ lib.optional config.virtualisation.libvirtd.enable pkgs.virt-manager
   ;
