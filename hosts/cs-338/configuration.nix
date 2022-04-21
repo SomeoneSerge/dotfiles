@@ -510,7 +510,7 @@ in
   #   settings.concurrentTasks = 8;
   # };
   services.hercules-ci-agents.nixpkgs-unfree = {
-    settings.concurrentTasks = 8;
+    settings.concurrentTasks = 4;
   };
 
 
