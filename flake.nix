@@ -53,7 +53,6 @@
         url = github:neovim/neovim?dir=contrib;
         inputs.nixpkgs.follows = "nixpkgs";
       };
-      mach-nix.url = github:DavHau/mach-nix;
       nixGL = {
         url = github:guibou/nixGL;
         flake = false;
@@ -80,7 +79,6 @@
           nixpkgs.flake = inputs.nixpkgs;
           dotfiles.flake = inputs.self;
           nixgl.flake = inputs.nixGL;
-          mach-nix.flake = inputs.mach-nix;
           nixos-unstable.flake = inputs.nixos-unstable;
           nixpkgs-master.flake = inputs.nixpkgs-master;
         };
@@ -88,7 +86,6 @@
           nixpkgs.flake = inputs.nixpkgs-unfree;
           dotfiles.flake = inputs.self;
           nixgl.flake = inputs.nixGL;
-          mach-nix.flake = inputs.mach-nix;
           nixos-unstable.flake = inputs.nixos-unstable;
           nixpkgs-master.flake = inputs.nixpkgs-master;
         };
