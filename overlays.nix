@@ -15,6 +15,7 @@ in
 
       rycee = import inputs.rycee { pkgs = final; };
 
+      obs-v4l2sink = final.libsForQt5.callPackage ./pkgs/obs-v4l2sink.nix { };
       alejandra = inputs.alejandra.defaultPackage.${prev.system};
       nixUpstream = inputs.nix.packages.${prev.system}.nix;
 

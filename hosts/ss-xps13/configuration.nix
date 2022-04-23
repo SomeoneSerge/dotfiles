@@ -35,12 +35,16 @@ in
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.extraModprobeConfig = ''
     options usb-storage quirks=1d6b:0003:u
+    options v4l2loopback card_label="obs" exclusive_caps=1
   '';
   boot.kernelParams = [
     "pci=nommconf"
 
     # Because someone thought passive is always "on par or better"
     "intel_pstate=active"
+  ];
+  boot.extraModulePackages = [
+    config.boot.kernelPackages.v4l2loopback
   ];
   services.fwupd.enable = true;
 
@@ -92,7 +96,6 @@ in
       }
     )
     vlc
-    obs-studio
     git
     qrencode
     imv
@@ -254,6 +257,13 @@ in
     programs.git.signing = {
       key = "3C335BD71DE8A69DDE0871DBA39079F4AE78D20D";
       signByDefault = true;
+    };
+
+    programs.obs-studio = {
+      enable = true;
+      plugins = [
+        pkgs.obs-v4l2sink
+      ];
     };
   };
 
