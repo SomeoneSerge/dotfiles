@@ -85,10 +85,10 @@ in
       services.matrix-synapse = {
         enable = true;
         # enable_registration = true;
-        server_name = config.networking.domain;
-        listeners = [{
+        settings.server_name = config.networking.domain;
+        settings.listeners = [{
           port = 8008;
-          bind_address = localAddress;
+          bind_addresses = [ localAddress ];
           type = "http";
           tls = false;
           x_forwarded = true;
