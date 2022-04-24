@@ -80,6 +80,7 @@ in
     environment.systemPackages = with pkgs; [
       polkit_gnome
       git-doc.out
+      xfce.thunar
     ];
     home-manager.users.${some.mainUser} =
       let
