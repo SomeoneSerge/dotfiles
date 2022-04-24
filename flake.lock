@@ -489,7 +489,24 @@
         "nixpkgs-review": "nixpkgs-review",
         "nixpkgs-unfree": "nixpkgs-unfree",
         "nixpkgs-update": "nixpkgs-update",
-        "openconnect-sso": "openconnect-sso"
+        "openconnect-sso": "openconnect-sso",
+        "rycee": "rycee"
+      }
+    },
+    "rycee": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1650785063,
+        "narHash": "sha256-EsOw4UztMGnTJ9E6+jNrp1EJt+oScRI8WCdM8yyYIA8=",
+        "ref": "master",
+        "rev": "927d279ffa45304dc45a77c7e67199514e17bf14",
+        "revCount": 2185,
+        "type": "git",
+        "url": "https://gitlab.com/rycee/nur-expressions.git"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://gitlab.com/rycee/nur-expressions.git"
       }
     }
   },

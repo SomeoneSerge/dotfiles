@@ -49,6 +49,11 @@
         inputs.nixpkgs.follows = "nixpkgs";
       };
 
+      rycee = {
+        url = "git+https://gitlab.com/rycee/nur-expressions.git";
+        flake = false;
+      };
+
       neovim-nightly = {
         url = github:neovim/neovim?dir=contrib;
         inputs.nixpkgs.follows = "nixpkgs";

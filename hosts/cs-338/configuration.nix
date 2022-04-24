@@ -215,6 +215,28 @@ in
       }
     ];
 
+  home-manager.users.ss.programs.firefox = {
+    enable = true;
+    extensions = with pkgs.rycee.firefox-addons; [
+      sidebery # tree-tabs
+      noscript
+      temporary-containers
+      multi-account-containers
+      (buildFirefoxXpiAddon {
+        pname = "adnauseam";
+        version = "3.12.2";
+        addonId = "adnauseam@rednoise.org";
+        url = "https://addons.mozilla.org/firefox/downloads/file/3894041/adnauseam-3.12.2-an+fx.xpi";
+        sha256 = "sha256-jN8NfFBaCnQ4TNYJqfq/80umfdwDP1KZwZlz53/hlpI=";
+        meta = {
+          license = lib.licenses.gpl3;
+          platforms = lib.platforms.all;
+          description = "uBlock that fights back";
+        };
+      })
+    ];
+  };
+
   home-manager.users.ss.programs.git.signing = {
     key = "E4C27B0B66DB86502905D8BD7B0E3B1390D61DA4";
     signByDefault = true;
@@ -352,7 +374,6 @@ in
     alacritty
     wget
     nmap
-    firefox
     silver-searcher
     ripgrep
     fd

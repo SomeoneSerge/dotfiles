@@ -13,6 +13,8 @@ in
     rec {
       inherit (prev.callPackage nixGL { }) nixGLNvidia nixGLIntel nixGLDefault;
 
+      rycee = import inputs.rycee { pkgs = final; };
+
       alejandra = inputs.alejandra.defaultPackage.${prev.system};
       nixUpstream = inputs.nix.packages.${prev.system}.nix;
 
