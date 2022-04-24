@@ -30,7 +30,7 @@ in
         gitAndTools.gh
 
         asciinema
-        youtube-dl
+        yt-dlp
         mediainfo
         graphicsmagick
         iotop
