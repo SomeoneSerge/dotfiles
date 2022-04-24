@@ -131,7 +131,6 @@ in
       }
     )
     (python3.withPackages (ps: with ps; [ numpy scipy matplotlib opencv4 ]))
-    firefox-wayland
     torsocks
     tor-browser-bundle-bin
     chromium

@@ -106,6 +106,7 @@ in
 
           services.gnome-keyring.enable = true;
           services.gnome-keyring.components = [ "ssh" "secrets" "pkcs11" ];
+
           programs.alacritty = {
             enable = true;
             settings = {
@@ -120,6 +121,29 @@ in
               font.size = mkDefault 9.0;
             };
           };
+
+          programs.firefox = {
+            enable = true;
+            extensions = with pkgs.rycee.firefox-addons; [
+              sidebery # tree-tabs
+              noscript
+              temporary-containers
+              multi-account-containers
+              (buildFirefoxXpiAddon {
+                pname = "adnauseam";
+                version = "3.12.2";
+                addonId = "adnauseam@rednoise.org";
+                url = "https://addons.mozilla.org/firefox/downloads/file/3894041/adnauseam-3.12.2-an+fx.xpi";
+                sha256 = "sha256-jN8NfFBaCnQ4TNYJqfq/80umfdwDP1KZwZlz53/hlpI=";
+                meta = {
+                  license = lib.licenses.gpl3;
+                  platforms = lib.platforms.all;
+                  description = "uBlock that fights back";
+                };
+              })
+            ];
+          };
+
           services.flameshot.enable = true;
           programs.i3status-rust = {
             enable = true;
