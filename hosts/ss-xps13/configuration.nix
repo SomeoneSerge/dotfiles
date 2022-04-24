@@ -106,7 +106,6 @@ in
     tdesktop
     brightnessctl
     gnome.gnome-tweaks
-    gnome.gnome-tweak-tool
     gnome.dconf-editor
     element-desktop
     ffmpeg-full
@@ -209,7 +208,7 @@ in
     enable = true;
     driSupport = true;
     extraPackages = with pkgs; [
-      libva-full
+      libva
       vaapiIntel # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
       vaapiVdpau
       libvdpau-va-gl
@@ -220,7 +219,7 @@ in
 
   xdg.portal.enable = true;
   services.flatpak.enable = true;
-  programs.singularity.enable = true;
+  # programs.singularity.enable = true;
 
   services.tor.enable = true;
   services.tor.client.enable = true;
