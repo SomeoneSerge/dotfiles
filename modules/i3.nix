@@ -43,23 +43,48 @@ in
   config = mkIf cfg.enable {
     environment.pathsToLink = [ "/libexec" ];
 
-    services.xserver.desktopManager.xfce = {
-      enable = true;
-      noDesktop = true;
-      enableXfwm = false;
-    };
-    services.xserver.displayManager.defaultSession = "xfce+i3";
+    # Taken from the xfce4 module
+    services.udisks2.enable = true;
+    security.polkit.enable = true;
+    services.accounts-daemon.enable = true;
+    services.upower.enable = true;
+    services.gnome.glib-networking.enable = true;
+    services.gvfs.enable = true;
+    services.tumbler.enable = true;
+    services.system-config-printer.enable = (mkIf config.services.printing.enable (mkDefault true));
+    services.xserver.libinput.enable = mkDefault true;
+
+    # Enable default programs
+    programs.dconf.enable = true;
+
+    # Shell integration for VTE terminals
+    programs.bash.vteIntegration = mkDefault true;
+    programs.zsh.vteIntegration = mkDefault true;
+
+    services.gnome.at-spi2-core.enable = true;
+
+    services.xserver.displayManager.defaultSession = "none+i3";
     services.xserver.windowManager.i3 = {
       enable = mkDefault true;
       package = mkDefault cfg.package;
-      extraPackages = with pkgs; [ dmenu i3status-rust i3lock-fancy ];
+      extraPackages = with pkgs; [ dmenu i3status-rust ];
     };
-    environment.systemPackages = with pkgs; [ polkit_gnome git-doc.out ];
-    security.polkit.enable = true;
+
+    programs.slock.enable = true; # suid wrapper to kill the oom-killer
+    services.xserver.xautolock = {
+      enable = true;
+      locker = "/run/wrappers/bin/slock";
+      time = 120;
+    };
+
+    environment.systemPackages = with pkgs; [
+      polkit_gnome
+      git-doc.out
+    ];
     home-manager.users.${some.mainUser} =
       let
         someBg =
-          "${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/Tree.jpg";
+          "${pkgs.gnome.gnome-backgrounds}/share/backgrounds/gnome/truchet-d.jpg";
         nixosConfig = config;
       in
       (
@@ -154,10 +179,6 @@ in
             };
           };
           services.dunst.enable = true;
-          services.betterlockscreen = {
-            enable = true;
-            inactiveInterval = 120;
-          };
           xsession.windowManager.i3 =
             let
               i3Final = hc.xsession.windowManager.i3;
