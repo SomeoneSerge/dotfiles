@@ -52,13 +52,32 @@ in
 
   networking.hostName = "ss-xps13"; # Define your hostname.
   networking.domain = "someonex.net";
-  networking.nameservers = [ "203:14db:1510:5009:f390:b491:a31c:68b3" "5.2.76.123" "1.1.1.1" ];
+  networking.nameservers = [ "10.24.60.1" "203:14db:1510:5009:f390:b491:a31c:68b3" "1.1.1.1" ];
   networking.resolvconf = {
     enable = true;
     extraConfig = ''
-      prepend_nameservers=203:14db:1510:5009:f390:b491:a31c:68b3
+      prepend_nameservers=127.0.0.1
     '';
   };
+
+  services.dnsmasq = {
+    enable = true;
+    extraConfig = ''
+      listen-address=127.0.0.1
+      bind-interfaces
+      cache-size=16384
+      domain-needed
+      bogus-priv
+      dns-forward-max=150
+      neg-ttl=3600
+    '';
+  };
+  environment.etc."/etc/dnsmasq-resolv.conf".text =
+    lib.concatMapStringsSep
+      "\n"
+      (s: "nameserver ${s}")
+      config.networking.nameservers;
+
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.hosts = {
     "${lite21ipv4}" = [ "lite21" ];
