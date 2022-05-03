@@ -52,16 +52,23 @@ in
 
   networking.hostName = "ss-xps13"; # Define your hostname.
   networking.domain = "someonex.net";
-  networking.nameservers = [ "10.24.60.1" "203:14db:1510:5009:f390:b491:a31c:68b3" "1.1.1.1" ];
-  networking.resolvconf = {
+  networking.nameservers = [
+    "10.24.60.1"
+    "203:14db:1510:5009:f390:b491:a31c:68b3"
+    "1.1.1.1"
+  ];
+  networking.resolvconf.enable = false;
+
+  networking.interfaces.wlp58s0.useDHCP = true;
+  networking.networkmanager = {
     enable = true;
-    extraConfig = ''
-      prepend_nameservers=127.0.0.1
-    '';
+    dns = "dnsmasq";
+    unmanaged = [ "type:tun" ];
   };
 
   services.dnsmasq = {
     enable = true;
+    servers = config.networking.nameservers;
     extraConfig = ''
       listen-address=127.0.0.1
       bind-interfaces
@@ -72,11 +79,6 @@ in
       neg-ttl=3600
     '';
   };
-  environment.etc."/etc/dnsmasq-resolv.conf".text =
-    lib.concatMapStringsSep
-      "\n"
-      (s: "nameserver ${s}")
-      config.networking.nameservers;
 
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.hosts = {
@@ -92,12 +94,6 @@ in
   };
 
   time.timeZone = "Europe/Helsinki";
-
-  networking.interfaces.wlp58s0.useDHCP = true;
-  networking.networkmanager = {
-    enable = true;
-    unmanaged = [ "type:tun" ];
-  };
 
   environment.systemPackages = with pkgs; [
     logseq
