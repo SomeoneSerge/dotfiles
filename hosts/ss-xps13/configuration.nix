@@ -242,7 +242,6 @@ in
   networking.wg-quick.interfaces.wg24601 = {
     address = [ "10.24.60.11" ];
     privateKeyFile = "/var/lib/wireguard/wg-${config.networking.hostName}";
-    dns = [ "10.24.60.1" ];
     peers = [
       {
         publicKey = "60oGoY7YyYL/9FnBAljeJ/6wyaWZOvSQY+G1OnmKYmg=";
