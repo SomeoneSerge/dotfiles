@@ -60,7 +60,7 @@ in
     fonts.enableGhostscriptFonts = mkDefault true;
     fonts.fontDir.enable = mkDefault true;
     fonts.fonts = with pkgs;
-      if xOn then [
+      lib.optionals xOn [
         source-code-pro
         anonymousPro
         hasklig
@@ -71,8 +71,11 @@ in
         font-awesome_5
         powerline-fonts
         powerline-symbols
-      ] else
-        [ ];
+      ] ++ [
+        lmodern
+        fira
+        fira-mono
+      ];
     fonts.fontconfig.defaultFonts = {
       monospace = [ "hasklig" "Source Code Pro" "Anonymous Pro" ];
       emoji = [ "FontAwesome5Free" "Noto Color Emoji" "Powerline Symbols" ];
