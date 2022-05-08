@@ -53,7 +53,6 @@ in
           {
             gpytorch = python-final.callPackage ./pkgs/gpytorch.nix { };
             gpflux = python-final.callPackage ./pkgs/gpflux.nix { };
-            dm-tree = python-final.callPackage ./pkgs/dm-tree { };
             tfp15 = python-final.callPackage ./pkgs/tfp.nix { };
             gpflow = python-final.callPackage ./pkgs/gpflow.nix { };
             trieste = python-final.callPackage ./pkgs/trieste.nix { tensorflow-probability = python-final.tfp15; };

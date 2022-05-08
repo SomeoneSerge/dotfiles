@@ -16,10 +16,10 @@ let
 
   psUsual = ps: with ps; [
     # LATER...
-    # gpytorch
-    # gpflow
-    # gpflux
-    # trieste
+    gpytorch
+    gpflow
+    gpflux
+    trieste
 
     # BROKEN for now
     # jax
@@ -27,7 +27,7 @@ let
     pytorch
     torchvision
     tensorflow
-    # tensorflow-probability
+    tensorflow-probability
     numpy
     scikit-learn
     networkx

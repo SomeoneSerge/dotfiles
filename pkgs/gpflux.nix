@@ -10,6 +10,7 @@
 , pytest
 , nbconvert
 , jupytext
+, matplotlib
 }:
 buildPythonPackage rec {
   pname = "GPflux";
@@ -34,6 +35,7 @@ buildPythonPackage rec {
   checkInputs = [
     pytest
     nbconvert
+    matplotlib
   ];
   postPatch = ''
     # sed -i 's/tensorflow>/${builtins.replaceStrings ["-"] ["_"] tensorflow.pname}>/' setup.py
