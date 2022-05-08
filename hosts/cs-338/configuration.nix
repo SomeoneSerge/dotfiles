@@ -150,7 +150,7 @@ in
   networking.interfaces.enp4s0.useDHCP = true;
   networking.networkmanager.enable = false;
 
-  programs.gnupg.agent.pinentryFlavor = "curses";
+  programs.gnupg.agent.pinentryFlavor = "gtk2";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
