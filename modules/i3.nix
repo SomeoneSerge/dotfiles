@@ -47,7 +47,7 @@ in
     services.udisks2.enable = true;
     security.polkit.enable = true;
     services.accounts-daemon.enable = true;
-    services.upower.enable = true;
+    services.upower.enable = mkDefault true;
     services.gnome.glib-networking.enable = true;
     services.gvfs.enable = true;
     services.tumbler.enable = true;
