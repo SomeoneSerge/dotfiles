@@ -15,7 +15,7 @@ in
       nixPath = mkDefault [ "nixpkgs=${pkgs.path}" ];
       package = mkDefault pkgs.nixUnstable;
       extraOptions = ''
-        experimental-features = nix-command flakes ca-derivations
+        experimental-features = nix-command flakes ca-derivations impure-derivations
         keep-outputs = true
         keep-derivations = true
       '';
