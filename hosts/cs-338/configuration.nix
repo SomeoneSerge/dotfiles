@@ -417,7 +417,7 @@ in
     # broken on unstable, 2022-04-10
     # nixpkgs-update
 
-    colmapWithCuda
+    # colmapWithCuda
 
     docker-compose
     podman-compose
