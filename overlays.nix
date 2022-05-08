@@ -57,6 +57,15 @@ in
             gpflow = python-final.callPackage ./pkgs/gpflow.nix { };
             trieste = python-final.callPackage ./pkgs/trieste.nix { tensorflow-probability = python-final.tfp15; };
 
+            chainer = python-prev.chainer.overridePythonAttrs (a: {
+              postPatch = ''
+                substituteInPlace chainer/_version.py --replace ",<8.0.0" ""
+              '';
+              meta = a.meta // {
+                broken = false;
+              };
+            });
+
             nix-visualize = python-final.buildPythonPackage rec {
               name = "nix-visualize-${version}";
               version = "1.0.4";
