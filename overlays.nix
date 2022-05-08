@@ -95,6 +95,11 @@ in
                   "test_request_without_certinfo"
                 ];
               });
+
+            # FIXME: rm after https://github.com/NixOS/nixpkgs/issues/170080
+            jupyterlab_server = python-prev.jupyterlab_server.overridePythonAttrs (a: {
+              doCheck = false;
+            });
           }
         )
       ];
