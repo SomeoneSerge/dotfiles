@@ -372,6 +372,7 @@ in
     vpn-slice
     p7zip
     blender
+    inkscape
     (
       conda.override {
         condaDeps = [
