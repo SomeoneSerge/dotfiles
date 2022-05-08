@@ -406,7 +406,6 @@ in
     (python3.withPackages psUsual)
     # FIXME: broken
     # napari
-    saccade
     okular
     xclip
     meld

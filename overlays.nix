@@ -19,8 +19,6 @@ in
       alejandra = inputs.alejandra.defaultPackage.${prev.system};
       nixUpstream = inputs.nix.packages.${prev.system}.nix;
 
-      saccade = final.libsForQt5.callPackage ./pkgs/saccade.nix { };
-
       vpn-slice = prev.vpn-slice.overrideDerivation (oldAttrs:
         with oldAttrs; rec {
           version = "0.15";
