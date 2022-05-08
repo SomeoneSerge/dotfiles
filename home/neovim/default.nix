@@ -132,21 +132,22 @@ in
       rnix-lsp
       nixpkgs-fmt
       yaml-language-server
-      nodePackages.typescript
-      nodePackages.typescript-language-server
+      # nodePackages.typescript
+      # nodePackages.typescript-language-server
       nodePackages.bash-language-server
-      nodePackages.vscode-langservers-extracted
+      # nodePackages.vscode-langservers-extracted
       gopls
-      sumneko-lua-language-server
+      # FIXME:
+      # sumneko-lua-language-server
       luaformatter
-      (
-        let
-          sumneko = sumneko-lua-language-server;
-        in
-        pkgs.writeScriptBin "sumneko_lua" ''
-          ${sumneko}/bin/lua-language-server -E ${sumneko}/extras/main.lua $@
-        ''
-      )
+      # (
+      #   let
+      #     sumneko = sumneko-lua-language-server;
+      #   in
+      #   pkgs.writeScriptBin "sumneko_lua" ''
+      #     ${sumneko}/bin/lua-language-server -E ${sumneko}/extras/main.lua $@
+      #   ''
+      # )
     ];
     extraPython3Packages = ps:
       with ps; [
