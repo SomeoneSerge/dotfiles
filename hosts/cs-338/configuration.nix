@@ -297,6 +297,11 @@ in
     };
   };
 
+  home-manager.users.ss.services.syncthing = {
+    enable = true;
+    tray.enable = true;
+  };
+
   services.printing.enable = true;
 
   services.gvfs.enable = true;
