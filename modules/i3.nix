@@ -94,6 +94,7 @@ in
           hc = config; # home config
         in
         {
+          xsession.enable = true;
           xsession.pointerCursor = {
             name = "breeze_cursors";
             package = pkgs.breeze-qt5;

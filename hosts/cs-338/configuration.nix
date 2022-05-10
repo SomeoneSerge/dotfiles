@@ -457,7 +457,7 @@ in
 
   xdg.portal.enable = true;
   services.flatpak.enable = true;
-  home-manager.users.ss = { services.random-background.enableXinerama = true; };
+  home-manager.users.ss.services.random-background.enableXinerama = true;
 
   services.munge = {
     enable = true;
