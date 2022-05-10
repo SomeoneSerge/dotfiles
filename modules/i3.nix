@@ -208,7 +208,7 @@ in
             let
               i3Final = hc.xsession.windowManager.i3;
               i3Cfg = i3Final.config;
-              refresh_i3status = "killall -SIGUSR1 i3status-rs";
+              refresh_i3status = "${pkgs.killall}/bin/killall -SIGUSR1 i3status-rs";
             in
             {
               enable = true;
@@ -221,6 +221,7 @@ in
                 let
                   modifier = i3Cfg.modifier;
                   playerctlBin = "${pkgs.playerctl}/bin/playerctl";
+                  pactlBin = "${pkgs.pulseaudio}/bin/pactl";
                 in
                 {
                   "${modifier}+h" = "focus left";
@@ -233,13 +234,13 @@ in
                   "${modifier}+Shift+l" = "move right";
                   "${modifier}+x" = "exec ${pkgs.xautolock}/bin/xautolock -locknow";
                   "XF86AudioRaiseVolume" =
-                    "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && ${refresh_i3status}";
+                    "exec --no-startup-id ${pactlBin} set-sink-volume @DEFAULT_SINK@ +10% && ${refresh_i3status}";
                   "XF86AudioLowerVolume" =
-                    "exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && ${refresh_i3status}";
+                    "exec --no-startup-id ${pactlBin} set-sink-volume @DEFAULT_SINK@ -10% && ${refresh_i3status}";
                   "XF86AudioMute" =
-                    "exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && ${refresh_i3status}";
+                    "exec --no-startup-id ${pactlBin} set-sink-mute @DEFAULT_SINK@ toggle && ${refresh_i3status}";
                   "XF86AudioMicMute" =
-                    "exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && ${refresh_i3status}";
+                    "exec --no-startup-id ${pactlBin} set-source-mute @DEFAULT_SOURCE@ toggle && ${refresh_i3status}";
                   "XF86AudioPlay" =
                     "exec --no-startup-id ${playerctlBin} play";
                   "XF86AudioPause" =
