@@ -94,6 +94,8 @@ in
                 ];
               });
 
+            tol-colors = python-final.callPackage ./pkgs/tol-colors.nix { };
+
             # FIXME: rm after https://github.com/NixOS/nixpkgs/issues/170080
             jupyterlab_server = python-prev.jupyterlab_server.overridePythonAttrs (a: {
               doCheck = false;

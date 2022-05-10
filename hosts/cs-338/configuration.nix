@@ -21,6 +21,8 @@ let
     gpflux
     trieste
 
+    tol-colors
+
     # BROKEN for now
     # jax
     # jaxlib
