@@ -25,6 +25,9 @@ in
     useACMEHost = fqdn;
 
     locations."/".proxyPass = "http://${config.services.jhub.host}:${toString config.services.jhub.port}/";
+    locations."/".extraConfig = ''
+      client_max_body_size 256m;
+    '';
     locations."/".proxyWebsockets = true;
     listenAddresses =
       [ "127.0.0.1" ]
