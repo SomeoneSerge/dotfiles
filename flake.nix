@@ -9,7 +9,7 @@
       nixpkgs-master.url = github:NixOS/nixpkgs/master;
 
       nixpkgs-unfree = {
-        url = github:SomeoneSerge/nixpkgs-unfree;
+        url = github:SomeoneSerge/nixpkgs-unfree/nixpkgs-unstable;
         inputs.nixpkgs.follows = "nixpkgs";
       };
 

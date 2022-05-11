@@ -72,17 +72,10 @@ in
   nix.package = pkgs.nix; # 2.7 instead of nixUnstable which is 2.8
 
   nixpkgs.overlays = [
+    inputs.nixpkgs-unfree.overlays.basic
+
     (final: prev: {
       pythonPackagesOverlays = (prev.pythonPackagesOverlays or [ ]) ++ [ pyOverrides ];
-
-      # necessary just for fft in pytorch
-      # but still setting it globally
-      blas = prev.blas.override {
-        blasProvider = final.mkl;
-      };
-      lapack = prev.lapack.override {
-        lapackProvider = final.mkl;
-      };
     })
   ];
 

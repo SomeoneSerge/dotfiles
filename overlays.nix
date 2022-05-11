@@ -84,18 +84,6 @@ in
 
             pint = python-final.callPackage ./pkgs/pint.nix { };
 
-            pycurl = python-prev.pycurl.overridePythonAttrs (a:
-              # Fails? The patch has probably already been merged in nixpkgs, time to remove it
-              assert a.version == "7.45.1";
-              {
-                disabledTests = a.disabledTests ++ [
-                  "test_getinfo_raw_certinfo"
-                  "test_request_with_certinfo"
-                  "test_request_with_verifypeer"
-                  "test_request_without_certinfo"
-                ];
-              });
-
             tol-colors = python-final.callPackage ./pkgs/tol-colors.nix { };
 
             # FIXME: rm after https://github.com/NixOS/nixpkgs/issues/170080
