@@ -15,7 +15,6 @@ let
   };
 
   psUsual = ps: with ps; [
-    # LATER...
     gpytorch
     gpflow
     gpflux
@@ -23,9 +22,8 @@ let
 
     tol-colors
 
-    # BROKEN for now
-    # jax
-    # jaxlib
+    jax
+    jaxlib
     pytorch
     torchvision
     tensorflow
