@@ -428,6 +428,8 @@ in
 
     docker-compose
     podman-compose
+
+    pklinfo
   ]
   ++ lib.optional config.virtualisation.libvirtd.enable pkgs.virt-manager
   ;

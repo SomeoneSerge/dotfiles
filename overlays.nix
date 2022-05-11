@@ -37,6 +37,8 @@ in
 
       conda = final.callPackage ./pkgs/conda.nix { };
 
+      pklinfo = final.callPackage ./pkgs/pklinfo { };
+
       python3 =
         let
           self = prev.python3.override {
