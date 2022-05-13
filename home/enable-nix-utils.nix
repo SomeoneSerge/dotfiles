@@ -22,6 +22,7 @@ in
       python3Packages.nix-visualize
       nix-index
       nix-tree
+      nix-top
       patchelf
     ];
   };

@@ -81,6 +81,8 @@ in
 
         curl
         wget
+
+        watchexec
       ]
       ++ lib.optional (!config.programs.broot.enable) [ tree ]
       ++ lib.optionals cfg.enable-gui-busybox [
