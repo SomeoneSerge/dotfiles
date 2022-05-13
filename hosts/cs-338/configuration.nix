@@ -224,6 +224,22 @@ in
     signByDefault = true;
   };
 
+  system.fsPackages = with pkgs; [ sshfs ];
+  fileSystems."/scratch" = {
+    device = "kozluks1@triton.aalto.fi:/scratch/";
+    fsType = "fuse.sshfs";
+    options = [
+      "nofail"
+      "_netdev"
+      "allow_other"
+      "x-systemd.automount"
+
+      "reconnect"
+      "IdentityFile=/root/.ssh/id_ed25519"
+      "ServerAliveInterval=15" # keep connections alive
+    ];
+  };
+
   home-manager.users.ss.programs.mpv = {
     enable = true;
     defaultProfiles = [ "gpu-hq" ];
