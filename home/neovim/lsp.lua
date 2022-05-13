@@ -68,7 +68,7 @@ local on_attach = function(client, bufnr)
                    opts)
 
     -- Set some keybinds conditional on server capabilities
-    if client.resolved_capabilities.document_range_formatting then
+    if client.server_capabilities.document_range_formatting then
         buf_set_keymap("v", "<leader>F",
                        "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
     end
