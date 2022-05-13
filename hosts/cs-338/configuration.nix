@@ -93,10 +93,19 @@ in
 
   nixpkgs.config.allowUnfree = true;
 
+  hardware.nvidia.modesetting.enable = true;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
+  hardware.nvidia.open = true;
+
   hardware.enableAllFirmware = true;
   hardware.opengl.driSupport32Bit = true;
-  hardware.nvidia.modesetting.enable = true;
   hardware.video.hidpi.enable = true;
+
+  hardware.opengl.extraPackages = [
+    pkgs.cudatoolkit
+    pkgs.cudatoolkit.lib
+    config.boot.kernelPackages.nvidia_x11
+  ];
 
   services.upower.enable = false;
 
@@ -481,12 +490,6 @@ in
     createHome = true;
     home = "/etc/munge";
   };
-
-  hardware.opengl.extraPackages = [
-    pkgs.cudatoolkit
-    pkgs.cudatoolkit.lib
-    config.boot.kernelPackages.nvidia_x11
-  ];
 
   systemd.slices.jhub.sliceConfig.CPUQuota = "50%";
   services.jhub.enable = true;

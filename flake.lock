@@ -202,11 +202,11 @@
       },
       "locked": {
         "dir": "contrib",
-        "lastModified": 1652357969,
-        "narHash": "sha256-4PWbvNgsbuxmUt/yjues0LjO/g8iD3nhLGK52z4SzHQ=",
+        "lastModified": 1652412677,
+        "narHash": "sha256-JUtGjeDI8BKRzKHJPpaovIzuYFcdWrm5HYwSYbd+kcc=",
         "owner": "neovim",
         "repo": "neovim",
-        "rev": "3a91adabda43376638e0edc80f54181258c98dea",
+        "rev": "030417d80bac7fb3e9574b7cb1b81dca8fedda32",
         "type": "github"
       },
       "original": {
@@ -313,11 +313,11 @@
     },
     "nixpkgs-master": {
       "locked": {
-        "lastModified": 1652359428,
-        "narHash": "sha256-fyXUZecxcR0YoBgzLGvhNgwDZW/gpch7n4uro0ht+/g=",
+        "lastModified": 1652430101,
+        "narHash": "sha256-AAdH5XxjzrSf/H473+ldVUn8HA6hqJQ3f3933ddLXvc=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f771d397500b5138329bd206af2634086d51d108",
+        "rev": "db312206a78f9b5905043bcbfe3bdb7ed6d3f509",
         "type": "github"
       },
       "original": {
@@ -412,11 +412,11 @@
     },
     "nixpkgs_3": {
       "locked": {
-        "lastModified": 1652276275,
-        "narHash": "sha256-Gt0ec0C4XU13T4EB2YS3tswMbRg+dl7mHM8qNraAn0Y=",
+        "lastModified": 1652430186,
+        "narHash": "sha256-DM3BSugnigrEUtxO582ZJ5EHzaHjfAAUsuHHMCP2kVk=",
         "owner": "SomeoneSerge",
         "repo": "nixpkgs",
-        "rev": "db36fb6fa2bde5ce977186fff5c6706217cb6e36",
+        "rev": "9f19000b210dab57ba0d39078dcb4e944eb7d1c6",
         "type": "github"
       },
       "original": {
@@ -484,11 +484,11 @@
     "rycee": {
       "flake": false,
       "locked": {
-        "lastModified": 1652328162,
-        "narHash": "sha256-ydzA7RRSHYJgjR4enHxYJoT6NUoGb5MZdhrOKAgswlU=",
+        "lastModified": 1652414550,
+        "narHash": "sha256-Qc+sNClsH9aGxO3VBtebpWahCtoU/6jTHEiarmB6wCg=",
         "ref": "master",
-        "rev": "6a095ab4204a37b8852b281906a94c4f91809a12",
-        "revCount": 2226,
+        "rev": "79368031ada29ef8b6a50b05d53af6a246afd74a",
+        "revCount": 2227,
         "type": "git",
         "url": "https://gitlab.com/rycee/nur-expressions.git"
       },
