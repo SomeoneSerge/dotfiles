@@ -45,7 +45,7 @@ local on_attach = function(client, bufnr)
 
     buf_set_keymap('n', '<leader>rn', '<cmd>lua vim.lsp.buf.rename()<CR>', opts)
     buf_set_keymap('n', '<leader>rd',
-                   '<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>',
+                   '<cmd>lua vim.diagnostic.open_float()<CR>',
                    opts)
     buf_set_keymap('n', '<leader>rh', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
     buf_set_keymap('n', '<leader>rs',
