@@ -17,7 +17,8 @@ in
 
   networking.nat.enable = true;
   services.hostapd.interface = lib.mkForce "wlp58s0";
-  networking.nat.externalInterface = "enp0s20f0u2";
+  networking.nat.externalInterface = "wlp58s0";
+  networking.nat.internalInterfaces = [ "ve-+" ];
 
   some.sane.enable = true;
   some.i3.enable = true;
@@ -279,6 +280,77 @@ in
       ];
     };
   };
+
+  containers.ovpn =
+    let
+      remoteAddr = "165.231.163.5";
+    in
+    {
+      bindMounts."/var/ovpn" = {
+        hostPath = "/var/ovpn";
+        isReadOnly = true;
+      };
+      bindMounts."/data/" = { isReadOnly = false; };
+      ephemeral = true;
+      privateNetwork = true;
+      enableTun = true;
+      extraVeths.ve-ovpn = {
+        hostAddress = "10.24.64.1";
+        localAddress = "10.24.64.2";
+      };
+      config = { config, pkgs, ... }: {
+        environment.systemPackages = with pkgs; [
+          yt-dlp
+          aria2
+        ];
+        networking.nameservers = [ "1.1.1.1" ];
+        environment.etc."resolv.conf".text = lib.concatMapStringsSep "\n" (s: "nameserver ${s}") config.networking.nameservers;
+        networking.interfaces.ve-ovpn.ipv4.routes = [
+          {
+            address = remoteAddr;
+            prefixLength = 32;
+            via = "10.24.64.1";
+          }
+        ];
+        users.users.ss.isNormalUser = true;
+        users.users.ss.initialHashedPassword =
+          "$6$aqhl5hjh4jho$ROUMqxxRv5wSZX/v2TH4N9QN73vZnKioP5jH2mtYXP5HOuGAUrjeNZv3E2XQszY8oMCt9oRtHXbdjwjM5FOVb.";
+        services.openvpn.servers.client = {
+          config = ''
+            client
+            dev tun
+            proto udp
+            remote ${remoteAddr} 1194
+            resolv-retry infinite
+            remote-random
+            nobind
+            tun-mtu 1500
+            tun-mtu-extra 32
+            mssfix 1450
+            persist-key
+            persist-tun
+            ping 15
+            ping-restart 120
+            ping-timer-rem
+            reneg-sec 0
+
+            remote-cert-tls server
+
+            #comp-lzo
+            verb 3
+            pull
+            fast-io
+            cipher AES-256-CBC
+
+            auth SHA512
+
+            ca /var/ovpn/ca.crt
+            tls-auth /var/ovpn/ta.key 1
+            auth-user-pass /var/ovpn/auth.txt
+          '';
+        };
+      };
+    };
 
   # I'm bootstrapping almost all of the system state from scratch (except for home)
   # so I'm going to try and bump the stateVersion from 20.09 to 21.11
