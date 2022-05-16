@@ -62,8 +62,8 @@ in
   networking.interfaces.wlp58s0.useDHCP = true;
   networking.networkmanager = {
     enable = true;
-    dns = "dnsmasq";
-    unmanaged = [ "type:tun" ];
+    dns = "none";
+    unmanaged = [ "type:tun" "interface-name:ve-*" ];
   };
 
   services.dnsmasq = {
