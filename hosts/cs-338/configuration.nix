@@ -353,7 +353,14 @@ in
     };
     ss = {
       isNormalUser = true;
-      extraGroups = [ "wheel" "video" "docker" "podman" ] ++ lib.optional config.virtualisation.libvirtd.enable "libvirtd";
+      extraGroups = [
+        "wheel"
+        "video"
+        "data"
+        "docker"
+        "podman"
+      ]
+      ++ lib.optional config.virtualisation.libvirtd.enable "libvirtd";
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMZCVSaUEokr9f55mKVWf4HzHsVIIY1CO089LuTJuHqS kozluks1@login3.triton.aalto.fi"
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKonZ3Bjgl9t+MlyEIBKd1vIW3YYRV5hcFe4vKu21Nia newkozlukov@gmail.com"
