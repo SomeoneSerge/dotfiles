@@ -95,7 +95,7 @@ in
 
   hardware.nvidia.modesetting.enable = true;
   hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.beta;
-  hardware.nvidia.open = true;
+  # hardware.nvidia.open = true;
 
   hardware.enableAllFirmware = true;
   hardware.opengl.driSupport32Bit = true;
