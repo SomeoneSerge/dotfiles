@@ -95,7 +95,8 @@ in
         in
         {
           xsession.enable = true;
-          xsession.pointerCursor = {
+          home.pointerCursor.x11.enable = true;
+          home.pointerCursor = {
             name = "breeze_cursors";
             package = pkgs.breeze-qt5;
             size = 32;
