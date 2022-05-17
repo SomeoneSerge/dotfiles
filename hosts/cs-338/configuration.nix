@@ -224,7 +224,11 @@ in
     signByDefault = true;
   };
 
-  system.fsPackages = with pkgs; [ sshfs ];
+  system.fsPackages = with pkgs; [
+    sshfs
+    archivemount
+    catfs
+  ];
   fileSystems."/scratch" = {
     device = "kozluks1@triton.aalto.fi:/scratch/";
     fsType = "fuse.sshfs";
