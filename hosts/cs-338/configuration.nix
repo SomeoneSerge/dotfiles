@@ -463,6 +463,7 @@ in
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+  services.openssh.forwardX11 = true;
   networking.firewall.enable = true;
   networking.firewall.trustedInterfaces = [ "wg24601" ];
   networking.firewall.allowedTCPPorts = [ 5201 ];
