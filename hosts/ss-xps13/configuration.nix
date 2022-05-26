@@ -253,16 +253,9 @@ in
     ];
   };
 
-  services.syncthing = {
-    enable = true;
-    # FIXME
-    user = "ss";
-    group = "users";
-    dataDir = "/home/ss/.syncthing";
-    configDir = "/home/ss/.config/syncthing";
-  };
 
   home-manager.users.ss = {
+    services.syncthing.enable = true;
     services.gammastep.enable = true;
     services.gammastep.dawnTime = "09:00";
     services.gammastep.duskTime = "18:00";
