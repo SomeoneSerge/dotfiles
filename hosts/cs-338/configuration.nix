@@ -115,6 +115,8 @@ in
   boot.loader.grub.configurationLimit = 16;
   boot.blacklistedKernelModules = [ "nouveau" ];
 
+  boot.cleanTmpDir = true;
+
   # Conflicts with podman:
   # virtualisation.docker.enable = true;
   virtualisation.docker.enableNvidia = true;
