@@ -25,6 +25,12 @@ let
         address = "10.24.60.31";
       };
     };
+    aziz-staff-corp = {
+      wireguard = {
+        publicKey = "IEwI7W0JG96tIKB06B105ZTPlVpQeOaqq45ZMUJDCik=";
+        address = "10.24.60.32";
+      };
+    };
     ss-xps13.wireguard = {
       publicKey = "BN0ZmyKUe7Ayjovl35jkIei5wpkFy3SVhMrOOoe+6yE=";
       address = "10.24.60.11";
