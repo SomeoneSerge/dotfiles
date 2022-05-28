@@ -282,7 +282,7 @@ in
         hostPath = "/var/ovpn";
         isReadOnly = true;
       };
-      bindMounts."/data/" = { isReadOnly = false; };
+      bindMounts."/data/t/" = { isReadOnly = false; };
       ephemeral = true;
       privateNetwork = true;
       enableTun = true;
@@ -295,6 +295,11 @@ in
           yt-dlp
           aria2
         ];
+        services.transmission = {
+          enable = true;
+          home = "/data/t";
+        };
+        system.stateVersion = "22.05";
         networking.nameservers = [ "1.1.1.1" ];
         environment.etc."resolv.conf".text = lib.concatMapStringsSep "\n" (s: "nameserver ${s}") config.networking.nameservers;
         networking.interfaces.ve-ovpn.ipv4.routes = [
