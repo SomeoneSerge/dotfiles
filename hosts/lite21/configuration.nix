@@ -25,7 +25,7 @@ let
         address = "10.24.60.31";
       };
     };
-    aziz-staff-corp = {
+    aziz-macbook = {
       wireguard = {
         publicKey = "IEwI7W0JG96tIKB06B105ZTPlVpQeOaqq45ZMUJDCik=";
         address = "10.24.60.32";
