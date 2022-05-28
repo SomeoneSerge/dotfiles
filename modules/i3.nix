@@ -3,6 +3,7 @@
 with lib;
 
 let
+  nixos-config = config;
   cfg = config.some.i3;
   some = config.some;
 in
@@ -217,6 +218,7 @@ in
               package = cfg.package;
               extraConfig = ''
                 exec --no-startup-id ${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1
+                exec --no-startup-id ${pkgs.xorg.setxkbmap}/bin/setxkbmap -option "${nixos-config.services.xserver.xkbOptions}"
               '';
               config.modifier = mkDefault "Mod4";
               config.keybindings = mkOptionDefault (
