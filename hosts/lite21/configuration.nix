@@ -43,8 +43,8 @@ let
       publicKey = "MMumrXbsxq7t55oNUOT+nV4XPyPRkfiMKKGfM2IXNVg=";
       address = "10.24.60.13";
     };
-    ferres.wireguard = {
-      publicKey = "+AKen1JkXsII++GUCB9a16RcguGCOXwJVODIpLKQPBY=";
+    max-macbook.wireguard = {
+      publicKey = "jdYCJGrqy5wUvdPb9YupT3ghUXiA86/8iizdJkdEe0Y=";
       address = "10.24.60.22";
     };
     cs-338.wireguard = {
