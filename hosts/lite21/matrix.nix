@@ -59,6 +59,7 @@ in
     privateNetwork = true;
     inherit hostAddress localAddress;
     config = ({ config, pkgs, lib, ... }: {
+      system.stateVersion = "21.11";
       environment.systemPackages = [ pkgs.dnsutils ];
       networking = {
         inherit domain hostName;
