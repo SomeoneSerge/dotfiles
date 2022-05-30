@@ -44,7 +44,7 @@ let
       address = "10.24.60.13";
     };
     max-macbook.wireguard = {
-      publicKey = "jdYCJGrqy5wUvdPb9YupT3ghUXiA86/8iizdJkdEe0Y=";
+      publicKey = "e7Rs1ZqLLs5bEzF6XC0WQtBDOFwDG4lqLwDdZXeB000=";
       address = "10.24.60.22";
     };
     cs-338.wireguard = {
