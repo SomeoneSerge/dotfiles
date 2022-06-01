@@ -496,31 +496,6 @@ in
   services.flatpak.enable = true;
   home-manager.users.ss.services.random-background.enableXinerama = true;
 
-  services.munge = {
-    enable = true;
-  };
-  systemd.services.generateMungeKey =
-    let
-      keyFile = config.services.munge.password;
-    in
-    {
-      enable = true;
-      before = [ "munged.service" ];
-      requiredBy = [ "munged.service" ];
-      partOf = [ "munged.service" ];
-      script = ''
-        [[ -f "${keyFile}" ]] || ${pkgs.munge}/bin/mungekey --keyfile="${keyFile}" --verbose
-      '';
-      serviceConfig = {
-        Type = "oneshot";
-        User = "munge";
-      };
-    };
-  users.users.munge = {
-    createHome = true;
-    home = "/etc/munge";
-  };
-
   systemd.slices.jhub.sliceConfig.CPUQuota = "50%";
   services.jhub.enable = true;
   services.jhub.user = "root";
