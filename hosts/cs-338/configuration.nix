@@ -483,6 +483,7 @@ in
   services.openssh.forwardX11 = true;
   networking.firewall.enable = true;
   networking.firewall.trustedInterfaces = [ "wg24601" ];
+  networking.firewall.allowedUDPPorts = [ 12345 ];
   networking.firewall.allowedTCPPorts = [ 5201 ];
 
   networking.wg-quick.interfaces.wg24601 = {
