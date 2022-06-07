@@ -117,6 +117,13 @@ in
 
   boot.cleanTmpDir = true;
 
+  boot.extraModprobeConfig = ''
+    options v4l2loopback card_label="obs" exclusive_caps=1
+  '';
+  boot.extraModulePackages = [
+    config.boot.kernelPackages.v4l2loopback
+  ];
+
   # Conflicts with podman:
   # virtualisation.docker.enable = true;
   virtualisation.docker.enableNvidia = true;
@@ -407,8 +414,16 @@ in
     gimp
     vpn-slice
     p7zip
+
     blender
     inkscape
+    (wrapOBS {
+      plugins = with pkgs.obs-studio-plugins; [
+        obs-nvfbc
+        obs-gstreamer
+      ];
+    })
+
     (
       conda.override {
         condaDeps = [
