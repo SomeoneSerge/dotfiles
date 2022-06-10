@@ -238,6 +238,22 @@ in
     archivemount
     catfs
   ];
+
+  fileSystems."/jetson" = {
+    device = "ss@jetson-sergei.cs.aalto.fi:";
+    fsType = "fuse.sshfs";
+    options = [
+      "nofail"
+      "_netdev"
+      "allow_other"
+      "x-systemd.automount"
+
+      "reconnect"
+      "IdentityFile=/root/.ssh/id_ed25519"
+      "ServerAliveInterval=15" # keep connections alive
+    ];
+  };
+
   fileSystems."/scratch" = {
     device = "kozluks1@triton.aalto.fi:/scratch/";
     fsType = "fuse.sshfs";
