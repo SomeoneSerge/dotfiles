@@ -239,6 +239,7 @@ in
     catfs
   ];
 
+  programs.ssh.knownHosts."jetson-sergei.cs.aalto.fi".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIpFbN8OB8m94RxbBS8tIX+VXvIkeycZ+7Hc5bVvCjoe";
   fileSystems."/jetson" = {
     device = "ss@jetson-sergei.cs.aalto.fi:";
     fsType = "fuse.sshfs";
@@ -254,6 +255,7 @@ in
     ];
   };
 
+  programs.ssh.knownHosts."triton.aalto.fi".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDumqy+fbEwTOtyVlPGqzS/k4i/hJ8L+kUDf6MpWO1OI";
   fileSystems."/scratch" = {
     device = "kozluks1@triton.aalto.fi:/scratch/";
     fsType = "fuse.sshfs";
