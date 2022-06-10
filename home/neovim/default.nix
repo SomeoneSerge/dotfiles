@@ -120,7 +120,8 @@ in
       # (cmake-language-server.overrideAttrs (_: { doCheck = false; }))
       cpplint
       ccls
-      haskell-language-server
+      # Broken: 2022-06-07
+      # haskell-language-server
       rust-analyzer
       clojure-lsp
 
